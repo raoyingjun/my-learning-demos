@@ -1,0 +1,97 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<title>无标题文档</title>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Bootstrap4 实用工具</h1>
+        <p>在Bootstrap4中包含了很多实用的小工具，这些功能能够让你不用写 CSS 代码就能实现想要的效果，让开发更快捷和简单。</p>
+        <h2>边框</h2>
+        <p>使用 border 类可以添加或移除边框:</p> 
+        <p class="border">class="border"</p>
+        <p class="border border-0">class="border border-0"</p>
+        <p class="border border-top-0">class="border border-top-0"</p>
+        <p class="border border-right-0">class="border border-right-0"</p>
+        <p class="border border-bottom-0">class="border border-bottom-0"</p>
+        <p class="border border-left-0">class="border border-left-0</p>
+        <hr />
+        <h2>边框颜色</h2>
+        <p>Bootstrap4 提供了一些类来设置边框颜色:</p> 
+        <p class="border border-primary">class="border border-primary"</p>
+        <p class="border border-secondary">class="border border-secondary"</p>
+        <p class="border border-success">class="border border-success"</p>
+        <p class="border border-danger">lass="border border-danger"</p>
+        <p class="border border-warning">lass="border border-warning"</p>
+        <p class="border border-info">class="border border-info"</p>
+        <p class="border border-light">class="border border-light"</p>
+        <p class="border border-dark">class="border border-dark"</p>
+        <p class="border border-white">lass="border border-white"</p>
+        <hr />
+        <h2>边框圆角设置</h2>
+        <p>使用rounded 类可以添加圆角边框。</p> 
+        <p>下列使用的边框样式分别为：rounded，rounded-top，rounded-right，rounded-bottom，rounded-left，rounded-circle，rounded-0。</p>
+        <style>
+            span{
+                display:inline-block;
+                width: 70px;
+                height: 70px;
+                background-color: lightgreen;
+                text-align: center;
+                line-height: 70px;
+            }
+        </style>
+        <span class="rounded">全部圆角</span>
+        <span class="rounded-top">上方圆角</span>
+        <span class="rounded-right">右边圆角</span>
+        <span class="rounded-bottom">下方圆角</span>
+        <span class="rounded-left">左边圆角</span>
+        <span class="rounded-circle">原型图片</span>
+        <span class="rounded-0">没有圆角</span>
+        <hr />
+        <h2>浮动</h2>
+        <p>.float-right 类用于设置元素右浮动， .float-left 设置元素左浮动, .clearfix 类用于清除浮动:</p> 
+        <div class="clearfix">
+            <span class="float-left">左浮动</span>
+            <span class="float-right">右浮动</span>
+        </div>
+        <hr />
+        <h2>响应式浮动</h2>
+        <p>重置浏览器大小查看效果。</p>
+        <p>我们可以设置浮动 (.float-*-left|right - * 为 sm, md, lg 或 xl)的方向依赖于屏幕的大小:</p> 
+        <div class="float-sm-right">在大于小屏幕尺寸上右浮动</div><br>
+        <div class="float-md-right">在大于中等屏幕尺寸上右浮动</div><br>
+        <div class="float-lg-right">在大于大屏幕尺寸上右浮动</div><br>
+        <div class="float-xl-right">在大于超大屏幕尺寸上右浮动</div><br>
+        <div class="float-none">没有浮动</div>
+        <hr />
+        <h2>水平居中</h2>
+        <p>使用 .mx-auto 类来设置居中对齐::</p>
+        <div class="mx-auto bg-warning" style="width:180px">盒子居中（并非文本）</div>
+        <hr />
+        <h2>宽度设置小工具</h2>
+        <p>元素上使用 w-* 类 (.w-25, .w-50, .w-75, .w-100, .mw-100) 来设置宽度:</p>
+        <div class="w-25 bg-warning">宽度 25%</div>
+        <div class="w-50 bg-warning">宽度 50%</div>
+        <div class="w-75 bg-warning">宽度 75%</div>
+        <div class="w-100 bg-warning">宽度 100%</div>
+        <div class="mw-100 bg-warning">最大宽度 100%</div>
+        <hr />
+        <h2>高度小工具</h2>
+        <p>元素上使用 h-* 类 (.h-25, .h-50, .h-75, .h-100, .mh-100) 来设置高度:</p>
+        <div style="height:200px;background-color:#ddd">
+            <div class="h-25 d-inline-block p-2 bg-warning">高度 25%</div>
+            <div class="h-50 d-inline-block p-2 bg-warning">高度 50%</div>
+            <div class="h-75 d-inline-block p-2 bg-warning">高度 75%</div>
+            <div class="h-100 d-inline-block p-2 bg-warning">高度 100%</div>
+            <div class="mh-100 d-inline-block p-2 bg-warning" style="height:500px">最大高度 100%</div>
+        </div>
+        <hr />
+    <script src="bootstrap/js/jquery-3.4.1.min.js"></script>
+    <script src="bootstrap/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

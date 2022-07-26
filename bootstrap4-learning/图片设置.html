@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>无标题文档</title>
+    <link href="bootstrap/css/bootstrap.min.css" type="text/css" rel="stylesheet">
+    <style>
+        img{width: 100%; max-width: 400px;}
+    </style>
+</head>
+
+<body>
+    <div class="container" style="background-color:  skyblue;">
+        <h2>图片形状</h2>
+        <p>img-rounded：让图片显示圆角效果（bootstrap4中更名为rounded）</p>
+        <p>img-circle：设置椭圆形图片（bootstrap4中更名为rounded-circle）</p>
+        <p>img-thumbnail：用于设置图片缩略图(图片有边框)</p>
+        <img src="bootstrap/images/pic1.jpg" class="rounded">
+        <img src="bootstrap/images/pic2.jpg" class="rounded-circle">
+        <img src="bootstrap/images/pic3.jpg" class="img-thumbnail">
+    </div>
+    
+    <div class="container clearfix" style="background-color:lightgreen;">
+        <h2>图片对齐</h2>
+        <p>使用 .float-right 类来设置图片右对齐，使用 .float-left 类设置图片左对齐:</p>
+        <img src="bootstrap/images/pic4.jpg" class="float-left">
+        <img src="bootstrap/images/pic5.jpg" class="float-right">
+        <p class="text-danger">使用float将会对其他元素排版产生影响,在此处没有影响因为使用clearfix清除了浮动</p>
+    </div>
+    
+    <div class="container" style="background-color: lightcoral">
+        <h2>响应式图片</h2>
+        <p>.img-fluid 类可以设置响应式图片，重置浏览器大小查看效果:</p>
+        <img src="bootstrap/images/pic4.jpg" class="img-fluid">
+    </div>
+</body>
+</html>

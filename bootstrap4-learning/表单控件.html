@@ -1,0 +1,130 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+<title>无标题文档</title>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Bootstrap4 表单控件</h1>
+        <p>Bootstrap4 支持以下表单控件：input、textarea、checkbox、radio以及select，使用这些类可以优化自定义显示，以实现一个更一致的跨浏览器跨设备渲染。</p>
+        <h2>表单控件: input</h2>
+        <p>Bootstrap 支持所有的 HTML5 输入类型: text, password, datetime, datetime-local, date, month, time, week, number, email, url, search, tel, 以及 color。</p>
+        <p>注意：如果 input 的 type 属性未正确声明，输入框的样式将不会显示。
+
+</p>
+        <form>
+            <div class="form-group">
+                <label for="usr">用户名:</label>
+                <input type="text" class="form-control" id="usr">
+            </div>
+            <div class="form-group">
+                <label for="pwd">密码:</label>
+                <input type="password" class="form-control" id="pwd">
+            </div>
+        </form>
+        <hr />
+        <h2>表单控件: textarea</h2>
+        <p>以下实例演示了 textarea 的样式。</p>
+        <form>
+            <div class="form-group">
+                <label for="comment">评论:</label>
+                <textarea class="form-control" rows="5" id="comment"></textarea>
+            </div>
+        </form>
+        <hr />
+        <h2>表单控件: checkbox</h2>
+        <p>使用 .form-check-label 类可以让选项单独占据一行，一般是为包裹复选项的标签(通常是 &lt;label&gt; )添加该类</p>
+        <p>以下实例包含了三个选项。最后一个是禁用的：</p>
+        <form>
+            <div class="form-check">
+                <label class="form-check-label">
+                    <input type="checkbox" class="form-check-input" value="">Option 1
+                </label>
+            </div>
+            <div class="form-check">
+                <label class="form-check-label">
+                    <input type="checkbox" class="form-check-input" value="">Option 2
+                </label>
+            </div>
+            <div class="form-check disabled">
+                <label class="form-check-label">
+                     <input type="checkbox" class="form-check-input" value="" disabled>Option 3
+                </label>
+            </div>
+        </form>
+        <br />
+        <p>使用 .form-check-inline 类可以让选项显示在同一行上，一般是为包裹复选项的标签(通常是 &lt;label&gt; )添加该类</p>
+        <p>以下实例包含了三个选项。最后一个是禁用的：</p>
+        <form>
+            <div class="form-check form-check-inline">
+                <label class="form-check-label">
+                    <input type="checkbox" class="form-check-input" value="">Option 1
+                </label>
+            </div>
+            <div class="form-check form-check-inline">
+                <label class="form-check-label">
+                    <input type="checkbox" class="form-check-input" value="">Option 2
+                </label>
+            </div>
+            <div class="form-check form-check-inline disabled">
+                <label class="form-check-label">
+                    <input type="checkbox" class="form-check-input" value="" disabled>Option 3
+                </label>
+            </div>
+        </form>
+        <hr />
+        <h2>Bootstrap 单选框(Radio)</h2>
+        <p>复选框用于让用户从一系列预设置的选项中进行选择，只能选一个。</p>
+        <p>以下实例包含了三个选项。最后一个是禁用的：</p>
+        <h2>表单控件: radio</h2>
+        <p>以下实例包含了三个选项。最后一个是禁用的：</p>
+        <form>
+            <div class="radio">
+                <label><input type="radio" name="optradio">Option 1</label>
+            </div>
+            <div class="radio">
+                <label><input type="radio" name="optradio">Option 2</label>
+            </div>
+            <div class="radio disabled">
+                <label><input type="radio" name="optradio" disabled>Option 3</label>
+            </div>
+        </form>
+        <hr />
+        <h2>Bootstrap select 下拉菜单</h2>
+        <p>当您想让用户从多个选项中进行选择，但是默认情况下只能选择一个选项时，则使用选择框。</p>
+        <p>以下实例包含了两个下拉菜单：</p>
+        <h2>表单控件: select</h2>
+        <p>以下表单包含了两个下拉菜单 (select 列表):</p>
+        <form>
+            <div class="form-group">
+                <label for="sel1">单选下拉菜单:</label>
+                <select class="form-control" id="sel1">
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                </select>
+                <br />
+                <p class="text-danger">多选下拉在移动端可能无法滑动，请谨慎使用。</p>
+                <label for="sel2">多选下拉菜单(按住 shift 键，可以选取多个选项):</label>
+                <select multiple class="form-control" id="sel2">
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                    <option>6</option>
+                    <option>7</option>
+                    <option>8</option>
+                </select>
+            </div>
+        </form>
+    </div>
+    <script src="bootstrap/js/jquery-3.4.1.min.js"></script>
+    <script src="bootstrap/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,89 @@
+<!doctype html>
+<html><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+<title>无标题文档</title>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Bootstrap4 折叠板</h1>
+        <h2>简单的折叠</h2>
+        <p>
+            .collapse 类用于指定一个折叠元素 (实例中的 &lt;div&gt;); 点击按钮后会在隐藏与显示之间切换。
+            控制内容的隐藏与显示，需要在 &lt;a&gt; 或 &lt;button&gt; 元素上添加 data-toggle="collapse" 属性。 data-target="#id" 属性是对应折叠的内容 (&lt;div id="demo"&gt;)。
+        </p>
+        <button type="button" class="btn btn-primary" data-toggle="collapse" data-target="#demo1">简单的折叠</button>
+        <div id="demo1" class="collapse">
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit,sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+        </div>
+        <hr />
+        <h5>在&lt;a&gt; 元素上你可以使用 href 属性来代替 data-target 属性:</h5>
+        <h2>简单的折叠</h2>
+        <a href="#demo2" class="btn btn-primary" data-toggle="collapse">简单的折叠</a>
+        <div id="demo2" class="collapse">
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit,sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+        </div>
+        <hr />
+        <h2>简单的折叠</h2>
+        <p>你可以添加 .show 类让内容默认显示:</p>
+        <button type="button" class="btn btn-primary" data-toggle="collapse" data-target="#demo3">简单的折叠</button>
+        <div id="demo3" class="collapse show">
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit,
+            sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+        </div>
+        <hr />
+        <h2>手风琴实例</h2>
+        <p>以下实例通过扩展卡片组件来显示简单的手风琴。</p>
+        <p>
+            <strong>注意:</strong> 使用 data-parent 属性来确保所有的折叠元素在指定的父元素下，这样就能实现在一个折叠选项显示时其他选项就隐藏。
+        </p>
+        <p class="alert alert-danger">
+            在含有 .collapse 的元素上添加data-parent属性。
+        </p>
+        <div id="accordion">
+            <div class="card">
+                <div class="card-header">
+                    <a class="card-link" data-toggle="collapse" href="#collapseOne">Collapsible Group Item #1</a>
+                </div>
+                <div id="collapseOne" class="collapse show" data-parent="#accordion">
+                    <div class="card-body">
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <a class="collapsed card-link" data-toggle="collapse" href="#collapseTwo">Collapsible Group Item #2</a>
+                </div>
+                <div id="collapseTwo" class="collapse" data-parent="#accordion">
+                    <div class="card-body">
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <a class="collapsed card-link" data-toggle="collapse" href="#collapseThree">Collapsible Group Item #3</a>
+                </div>
+                <div id="collapseThree" class="collapse" data-parent="#accordion">
+                    <div class="card-body">
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr />
+        <p>这只是一些无用的文本。</p>
+        <p>这只是一些无用的文本。</p>
+        <p>这只是一些无用的文本。</p>
+        <p>这只是一些无用的文本。</p>
+    </div>
+    <script src="bootstrap/js/jquery-3.4.1.min.js"></script>
+    <script src="bootstrap/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

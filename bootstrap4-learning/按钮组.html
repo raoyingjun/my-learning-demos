@@ -1,0 +1,132 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+    <style>
+        .btn{box-shadow: none !important}
+    </style>
+<title>无标题文档</title>
+</head>
+<body>
+    <div class="container">
+        <h2>按钮组</h2>
+        <p>在Bootstrap 4中，除了单个按钮外，还允许我们将按钮放在同一行上，组成按钮组。</p>
+        <p> .btn-group 类用于创建按钮组:</p>
+        <div class="">
+            <p>如果不需要<span class="text-danger font-weight-bold">outline</span>请记得在css添加下列代码（本页面所有实例都已去除outline）：</p>
+            <p class="text-danger font-weight-bold">.btn{box-shadow: none !important}</p>
+        </div>
+        <div class="btn-group">
+            <button type="button" class="btn">common</button>
+            <button type="button" class="btn btn-primary">Apple</button>
+            <button type="button" class="btn btn-primary">Samsung</button>
+            <button type="button" class="btn btn-primary">Sony</button>
+        </div>
+        <hr />
+        <h2>按钮组大小</h2>
+        <p>我们可以使用 .btn-group-lg|sm|xs 类来设置按钮组的大小。</p>
+        <p class="text-danger">为按钮组添加该类样式，而不是为该元素。</p>
+        <h3>大按钮:</h3>
+        <div class="btn-group btn-group-lg">
+            <button type="button" class="btn btn-primary">Apple</button>
+            <button type="button" class="btn btn-primary">Samsung</button>
+            <button type="button" class="btn btn-primary">Sony</button>
+        </div>
+        <h3>默认按钮:</h3>
+        <div class="btn-group">
+            <button type="button" class="btn btn-primary">Apple</button>
+            <button type="button" class="btn btn-primary">Samsung</button>
+            <button type="button" class="btn btn-primary">Sony</button>
+        </div>
+        <h3>小按钮:</h3>
+        <div class="btn-group btn-group-sm">
+            <button type="button" class="btn btn-primary">Apple</button>
+            <button type="button" class="btn btn-primary">Samsung</button>
+            <button type="button" class="btn btn-primary">Sony</button>
+        </div>
+        <hr />
+        <h2>垂直按钮组</h2>
+        <p>可以使用 .btn-group-vertical 类来创建垂直的按钮组：</p>
+        <div class="btn-group-vertical">
+            <button type="button" class="btn btn-primary">Apple</button>
+            <button type="button" class="btn btn-primary">Samsung</button>
+            <button type="button" class="btn btn-primary">Sony</button>
+        </div>
+        <hr />
+        <h2>内嵌按钮组</h2>
+        <div class="alert alert-danger">
+            <p>使用内嵌按钮组必须依赖3个插件，分别为<code>jquery.js</code>，<code>popper.js</code>，<code>bootstrap.js</code> 或者 <code>jquery.js</code>，<code>bootstrap.bundle.js</code> (该js文件包含popper.js和bootstrap.js)。而且必须得按照顺序引入。
+            </p>
+            <div class="alert alert-info">
+                &lt;script src="jquery.js"&gt;&lt;/script&gt;<br />
+                &lt;script src="popper.js"&gt;&lt;/script&gt;<br />
+                &lt;script src="bootstrap.js"&gt;&lt;/script&gt;
+            </div>
+            <p>或者：</p>
+            <div class="alert alert-info">
+                &lt;script src="jquery.js"&gt;&lt;/script&gt;<br />
+                &lt;script src="bootstrap.bundle.js"&gt;&lt;/script&gt;
+            </div>
+        </div>
+        <p>按钮组设置下拉菜单:</p>
+        <div class="btn-group">
+            <button type="button" class="btn btn-primary">Apple</button>
+            <button type="button" class="btn btn-primary">Samsung</button>
+            <div class="btn-group">
+                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">Sony</button>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="#">Tablet</a>
+                    <a class="dropdown-item" href="#">Smartphone</a>
+                </div>
+            </div>
+            <button type="button" class="btn btn-primary">Huawei</button>
+        </div>
+        <hr />
+        <h2>拆分按钮下拉菜单</h2>
+        <p>含有类样式 dropdown-toggle-split:</p>
+        <div class="btn-group">
+            <button type="button" class="btn btn-primary">Sony</button>
+            <div class="btn-group">
+                <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown"></button>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" href="#">Tablet</a>
+                  <a class="dropdown-item" href="#">Smartphone</a>
+                </div>
+            </div>
+            <button type="button" class="btn btn-primary">samsung</button>
+        </div>
+        <p>没有类样式 dropdown-toggle-split:</p>
+        <div class="btn-group">
+            <button type="button" class="btn btn-primary">Sony</button>
+            <div class="btn-group">
+                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"></button>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" href="#">Tablet</a>
+                  <a class="dropdown-item" href="#">Smartphone</a>
+                </div>
+            </div>
+            <button type="button" class="btn btn-primary">samsung</button>
+        </div>
+        <hr />
+        <h2>垂直按钮组及下拉菜单</h2>
+            <div class="btn-group-vertical">
+                <button type="button" class="btn btn-primary">Apple</button>
+                <button type="button" class="btn btn-primary">Samsung</button>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">Sony</button>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="#">Tablet</a>
+                            <a class="dropdown-item" href="#">Smartphone</a>
+                        </div>
+                </div>
+                <button type="button" class="btn btn-primary">Samsung</button>
+            </div>
+        <hr />
+        <p>这只是一些无用的文本</p>
+    </div>
+    <script src="bootstrap/js/jquery-3.4.1.min.js"></script>
+    <script src="bootstrap/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

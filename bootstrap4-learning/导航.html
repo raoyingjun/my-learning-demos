@@ -1,0 +1,273 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+<title>无标题文档</title>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Bootstrap4 导航</h1>
+        <p>在Bootstrap4中，可以使用.nav类来创建导航</p>
+        <hr />
+        <h2>简单的水平导航</h2>
+        <p>如果你想创建一个简单的水平导航栏，可以在 &lt;ul&gt; 元素上添加 .nav类，在每个 &lt;li&gt 选项上添加 .nav-item 类，在每个链接上添加 .nav-link 类。</p>
+        <ul class="nav">
+            <li class="nav-item">
+                <a class="nav-link" href="http://www.baidu.com">跳转到百度</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="http://www.baidu.com">跳转到百度</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="http://www.baidu.com">跳转到百度</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link disabled" href="http://www.baidu.com">跳转到百度（disabled）</a>
+            </li>
+        </ul>
+        <hr />
+        <h2>导航对齐方式</h2>
+        <p>导航默认左对齐，我们可以使用.justify-content-center 类设置导航居中显示， .justify-content-end 类设置导航右对齐。</p>
+        <p>左对齐导航 (默认):</p>
+        <ul class="nav">
+            <li class="nav-item">
+               <a class="nav-link" href="#">Link</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Link</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Link</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link disabled" href="#">Disabled</a>
+            </li>
+        </ul>
+        <p class="text-center">居中对齐导航:</p>
+            <ul class="nav justify-content-center">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Link</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Link</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Link</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link disabled" href="#">Disabled</a>
+                </li>
+            </ul>
+        <p class="text-right">右对齐导航:</p>
+        <ul class="nav justify-content-end">
+            <li class="nav-item">
+                <a class="nav-link" href="#">Link</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Link</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Link</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link disabled" href="#">Disabled</a>
+            </li>
+        </ul>
+        <hr />
+        <h2>垂直导航</h2>
+        <p>.flex-column 类用于创建垂直导航：</p>
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link" href="#">Link</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Link</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Link</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link disabled" href="http://www.baidu.com">Disabled</a>
+            </li>
+        </ul>
+        <hr />
+        <h2>选项卡</h2>
+        <p>使用 .nav-tabs 类可以将导航转化为选项卡。然后对于选中的选项使用 .active 类来标记。</p>
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link active" href="#">Active</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Link</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Link</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link disabled" href="#">Disabled</a>
+            </li>
+        </ul>
+        <hr />
+        <h2>胶囊</h2>
+        <p>.nav-pills 类可以将导航项设置成胶囊形状。</p>
+        <ul class="nav nav-pills">
+            <li class="nav-item">
+                <a class="nav-link active" href="#">Active</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Link</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Link</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link disabled" href="#">Disabled</a>
+            </li>
+        </ul>
+        <hr />
+        <h2>导航等宽</h2>
+        <p>.nav-justified 类可以设置导航项齐行等宽显示。</p>
+        <ul class="nav nav-pills nav-justified">
+            <li class="nav-item">
+                <a class="nav-link active" href="#">Active</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Link</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Link</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link disabled" href="#">Disabled</a>
+            </li>
+        </ul><br>
+        <p>Justified tabs:</p>
+        <ul class="nav nav-tabs nav-justified">
+            <li class="nav-item">
+                <a class="nav-link active" href="#">Active</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Link</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Link</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link disabled" href="#">Disabled</a>
+            </li>
+        </ul>
+        <hr />
+        <h2>胶囊导航带下拉菜单</h2>
+        <p>下拉菜单是应用.dropdown类来实现。</p>
+        <ul class="nav nav-pills">
+            <li class="nav-item">
+                <a class="nav-link active" href="#">Active</a>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">Dropdown</a>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="#">Link 1</a>
+                    <a class="dropdown-item" href="#">Link 2</a>
+                    <a class="dropdown-item" href="#">Link 3</a>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Link</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link disabled" href="#">Disabled</a>
+            </li>
+        </ul>
+        <hr />
+        <h2>选项卡下拉菜单</h2>
+        <p>下拉菜单是应用.dropdown类来实现。</p>
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link active" href="#">Active</a>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">Dropdown</a>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="#">Link 1</a>
+                    <a class="dropdown-item" href="#">Link 2</a>
+                    <a class="dropdown-item" href="#">Link 3</a>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Link</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link disabled" href="#">Disabled</a>
+            </li>
+        </ul>
+        <hr />
+        <h2>动态选项卡</h2>
+        <p>如果你要设置选项卡是动态可切换的，可以在每个链接上添加 data-toggle="tab" 属性。 然后在每个选项对应的内容的上添加 .tab-pane 类。</p>
+        <p>如果你希望有淡入效果可以在 .tab-pane 后添加 .fade类。</p>
+        <p class="alert alert-danger">当你想让某个选项卡中的选项默认显示并且有淡入效果，可以为其添加 .active 类和 .fade 类。可 .fade 类会让该元素以及内容默认隐藏，如果想解决这个问题。请为其再添加 .show 类，使他显示。（同样适用于胶囊状选项卡）</p>
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" href="#home">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#menu1">Menu 1</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#menu2">Menu 2</a>
+            </li>
+        </ul>
+        <!-- Tab panes -->
+        <div class="tab-content">
+            <div id="home" class="container tab-pane active fade show"><br>
+                <h3>HOME</h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+            </div>
+            <div id="menu1" class="container tab-pane fade"><br>
+                <h3>Menu 1</h3>
+                <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+            </div>
+            <div id="menu2" class="container tab-pane fade"><br>
+                <h3>Menu 2</h3>
+                <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
+            </div>
+        </div>
+        <hr />
+        <h2>胶囊状动态选项卡</h2>
+        <p>胶囊状动态选项卡只需要将以上实例的代码中 data-toggle 属性设置为 data-toggle="pill" ，并且将.nav-tabs 修改为 .nav-pills。</p>
+        <ul class="nav nav-pills" role="tablist">
+            <li class="nav-item">
+                <a href="#Home" data-toggle="pill" class="nav-link active">Home</a>
+            </li>
+            <li class="nav-item">
+                <a href="#Menu1" data-toggle="pill" class="nav-link">Menu1</a>
+            </li>
+            <li class="nav-item">
+                <a href="#Menu2" data-toggle="pill" class="nav-link">Menu2</a>
+            </li>
+        </ul>
+        <div class="tab-content">
+            <div class="container tab-pane fade active show" id="Home">
+                <br />
+                <h3>HOME</h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+            </div>
+            <div class="container tab-pane fade" id="Menu1">
+                <br />
+                <h3>Menu1</h3>
+                <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+            </div>
+            <div class="container tab-pane fade" id="Menu2">
+                <br />
+                <h3>Menu2</h3>
+                <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
+            </div>
+        </div>
+    </div>
+    <script src="bootstrap/js/jquery-3.4.1.min.js"></script>
+    <script src="bootstrap/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

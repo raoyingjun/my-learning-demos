@@ -1,0 +1,128 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+<title>无标题文档</title>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Bootstrap4 卡片</h1>
+        
+        <p>卡片是一个灵活的、可扩展的内容窗口。它包含了可选的卡片头和卡片脚、一个大范围的内容、上下文背景色以及强大的显示选项。</p>
+        <hr />
+        <h2>创建卡片</h2>
+        <p>我们可以通过 Bootstrap4 的 .card 与 .card-body 类来创建一个简单的卡片，实例如下:</p>
+        <div class="card">
+            <div class="card-body">简单的卡片</div>
+        </div>
+        <hr />
+        <h2>卡片头部和底部</h2>
+        <p>.card-header 类用于创建卡片的头部样式， .card-footer 类用于创建卡片的底部样式：</p>
+        <div class="card">
+            <div class="card-header">头部</div>
+            <div class="card-body">内容</div> 
+            <div class="card-footer">底部</div>
+        </div>
+        <hr />
+        <h2>多种颜色卡片</h2>
+        <p>没有添加背景颜色的类样式，只是一张卡片：</p>
+        <div class="card">
+            <div class="card-body">Basic card</div>
+        </div>
+        <br>
+        <p>.bg-primary</p>
+        <div class="card bg-primary text-white">
+            <div class="card-body">Primary card</div>
+        </div>
+        <br>
+        <p>.bg-success</p>
+        <div class="card bg-success text-white">
+            <div class="card-body">Success card</div>
+        </div>
+        <br>
+        <p>.bg-info</p>
+        <div class="card bg-info text-white">
+            <div class="card-body">Info card</div>
+        </div>
+        <br>
+        <p>.bg-warning</p>
+        <div class="card bg-warning text-white">
+            <div class="card-body">Warning card</div>
+        </div>
+        <br>
+        <p>.bg-danger</p>
+        <div class="card bg-danger text-white">
+            <div class="card-body">Danger card</div>
+        </div>
+        <br>
+        <p>.bg-secondary</p>
+        <div class="card bg-secondary text-white">
+            <div class="card-body">Secondary card</div>
+        </div>
+        <br>
+        <p>.bg-dark</p>
+        <div class="card bg-dark text-white">
+            <div class="card-body">Dark card</div>
+        </div>
+        <br>
+        <p>.bg-light</p>
+        <div class="card bg-light text-dark">
+            <div class="card-body">Light card</div>
+        </div>
+        <hr />
+        <h2>标题、文本和链接</h2>
+        <p>我们可以在头部元素上使用 .card-title 类来设置卡片的标题 。 .card-text 类用于设置卡片正文的内容。 .card-link 类用于给链接设置颜色。</p>
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">有生活的境界</h4>
+                <p class="card-text">好生活是耕出了田野，有一往无际的田园。好生活是犁出了城市，有丰富多彩的城景。好人生是走出了山水有珠光宝气的影，好人生是行出了天地有非凡意义的世界，好现实是你生活根深蒂固，好现实是你人生淋漓尽致。</p>
+                <a href="#" class="card-link">短文学</a>
+                <a href="#" class="card-link">散文诗集</a>
+            </div>
+        </div>
+        <hr />
+        <h2>图片卡片</h2>
+        <p>我们可以给 &lt;img&gt; 添加 .card-img-top（图片在文字上方） 或 .card-img-bottom（图片在文字下方 来设置图片卡片：</p>
+        <p>图片在头部 (card-img-top):</p>
+        <div class="card" style="width:100%">
+            <img class="card-img-top" src="https://www.w3cschool.cn/attachments/image/20180524/1527144620597215.png" alt="Card image" style="max-width:500px">
+            <div class="card-body">
+                <h4 class="card-title">bootstrap4</h4>
+                <p class="card-text">Some example text some example text. John Doe is an architect and engineer</p>
+                <a href="#" class="btn btn-primary">See Profile</a>
+            </div>
+        </div>
+        <br>
+        <p>图片在底部(card-img-bottom):</p>
+        <div class="card" style="width:100%;">
+            <div class="card-body">
+                <h4 class="card-title">bootstrap4</h4>
+                <p class="card-text">Some example text some example text. Jane Doe is an architect and engineer</p>
+                <a href="#" class="btn btn-primary">See Profile</a>
+            </div>
+            <img class="card-img-bottom" src="https://www.w3cschool.cn/attachments/image/20180524/1527144620597215.png" alt="Card image" style="max-width:500px;">
+        </div>
+        <hr />
+        <h2>文字覆盖图片</h2>
+        <p>如果图片要设置为背景，可以将 .card-body 修改为 .card-img-overlay 类，并且为含有 .card 的元素添加 .img-fluid</p>
+        <p class="text-white bg-danger">在屏幕特小的手机，例如 iphone5/SE 文字可能内容会溢出图片</p>
+        <p></p>
+        <p></p>
+        <div class="card img-fluid">
+            <img class="card-img-top" src="https://atts.w3cschool.cn/attachments/knowledge/201804/30601.png" alt="Card image">
+            <div class="card-img-overlay">
+              <h4 class="card-title">W3Cschool</h4>
+              <p class="card-text">Some example text some example text. Some example text some example text. Some example text some example text. Some example text some example text.</p>
+              <a href="#" class="btn btn-primary">See Profile</a>
+            </div>
+        </div>
+        <hr />
+        <p>这只是一些无用的文本</p>
+    </div>
+    <script src="bootstrap/js/jquery-3.4.1.min.js"></script>
+    <script src="bootstrap/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

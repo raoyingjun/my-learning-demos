@@ -1,0 +1,349 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" href="bootstrap/css/font-awesome.min.css">
+<title>无标题文档</title>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Bootstrap4 导航栏</h1>
+        <p>导航栏是一个将商标、导航以及别的元素简单放置到一个简洁导航页头的的集合。在Bootstrap4中，导航栏的创建并不难，而且，可以使用各种类对其进行扩展。</p>
+        <hr />
+        <h2>基础导航栏创建</h2>
+        <p>
+            我们可以使用 .navbar 类来创建一个标准的导航栏，后面紧跟: .navbar-expand-xl|lg|md|sm 类来创建响应式的导航栏 (大屏幕水平铺开，小屏幕垂直堆叠)。
+        </p>
+        <p>
+            导航栏上的选项可以使用 &lt;ul&gt; 元素并添加 class="navbar-nav" 类。 然后在 &lt;li&gt; 元素上添加 .nav-item 类， &lt;a&gt; 元素上使用 .nav-link 类:
+        </p>
+        <nav class="navbar navbar-expand-sm bg-light">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Link 1</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Link 2</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Link 3</a>
+                </li>
+            </ul>
+        </nav>
+        <hr />
+        <h2>垂直导航栏</h2>
+        <p>通过删除 .navbar-expand-xl|lg|md|sm 类来创建垂直导航栏:</p>
+        <nav class="navbar bg-light">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Link 1</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Link 2</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Link 3</a>
+                </li>
+            </ul>
+        </nav>
+        <hr />
+        <h3>不同颜色导航栏</h3>
+        <p>
+            可以使用以下类来创建不同颜色导航栏：.bg-primary, .bg-success, .bg-info, .bg-warning, .bg-danger, .bg-secondary, .bg-dark 和 .bg-light。
+        </p>
+        <p>可以使用以下类来控制的文本的颜色以及文本被hover时的颜色：.navbar-light，.navbar-dark</p>
+        <div class="alert alert-danger">
+            <p>
+                为导航栏添加 .navbar-light 类时，.active 类的文本会被设为黑色，.disabled 类的文本会被设为浅灰色，其他的链接会被设为灰色，并且其他的链接被hover时候，颜色会被设为暗黑色。
+            </p>
+            <p>
+            为导航栏添加 .navbar-dark 类时，.active 类的文本会被设为白色，.disabled 类的文本会被设为浅灰色，其他的链接会被设为灰色，并且其他的链接被hover时候，颜色会被设为亮灰色。
+            </p>
+            <p class="text-danger">这说明了该两个类的语义与其作用相反。</p>
+        </div>
+        <nav class="navbar navbar-expand-sm bg-light navbar-light">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Active</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Link</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Link</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link disabled" href="#">Disabled</a>
+                </li>
+            </ul>
+        </nav>
+        <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Active</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Link</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Link</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link disabled" href="#">Disabled</a>
+                </li>
+            </ul>
+        </nav>
+        <nav class="navbar navbar-expand-sm navbar-dark bg-primary">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Active</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Link</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Link</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link disabled" href="#">Disabled</a>
+                </li>
+            </ul>
+        </nav>
+        <nav class="navbar navbar-expand-sm bg-success navbar-dark">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Active</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Link</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Link</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link disabled" href="#">Disabled</a>
+                </li>
+            </ul>
+        </nav>
+        <nav class="navbar navbar-expand-sm bg-info navbar-dark">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Active</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Link</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Link</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link disabled" href="#">Disabled</a>
+                </li>
+            </ul>
+        </nav>
+        <nav class="navbar navbar-expand-sm bg-warning navbar-dark">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Active</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Link</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Link</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link disabled" href="#">Disabled</a>
+                </li>
+            </ul>
+        </nav>
+        <nav class="navbar navbar-expand-sm bg-danger navbar-dark">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Active</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Link</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Link</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link disabled" href="#">Disabled</a>
+                </li>
+            </ul>
+        </nav>
+        <nav class="navbar navbar-expand-sm bg-secondary navbar-dark">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Active</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Link</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Link</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link disabled" href="#">Disabled</a>
+                </li>
+            </ul>
+        </nav>
+        <hr />
+        <h2>品牌/Logo</h2>
+        <p>.navbar-brand 类用于高亮显示品牌/Logo:</p>
+        <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+        <!-- Brand/logo -->
+        <a class="navbar-brand" href="#">Logo</a>
+        <!-- Links -->
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" href="#">Link 1</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Link 2</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Link 3</a>
+            </li>
+        </ul>
+        </nav>
+        <hr />
+        <h2>品牌 / Logo</h2>
+        <p>如果使用图片，可以使用 .navbar-brand 类来设置图片自适应导航栏。</p>
+        <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+        <!-- Brand/logo -->
+        <a class="navbar-brand" href="#">
+            <img src="https://www.w3cschool.cn/attachments/image/20180524/1527144620597215.png" alt="logo" style="width: 60px;">
+        </a>
+        <!-- Links -->
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" href="#">Link 1</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Link 2</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Link 3</a>
+            </li>
+        </ul>
+        </nav>
+        <hr />
+        <h2>折叠导航栏</h2>
+        <p>通常，小屏幕上我们都会折叠导航栏，通过点击来显示导航选项。</p>
+        <p>要创建折叠导航栏，可以在按钮上添加 class="navbar-toggler", data-toggle="collapse" 与 data-target="#thetarget" 类。然后在设置了 class="collapse navbar-collapse" 类的 div 上包裹导航内容（链接）, div 元素上的 id 匹配按钮 data-target 的上指定的 id。</p>
+        <p>提示: 如果你删除 .navbar-expand-md 类，导航链接会一直隐藏，且切换按钮会一直显示。</p>
+        <nav class="navbar navbar-expand-md bg-dark navbar-dark">
+            <a class="navbar-brand" href="#">Brand</a>
+            <button class="navbar-toggler" data-toggle="collapse" data-target="#collapsibleNavbar" type="button">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="collapsibleNavbar">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">Link</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">Link</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">Link</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <hr />
+        <h2>导航栏使用下拉菜单</h2>
+        <p>导航栏上可以设置下拉菜单（dropdown）：</p>
+        <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+            <!-- Brand -->
+            <a class="navbar-brand" href="#">Logo</a>
+            <!-- Links -->
+            <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Link 1</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Link 2</a>
+                    </li>
+                    <!-- Dropdown -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">Dropdown link</a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="#">Link 1</a>
+                            <a class="dropdown-item" href="#">Link 2</a>
+                            <a class="dropdown-item" href="#">Link 3</a>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Link 3</a>
+                    </li>
+            </ul>
+        </nav>
+        <hr />
+        <h2>导航栏的表单与按钮</h2>
+        <p>导航栏的表单&lt;form&gt; 元素使用 class="form-inline" 类来排版输入框与按钮：</p>
+        <nav class="navbar navbar-expand-md bg-dark navbar-dark">
+            <form class="form-inline">
+                <input class="form-control" type="text" placeholder="search">
+                <button class="btn btn-success" type="button">Search</button>
+            </form>
+        </nav>
+        <hr />
+        <h2>在输入框内使用字体图标</h2>
+        <p>你也可以使用其他的输入框类，如 .input-group-addon 类用于在输入框前添加小标签。</p>
+        <div class="alert alert-danger">
+            <p>boostrap4版本 .input-group-addon 类已被摒弃。请使用 .input-group-prepend 类或 .input-group-append 类，两者的区别在于前者的边框添加了圆角效果 (border-radius) ,后者没有圆角效果。其他则一致。</p>
+            <p>如果发现字体图标无法垂直居中，请使用 .d-flex 类使其垂直居中 (本实例使用了该类样式) 。</p>
+        </div>
+        <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+        <form class="form-inline">
+            <div class="input-group">
+                <div class="input-group-prepend"><i class="input-group-text fa fa-user d-flex"></i></div>
+                <input type="text" class="form-control" placeholder="Username">
+            </div>    
+        </form>
+        </nav>
+        <hr />
+        <h2>导航栏文本</h2>
+        <p>用 .navbar-text 类来设置导航栏上非链接文本，可以保证水平对齐，颜色与内边距一样。</p>
+        <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+            <!-- Links -->
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Link 1</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Link 2</a>
+                </li>
+            </ul>
+            <!-- Navbar text-->
+            <span class="navbar-text">Navbar text</span>
+        </nav>
+        <hr />
+        <h2>固定导航栏</h2>
+        <p>导航栏可以固定在头部或者底部。</p>
+        <p>我们使用 .fixed-top 类来实现导航栏的顶部固定，.fixed-bottom 类用于设置导航栏固定在底部：</p>
+        <p class="text-danger">该实例被固定在页面顶部。</p>
+        <nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top">
+            <a class="navbar-brand" href="#">Logo</a>
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Link</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Link</a>
+                </li>
+            </ul>
+            <span class="navbar-text">我是固定导航栏</span>
+        </nav>
+        <hr />
+    </div>
+    <script src="bootstrap/js/jquery-3.4.1.min.js"></script>
+    <script src="bootstrap/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

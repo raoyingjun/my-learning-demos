@@ -1,0 +1,34 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+<title>无标题文档</title>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Bootstrap4 提示框</h1>
+        <p>提示框是一个小小的弹窗，只有当鼠标移动到元素上时才会显示，鼠标移出后消失。在Bootstrap4中，提示框功能的实现其实也很简单。</p>
+        <h2>创建提示框</h2>
+        <p>通过向元素添加 data-toggle="tooltip" 来来创建提示框。title 属性的内容为提示框显示的内容：</p>
+        <p>提示框要写在 jQuery 的初始化代码里: 然后在指定的元素上调用 tooltip() 方法。</p>
+        <a href="#" data-toggle="tooltip" title="我是提示内容!">鼠标移动到我这</a>
+        <hr />
+        <h2>提示框实例</h2>
+        <p>默认情况下提示框会显示在元素上方，但是我们可以使用 data-placement 属性来设定提示框显示的方向: 上top, 下bottom, 左left 或 右right:</p>
+        <a href="#" data-toggle="tooltip" data-placement="top" title="top!">鼠标移动到我这</a>
+        <a href="#" data-toggle="tooltip" data-placement="bottom" title="bottom!">鼠标移动到我这</a>
+        <a href="#" data-toggle="tooltip" data-placement="left" title="left!">鼠标移动到我这</a>
+        <a href="#" data-toggle="tooltip" data-placement="right" title="right!">鼠标移动到我这</a>
+    </div>
+    <script src="bootstrap/js/jquery-3.4.1.min.js"></script>
+    <script src="bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script>
+    $(function(){
+        $("[data-toggle='tooltip']").tooltip();   
+    })
+    </script>
+</body>
+</html>

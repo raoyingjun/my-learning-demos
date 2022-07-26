@@ -1,0 +1,44 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+<title>无标题文档</title>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Bootstrap4 弹出框</h1>
+        <p>弹出框控件和提示框有点类似，用户用鼠标点击元素后，就会显示。不过和提示框不同的是，弹出框能够显示的内容更多。</p>
+        <h2>创建弹出框</h2>
+        <p>通过向元素添加 data-toggle="popover" 来来创建弹出框。</p>
+        <p>弹出框要写在 jQuery 的初始化代码里: 然后在指定的元素上调用 popover() 方法。</p>
+        <p>title 属性的内容为弹出框的标题，data-content 属性显示了弹出框的文本内容：</p>
+        <a href="#" data-toggle="popover" title="弹出框标题" data-content="弹出框内容">多次点我</a>
+        <hr />
+        <h2>指定弹出框的位置</h2>
+        <p>默认情况下弹出框显示在元素右侧。</p>
+        <p>可以使用 data-placement 属性来设定弹出框显示的方向: 上：top, 下：bottom, 左：left 或 右：right:</p>
+        <a href="#" title="弹出位置" data-toggle="popover" data-placement="top" data-content="top">点我</a>
+        <a href="#" title="弹出位置" data-toggle="popover" data-placement="bottom" data-content="bottom">点我</a>
+        <a href="#" title="弹出位置" data-toggle="popover" data-placement="left" data-content="left">点我</a>
+        <a href="#" title="弹出位置" data-toggle="popover" data-placement="right" data-content="right">点我</a>
+        <hr />
+        <h2>关闭弹出框</h2>
+        <p>默认情况下，弹出框在再次点击指定元素后就会关闭，你可以使用 data-trigger="focus" 属性来设置在鼠标点击元素外部区域来关闭弹出框：</p>
+        <a href="#" title="取消弹出框" data-toggle="popover" data-trigger="focus" data-content="点击文档的其他地方关闭我">点我</a>
+        <hr />
+        <h2>悬浮时创建弹出框</h2>
+        <p>如果你想实现在鼠标移动到元素上显示，移除后消失的效果，可以使用 data-trigger 属性，并设置值为 "hover"：</p>
+         <a href="#" title="Header" data-toggle="popover" data-trigger="hover" data-content="一些内容">鼠标移动到我这</a>
+    </div>
+    <script src="bootstrap/js/jquery-3.4.1.min.js"></script>
+    <script src="bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script>
+        $(function(){
+            $("[data-toggle='popover']").popover();   
+        });
+    </script>
+</body>
+</html>

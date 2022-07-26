@@ -1,0 +1,82 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+<title>无标题文档</title>
+</head>
+<body data-spy="scroll" data-target=".navbar" data-offset="56">
+    <p>Bootstrap4 滚动监听 (Scrollspy) </p>
+    <p style="margin-top: 50px">向您想要监听的元素（通常是 body）添加 data-spy="scroll" 。然后添加 data-target 属性，它的值为导航栏的 id 或 class (.navbar)。这样就可以联系上可滚动区域。注意可滚动项元素上的 id （&lt;div id="section1"&gt;） 必须匹配导航栏上的链接选项 （&lt;a href="#section1"&gt;)。可选项data-offset 属性用于计算滚动位置时，距离顶部的偏移像素。 默认为 10 px。</p>
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top"> 
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" href="#section1">Section 1</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#section2">Section 2</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#section3">Section 3</a>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+                Section 4
+                </a>
+              <div class="dropdown-menu">
+                  <a class="dropdown-item" href="#section41">Link 1</a>
+                  <a class="dropdown-item" href="#section42">Link 2</a>
+              </div>
+            </li>
+        </ul>
+    </nav>
+    <div id="section1" class="container-fluid bg-success" style="padding-top:70px;padding-bottom:70px">
+        <h1>Section 1</h1>
+        <p>学编程，从W3Cschool开始！</p>
+    </div>
+    <div id="section2" class="container-fluid bg-warning" style="padding-top:70px;padding-bottom:70px">
+        <h1>Section 2</h1>
+        <p>学编程，从W3Cschool开始！</p>
+    </div>
+    <div id="section3" class="container-fluid bg-secondary" style="padding-top:70px;padding-bottom:70px">
+        <h1>Section 3</h1>
+        <p>学编程，从W3Cschool开始！</p>
+    </div>
+    <div id="section41" class="container-fluid bg-danger" style="padding-top:70px;padding-bottom:70px">
+        <h1>Section 4 Submenu 1</h1>
+        <p>学编程，从W3Cschool开始！</p>
+    </div>
+    <div id="section42" class="container-fluid bg-info" style="padding-top:70px;padding-bottom:70px">
+        <h1>Section 4 Submenu 2</h1>
+        <p>学编程，从W3Cschool开始！</p>
+    </div>
+    <div class="container-fluid bg-primary" style="padding-top:70px;padding-bottom:70px">
+        <h1>占位标题</h1>
+        <p>占位内容</p>
+    </div>
+    <div class="container-fluid bg-primary" style="padding-top:70px;padding-bottom:70px">
+        <h1>占位标题</h1>
+        <p>占位内容</p>
+    </div>
+    <div class="container-fluid bg-primary" style="padding-top:70px;padding-bottom:70px">
+        <h1>占位标题</h1>
+        <p>占位内容</p>
+    </div>
+    <div class="container-fluid bg-primary" style="padding-top:70px;padding-bottom:70px">
+        <h1>占位标题</h1>
+        <p>占位内容</p>
+    </div>
+    <div class="container-fluid bg-primary" style="padding-top:70px;padding-bottom:70px">
+        <h1>占位标题</h1>
+        <p>占位内容</p>
+    </div>
+    <div class="container-fluid bg-primary" style="padding-top:70px;padding-bottom:70px">
+        <h1>占位标题</h1>
+        <p>占位内容</p>
+    </div>
+    <script src="bootstrap/js/jquery-3.4.1.min.js"></script>
+    <script src="bootstrap/js/bootstrap.bundle.min.js"></script>
+</body>
+    
+</html>

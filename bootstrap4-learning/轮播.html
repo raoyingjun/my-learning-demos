@@ -1,0 +1,73 @@
+<!doctype html>
+<html><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+<style>
+    img{
+        max-height:300px;
+        width: 100%;
+    }
+</style>
+<title>无标题文档</title>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Bootstrap4 轮播</h1>
+        <p>轮播是一个一个幻灯片组件，用来循环显示图片元素，或者滚动的文字。</p>
+        <h2>轮播创建</h2>
+        <div class="alert alert-primary">
+            <p>data-slide-to、data-slide、data-ride用于轮播图carousel。</p>
+            <p>属性 data-slide接受关键字 prev 或 next，用来改变幻灯片相对于当前位置的位置。</p>
+            <p>使用 data-slide-to 来向轮播传递一个原始滑动索引，data-slide-to="2"将把滑块移动到一个特定的索引，索引从 0开始计数。</p>
+            <p>data-ride="carousel" 属性用于标记轮播在页面加载时就开始动画播放</p>
+            <p>在每个 &lt;div class="carousel-item" &gt; 内添加 &lt;div class="carousel-caption"&gt; 来设置轮播图片的描述文本：</p>
+            <p>别忘记给需要显示的下标元素和包裹图片的容器添加 .active</p>
+        </div>
+        <p>以下实例创建了一个简单的图片轮播效果 ：</p>
+        <div class="carousel slide" id="demo" data-ride="carousel">
+           <!--索引-->
+           <ul class="carousel-indicators">
+               <li data-target="#demo" data-slide-to="0" class="active"></li>
+               <li data-target="#demo" data-slide-to="1"></li>
+               <li data-target="#demo" data-slide-to="2"></li>
+           </ul>
+           <!--图片-->
+           <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img src="bootstrap/images/pic1.jpg">
+                    <div class="carousel-caption">
+                        <h3>第一张图片描述标题</h3>
+                        <p>描述文字!</p>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <img src="bootstrap/images/pic2.jpg">
+                    <div class="carousel-caption">
+                        <h3>第二张图片描述标题</h3>
+                        <p>描述文字!</p>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <img src="bootstrap/images/pic3.jpg">
+                    <div class="carousel-caption">
+                        <h3>第三张图片描述标题</h3>
+                        <p>描述文字!</p>
+                    </div>
+                </div>
+            </div>
+            <!--按钮-->
+            <a class="carousel-control-prev" href="#demo" data-slide="prev">
+                <span class="carousel-control-prev-icon"></span>
+            </a>
+            <a class="carousel-control-next" href="#demo" data-slide="next">
+                <span class="carousel-control-next-icon"></span>
+            </a>
+        </div>
+        <hr />
+    </div>
+    <script src="bootstrap/js/jquery-3.4.1.min.js"></script>
+    <script src="bootstrap/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,70 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<title>无标题文档</title>
+</head>
+
+<body>
+    <div class="container mt-2">
+        <h1>Bootstrap 4 多媒体对象</h1>
+        <p>在Bootstrap4中，提供了很好的方式来处理图片或视频等多媒体对象和内容的布局。其应用场景有博客评论、微博等等。</p>
+        <h2>多媒体对象</h2>
+        <p>要创建一个多媒体对象，可以在容器元素上添加 .media 类，然后将多媒体内容放到子容器上，子容器需要添加 .media-body 类，然后添加外边距，内边距等效果:</p>
+        <div class="media border p-3">
+            <img src="https://www.w3cschool.cn/attachments/cover/cover_bootstrap4.jpg" alt="John Doe" class="mr-3 mt-3 rounded-circle" style="width:60px;">
+            <div class="media-body">
+                <h4>bootstrap4教程</h4>
+                <p>Bootstrap4 目前是 Bootstrap 的最新版本，是一套用于 HTML、CSS 和 JS 开发的开源工具集。</p>      
+            </div>
+        </div>
+        <hr />
+        <h2>多媒体对象图片显示在右边</h2>
+        <p>如果你想将头像图片显示在右侧，可以在 .media-body 容器后添加图片:</p>
+        <div class="media border p-3">
+            <div class="media-body">
+                <h4>bootstrap4教程</h4>
+                <p>Bootstrap4 目前是 Bootstrap 的最新版本，是一套用于 HTML、CSS 和 JS 开发的开源工具集。</p>      
+            </div>
+            <img src="https://www.w3cschool.cn/attachments/cover/cover_bootstrap4.jpg" alt="John Doe" class="ml-3 mt-3 rounded-circle" style="width:60px;">
+        </div>
+        <hr />
+        <h2>定位多媒体图片位置</h2>
+        <p>我们可以使用 align-self-* 相关类来设置多媒体对象的图片显示位置：</p><br>
+        <!-- 头部 -->
+        <div class="media border">
+            <img src="https://www.w3cschool.cn/attachments/cover/cover_bootstrap4.jpg" class="align-self-start mr-3" style="width:60px">
+            <div class="media-body">
+                <h4>头部 -- bootstrap4教程</h4>
+                <p>Bootstrap4 目前是 Bootstrap 的最新版本</p>
+                <p>Bootstrap4 目前是 Bootstrap 的最新版本</p>
+                <p>Bootstrap4 目前是 Bootstrap 的最新版本</p>
+            </div>
+        </div>
+        <!-- 居中 -->
+        <div class="media mt-3 border">
+            <img src="https://www.w3cschool.cn/attachments/cover/cover_bootstrap4.jpg" class="align-self-center mr-3" style="width:60px">
+            <div class="media-body">
+                <h4>居中 -- bootstrap4教程</h4>
+                <p>Bootstrap4 目前是 Bootstrap 的最新版本</p>
+                <p>Bootstrap4 目前是 Bootstrap 的最新版本</p>
+                <p>Bootstrap4 目前是 Bootstrap 的最新版本</p>
+            </div>
+        </div>
+        <!-- 底部 -->
+        <div class="media mt-3 border">
+            <img src="https://www.w3cschool.cn/attachments/cover/cover_bootstrap4.jpg" class="align-self-end mr-3" style="width:60px">
+            <div class="media-body">
+                <h4>底部 -- bootstrap4教程</h4>
+                <p>Bootstrap4 目前是 Bootstrap 的最新版本</p>
+                <p>Bootstrap4 目前是 Bootstrap 的最新版本</p>
+                <p>Bootstrap4 目前是 Bootstrap 的最新版本</p>
+            </div>
+        </div>        
+    </div>
+    <script src="bootstrap/js/jquery-3.4.1.min.js"></script>
+    <script src="bootstrap/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

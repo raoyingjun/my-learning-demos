@@ -1,0 +1,52 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+<title>无标题文档</title>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Bootstrap4 表单</h1>
+        <p>在本章中，我们将学习在Bootstrap4 中如何创建表单。在Bootstrap4 中，我们可以通过一些简单的 HTML 标签和扩展的类即可创建出不同样式的表单。</p>
+        <p>表单元素 &lt;input&gt;, &lt;textarea&gt; 和 &lt;select&gt; elements 在使用 .form-control 类的情况下，宽度都是设置为 100%。</p>
+        <h2>堆叠表单</h2>
+        <form>
+            <div class="form-group">
+                <label for="email1">Email:</label>
+                <input type="email" class="form-control" id="email1" placeholder="Enter email">
+            </div>
+            <div class="form-group">
+                <label for="pwd1">Password:</label>
+                <input type="password" class="form-control" id="pwd1" placeholder="Enter password">
+            </div>
+            <div class="form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox"> Remember me
+                </label>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+        <hr />
+        <h2>内联表单</h2>
+        <p>屏幕宽度在大于等于 576px 时才会水平显示。如果小于 576px 则会生成堆叠表单。</p>
+        <p>内联表单需要在 &lt;form&gt; 元素上添加 .form-inline类。</p>
+        <form class="form-inline">
+            <label for="email2">Email:</label>
+            <input type="email" class="form-control" id="email2" placeholder="Enter email">
+            <label for="pwd2">Password:</label>
+            <input type="password" class="form-control" id="pwd2" placeholder="Enter password">
+            <div class="form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox"> Remember me
+                </label>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+    <script src="bootstrap/js/jquery-3.4.1.min.js"></script>
+    <script src="bootstrap/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
