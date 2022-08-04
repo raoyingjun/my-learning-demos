@@ -1,0 +1,119 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        svg {
+            width: 500px;
+            height: 500px;
+            border: 1px solid rgb(252, 127, 127);
+        }
+    </style>
+</head>
+
+<body>
+    <svg>
+        <!-- 
+            SVG 形状通用属性介绍：
+            CSS 的 fill 属性定义矩形的填充颜色（rgb 值、颜色名或者十六进制值）
+            CSS 的 stroke-width 属性定义矩形边框的宽度
+            CSS 的 stroke 属性定义矩形边框的颜色
+            CSS 的 fill-opacity 属性定义填充颜色透明度（合法的范围是：0 - 1）
+            CSS 的 stroke-opacity 属性定义笔触颜色的透明度（合法的范围是：0 - 1
+            CSS 的 opacity 属性定义整个元素的透明值（合法的范围是：0 - 1） 
+        -->
+        <!-- 
+            circle 用来创建一个圆。
+            cx 和 cy 属性定义圆中心的 x 和 y 坐标。如果忽略这两个属性，那么圆点会被设置为 (0, 0)。
+            r 属性定义圆的半径。 
+        -->
+        <circle cx="100" cy="100" r="50" stroke="red" stroke-width="2" fill="green" opacity="0.5" />
+        <!-- 
+            rect 元素会在屏幕上绘制一个矩形 
+            rect 元素的 width 和 height 属性可定义矩形的高度和宽度
+            x 属性定义矩形的左侧位置（例如，x="0" 定义矩形到 SVG 容器左侧的距离是 0px）
+            y 属性定义矩形的顶端位置（例如，y="0" 定义矩形到 SVG 容器顶端的距离是 0px）
+            rx 和 ry 属性可使矩形产生圆角。
+        -->
+        <rect x="200" y="100" width="100" height="100" rx="10" ry="20" fill="blue" stroke="red" stroke-opacity="0.5"
+            fill-opacity="0.4" />
+        <!-- 
+            ellipse 标签可用来创建椭圆
+            cx 属性定义圆点的 x 坐标
+            cy 属性定义圆点的 y 坐标
+            rx 属性定义水平半径
+            ry 属性定义垂直半径
+        -->
+        <ellipse cx="100" cy="300" rx="40" ry="60" stroke="red" stroke-width="2" />
+        <!-- 
+            line 标签用来创建线条
+            x1 属性在 x 轴定义线条的开始
+            y1 属性在 y 轴定义线条的开始
+            x2 属性在 x 轴定义线条的结束
+            y2 属性在 y 轴定义线条的结束
+        -->
+        <line x1="400" y1="100" x2="400" y2="250" stroke="green" />
+        <!-- 
+            polygon 标签用来创建多边形
+            polygon 的路径在最后一个点处会自动和第一个点相连
+            points 属性定义多边形每个端点的 x 和 y 坐标
+        -->
+        <polygon points="250, 250 300,300 200,300" stroke="pink" stroke-width="2" />
+        <!-- 
+            polyline 标签用来创建折线
+            points 属性定义每个端点的 x 和 y 坐标
+        -->
+        <polyline points="350, 300 450,300 350,350" stroke="pink" stroke-width="2" fill="white" />
+        <!-- 
+            SVG 滤镜需要定义在 defs 元素中。
+            filter 标签用来定义 SVG 滤镜，通过链接 filter 标签的 id 属性来决定将滤镜应用到哪个图形
+        -->
+        <defs>
+            <!-- 
+                有关 SVG Filters 请参阅 MDN 文档：（下同）
+                https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/SVG_Filters_Tutorial
+             -->
+            <filter id="effect-blur">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="3" />
+            </filter>
+            <filter id="effect-shadow">
+                <feOffset in="SourceGraphic" dx="10" dy="10" result="offOut" />
+                <feBlend in="SourceGraphic" in2="offOut" mode="normal" />
+            </filter>
+            <!-- 
+                linearGradient 用来定义 SVG 的线性渐变。
+                linearGradient 标签必须嵌套在 defs 的内部
+                根据 (x1, y1) 和 (x2, y2) 的端点形成的线段，线段的方向即是渐变的方向
+             -->
+            <linearGradient id="effect-linear-gradient" x1="0" y1="0" x2="100%" y2="1">
+                <!-- 
+                    每种颜色通过一个 stop 标签来规定。
+                    offset 属性用来定义渐变的开始和结束位置。
+                 -->
+                <stop offset="0" stop-color="red" />
+                <stop offset="100%" stop-color="green" />
+            </linearGradient>
+            <!-- 
+                radialGradient 用来定义 SVG 的径向渐变
+                radialGradient 标签必须嵌套在 defs 的内部
+                cx、cy 属性定义外圈的中心点坐标
+                r 属性定义半径
+                fx、fy 属性定义内圈的中心点坐标
+             -->
+            <radialGradient id="effect-radial-gradient" cx="50%" cy=".5" r="50%" fx="30%" fy=".4">
+                <stop offset="0" stop-color="red" />
+                <stop offset="1" stop-color="green" />
+            </radialGradient>
+        </defs>
+        <!-- 使用滤镜（下同） -->
+        <rect x="100" y="400" width="50" height="50" fill="blue" filter="url(#effect-blur)" />
+        <rect x="200" y="400" width="50" height="50" fill="blue" filter="url(#effect-shadow)" />
+        <rect x="300" y="400" width="50" height="50" fill="url(#effect-linear-gradient)" />
+        <rect x="400" y="400" width="50" height="50" fill="url(#effect-radial-gradient)" />
+    </svg>
+</body>
+
+</html>
