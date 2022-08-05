@@ -7,14 +7,19 @@
       <input type="number" @change="counterStore.update(Number($event.target.value))" id="count"
              :value="counterStore.count">
     </label>
-    <p>{{ counterStore.count }} * {{ counterStore.base }} = {{ counterStore.result }}</p>
+    <p>
+      Expression is
+      {{ counterStore.count }} * {{ counterStore.base }} = {{ counterStore.result }}</p>
     <hr>
     <h2>Use store with Option API</h2>
     <label for="name">
       Input last name:
       <input type="text" v-model="userStore.lastName" id="name">
     </label>
-    <p>Full name is {{ userStore.lastName }} {{ userStore.firstName }}</p>
+    <p>
+      Full name is
+      {{ userStore.fullName }}
+    </p>
   </div>
 </template>
 

@@ -4,7 +4,7 @@ import { defineStore } from 'pinia';
 const useUserStore = defineStore('user', () => {
   const firstName = ref('Rao');
   const lastName = ref('YingJun');
-  const fullName = computed(() => firstName.value + lastName.value);
+  const fullName = computed(() => `${lastName.value} ${firstName.value}`);
   return {
     lastName,
     fullName,
