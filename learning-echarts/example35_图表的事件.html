@@ -1,0 +1,76 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #echart {
+            width: 500px;
+            height: 500px;
+            border: 1px solid black;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+
+<body>
+<div id="echart"></div>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.3.1/dist/echarts.js"></script>
+<script>
+    /**
+     * 一，先初始化echarts对象
+     * 二，设置配置项
+     * 三，设置轴参数
+     * 四，系列中配置数据
+     */
+    const echartDom = document.getElementById('echart')
+    let echart = echarts.init(echartDom)
+
+    echart.setOption({
+        title: {
+            text: '水果',
+        },
+        xAxis: {
+            data: ['苹果', '西瓜', '香蕉', '橘子'],
+            /**
+             * value 数值轴
+             * category 类目轴
+             */
+            type: 'category'
+        },
+        yAxis: {},
+        series: [{
+            type: 'bar', // 图表类型，bar为柱状图
+            name: 'FruitData', // series 的名称
+            data: [500, 600, 580, 150], // 映射到图表的数据
+        }, {
+            type: 'line', // 图表类型设置为折线图
+            data: [300, 250, 518, 430], // 映射到图表的数据
+        }]
+    })
+    // 传入两个参数。当某个系列的图形被点击的时候触发
+    echart.on('click', params => {
+        console.log('点击事件生效在所有图类', params)
+    })
+
+    /**
+     * 传入三个参数。第二个参数指定要生效的图表类型
+     * 下面的示例仅当series.line系列的图形被点击的时候触发
+     */
+    echart.on('click', 'series.line', params => {
+        console.log('该点击事件只生效在折线图', params)
+    })
+
+    // 传入三个参数。第二个参数可传入一个对象
+    echart.on('click', {
+        name: '西瓜', // 事件仅生效在西瓜这一列的图形
+        seriesIndex: 1, // 事件仅生效在series[seriesIndex]系列
+    }, params => {
+        console.log('该点击事件只生效在西瓜这一列且系列为series[seriesIndex]（折线图）的时候', params)
+    })
+</script>
+</body>
+
+</html>

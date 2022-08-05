@@ -1,0 +1,117 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #echart {
+            width: 500px;
+            height: 500px;
+            border: 1px solid black;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+
+<body>
+<div id="echart"></div>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.3.1/dist/echarts.js"></script>
+<script>
+    /**
+     * 一，先初始化echarts对象
+     * 二，设置配置项
+     * 三，设置轴参数
+     * 四，系列中配置数据
+     */
+    const echartDom = document.getElementById('echart')
+    let echart = echarts.init(echartDom)
+    let kData = [
+        // [open, close, lowest, highest]
+        [20, 34, 10, 38],
+        [40, 35, 30, 50],
+        [31, 38, 33, 44],
+        [38, 15, 5, 42]
+    ]
+    echart.setOption({
+        xAxis: {
+            data: ['苹果', '西瓜', '香蕉', '橘子'],
+        },
+        yAxis: {},
+        tooltip: {
+            /**
+             * item 鼠标移动到对应图形内触发
+             * axis 鼠标移动到对应坐标轴内触发
+             * none 什么都不触发
+             */
+            trigger: 'axis', // 如何触发交互
+            axisPointer: { // 坐标轴指示器
+                /**
+                 * line 实线
+                 * shadow 阴影
+                 * cross 十字准星
+                 */
+                type: 'cross', // 鼠标移到图形时指示器的样式类型
+            },
+        },
+        series: [{
+            type: 'candlestick', // 图表类型，candlestick为K线图
+            // 映射到图表的数据
+            /**
+             * 每个数据是一个长度为4的数组，如下释义
+             * 比如 [20, 34, 10, 38]
+             *
+             * ↑       e
+             * |       |
+             * |  a __ | __ b
+             * |  |    |
+             * |  |    |
+             * |  c ——   —— d
+             * |       |
+             * |       |
+             * |       f
+             * O------------------------→
+             *
+             * 其中 O 为原点
+             * (20, 34) 对应 (c, a)
+             * (10, 38) 对应 (f, e)
+             * 如果 a > c，则为上涨
+             * 如果 a < c，则为下跌
+             */
+            data: kData,
+            itemStyle: {
+                color: 'green', // 上涨对应的颜色
+                color0: 'red', // 下跌对应的颜色
+                borderColor: 'blue', // 上涨边框线条对应的颜色
+                borderColor0: 'yellow' // 下跌边框线条对应的颜色
+            },
+            markPoint: {
+                data: [{
+                    type: 'max',
+                    name: '最大值',
+                    valueDim: "highest" // 以哪个属性值为维度作为参照
+                }, {
+                    type: 'min',
+                    name: '最小值',
+                    valueDim: "lowest" // 以哪个属性值为维度作为参照
+                }]
+            },
+            markLine: {
+                data: [{
+                    type: 'average',
+                    name: '平均值',
+                    valueDim: 'close' // 以哪个属性值为维度作为参照
+                }]
+            }
+        }, {
+            type: 'line',
+            smooth: true,
+            data: kData.map(data => data[0])
+        }],
+    })
+
+</script>
+</body>
+
+</html>

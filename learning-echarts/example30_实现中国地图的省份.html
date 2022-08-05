@@ -1,0 +1,62 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #echart {
+            width: 500px;
+            height: 500px;
+            border: 1px solid black;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+
+<body>
+<div id="echart"></div>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.3.1/dist/echarts.js"></script>
+<script src="./example30_shanxi_province_map_data.js"></script>
+<script>
+    /**
+     * 一，先初始化echarts对象
+     * 二，设置配置项
+     * 三，设置轴参数
+     * 四，系列中配置数据
+     */
+    /**
+     * 用地图数据注册地图，地图数据来源于阿里云。
+     * 地图数据拾取工具：http://datav.aliyun.com/portal/school/atlas/area_selector
+     * 地图数据：https://geo.datav.aliyun.com/areas_v3/bound/610000_full.json
+     */
+    echarts.registerMap('ShanXiProvinceMap', ShanXi_PROVINCE_MAP_DATA)
+    const echartDom = document.getElementById('echart')
+    let echart = echarts.init(echartDom)
+    echart.setOption({
+        geo: { // 使用地理坐标组件
+            type: 'map', // 地理坐标组件类型为地图
+            map: 'ShanXiProvinceMap', // 使用注册的地图
+            roam: true, // 是否可以拖拽/缩放地图
+            label: { // 设置标签文本
+                // true默认显示地图区域对应的标签，false悬浮到对应地图区域才显示标签
+                show: true,
+                color: 'red', // 设置标签文本的颜色
+                fontSize: 16 // 设置标签文本大小
+            },
+            itemStyle: { // 设置地图区域的样式
+                areaColor: 'green' // 设置地图区域的区域颜色
+            },
+            emphasis: { // 鼠标聚焦时
+                itemStyle: { // 同上
+                    areaColor: 'orange'
+                }
+            }
+        },
+    })
+
+</script>
+</body>
+
+</html>

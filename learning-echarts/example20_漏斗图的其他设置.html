@@ -1,0 +1,71 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #echart {
+            width: 500px;
+            height: 500px;
+            border: 1px solid black;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+
+<body>
+<div id="echart"></div>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.3.1/dist/echarts.js"></script>
+<script>
+    /**
+     * 一，先初始化echarts对象
+     * 二，设置配置项
+     * 三，设置轴参数
+     * 四，系列中配置数据
+     */
+    const echartDom = document.getElementById('echart')
+    let echart = echarts.init(echartDom)
+
+    echart.setOption({
+        series: {
+            type: 'funnel', // 图表类型，funnel为漏斗图
+            data: [
+                // 漏斗图的每项对应的数据和名称
+                {value: 60, name: 'A'},
+                {value: 40, name: 'B'},
+                {value: 80, name: 'C'},
+                {value: 20, name: 'D'},
+                {value: 90, name: 'E'},
+            ],
+            /**
+             * ascending 升序
+             * descending 降序
+             * none 按照数据原有的顺序，不进行排序
+             */
+            sort: 'ascending',
+            // 设置漏斗的样式
+            itemStyle: {
+                borderColor: 'red', // 设置漏斗的边框颜色
+                borderWidth: 2, // 设置漏斗的边框宽度
+            },
+            // 设置标签样式
+            label: {
+                show: true, // 是否展示标签
+                position: 'inside' // 标签展示的位置，inside 在每项漏斗的里面展示对应标签
+            },
+            // 鼠标悬浮时
+            emphasis: {
+                // 设置标签样式
+                label: {
+                    fontSize: 30 // 设置标签的字体大小样式
+                }
+            }
+        },
+    })
+
+</script>
+</body>
+
+</html>

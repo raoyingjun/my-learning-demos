@@ -1,0 +1,106 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #echart {
+            width: 500px;
+            height: 500px;
+            border: 1px solid black;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+
+<body>
+<div id="echart"></div>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.3.1/dist/echarts.js"></script>
+<script>
+    /**
+     * 一，先初始化echarts对象
+     * 二，设置配置项
+     * 三，设置轴参数
+     * 四，系列中配置数据
+     */
+    const echartDom = document.getElementById('echart')
+    let echart = echarts.init(echartDom)
+    echart.setOption({
+        tooltip: {
+            trigger: 'item',
+        },
+        series: {
+            type: 'tree', // 图表类型设置为树图
+            // 映射到图表的数据
+            data: [{
+                name: '顶级节点', // 树节点名称，下面以此类推
+                children: [ // 树节点的子树，下面以此类推
+                    {
+                        name: '一级节点',
+                        children: [
+                            {
+                                name: '二级节点1',
+                                children: [
+                                    // value为树节点对应的数据值
+                                    {name: '三级节点1-1', value: 225},
+                                    {name: '三级节点1-2', value: 352},
+                                    {name: '三级节点1-3', value: 164},
+                                    {name: '三级节点1-4', value: 864},
+                                ]
+                            },
+                            {
+                                name: '二级节点2',
+                                children: [
+                                    {name: '三级节点2-1', value: 542},
+                                    {name: '三级节点2-2', value: 651},
+                                    {name: '三级节点2-3', value: 543},
+                                    {name: '三级节点2-4', value: 265},
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }],
+            symbolSize: 20, // 设置节点的大小
+            label: { // 标签相关设置
+                position: 'bottom', // 设置标签文字展示位置
+                verticalAlign: 'bottom', // 标签文字垂直对齐方式
+                align: 'left', // 标签文字水平对齐方式
+                fontSize: 16, // 标签文本大小
+                rotate: 30 // 设置标签文本的旋转角度。正数为逆时针
+            },
+            leaves: { // leaves翻译为叶子。叶子节点的相关设置
+                label: { // 跟上面的label属性的配置一致
+                    position: 'top',
+                    verticalAlign: 'top',
+                    align: 'right',
+                    fontSize: 12
+                }
+            },
+            emphasis: { // 树图中图形和标签高亮的样式
+                /**
+                 * 聚焦到节点时的高亮效果。参数如下：
+                 * 'none' 不淡出其它图形，默认使用该配置。
+                 * 'self' 只聚焦（不淡出）当前高亮的数据的图形。
+                 * 'series' 聚焦当前高亮的数据所在的系列的所有图形。
+                 * 'ancestor' 聚焦所有祖先节点
+                 * 'descendant' 聚焦所有子孙节点
+                 */
+                focus: 'descendant'
+            },
+            /**
+             * 取值分别为 'LR' , 'RL', 'TB', 'BT'
+             * 含义解释：L->Left, R->Right, T->Top, B->Bottom
+             * LR就是Left to Right，表示树图的方向为从左到右，其他取值以此类推
+             */
+            orient: 'TB',
+            top: '5%', // 设置距离顶部的位置
+        },
+    })
+
+</script>
+</body>
+
+</html>

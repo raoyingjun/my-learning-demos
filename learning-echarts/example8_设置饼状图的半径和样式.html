@@ -1,0 +1,99 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #echart {
+            width: 500px;
+            height: 500px;
+            border: 1px solid black;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+
+<body>
+<div id="echart"></div>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.3.1/dist/echarts.js"></script>
+<script>
+    /**
+     * 一，先初始化echarts对象
+     * 二，设置配置项
+     * 三，设置轴参数
+     * 四，系列中配置数据
+     */
+    const echartDom = document.getElementById('echart')
+    let echart = echarts.init(echartDom)
+
+    echart.setOption({
+        title: {
+            text: '饼状图',
+            left: 'center' // 设置标题水平居中
+        },
+        legend: {
+            left: 'left', // 设置图例水平居左
+            orient: 'vertical' // 设置图例的方向， vertical 垂直方向排列展示
+        },
+        series: {
+            // 设置柱状图对应文本标签
+            label: {
+                show: true, // 文本标签是否可见
+                /**
+                 * outside 在图表外侧展示文本标签
+                 * inside 在图表内侧展示文本标签
+                 * center 在图表中心展示文本标签
+                 */
+                position: 'inside' // 图表文本标签展示的位置
+            },
+            /**
+             * area 设置饼图为南丁格尔图。各个类目均分扇形，根据扇形每一块的半径大小来看其所占比
+             */
+            roseType: 'area',
+            // 设置图表的样式
+            itemStyle: {
+                color: 'red', // 图表的颜色
+            },
+            // 设置鼠标悬浮时高亮的样式
+            emphasis: {
+                // 设置图表的高亮时样式
+                itemStyle: {
+                    color: 'blue', // 图表的颜色
+                    shadowBlur: 20, // 设置阴影模糊程度
+                    shadowColor: 'rgba(0, 255, 0, .5)' // 设置阴影颜色
+                }
+            },
+            type: 'pie', // 图表类型，pie为饼状图
+            name: 'LetterUsedCount', // series 的名称
+            // radius: '60%', // 通过设置图表的半径来调整图表的大小。
+            radius: ['40%', '70%'], // 设置饼图的半径。用数组参数可以制作环形饼图，每项分别对应 [内半径, 外半径]
+            data: [{
+                value: 600,
+                name: 'A',
+                // 直接在数据上设置该饼图区域的的样式
+                itemStyle: {
+                    color: 'green'
+                }
+            }, {
+                value: 200,
+                name: 'B',
+                // 直接在数据上设置该饼图区域的的样式
+                itemStyle: {
+                    color: 'yellow'
+                }
+            }, {
+                value: 400,
+                name: 'C'
+            }, {
+                value: 350,
+                name: 'D'
+            }], // 映射到图表的数据
+        }
+    })
+
+</script>
+</body>
+
+</html>

@@ -1,0 +1,75 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #echart {
+            width: 500px;
+            height: 500px;
+            border: 1px solid black;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+
+<body>
+<div id="echart"></div>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.3.1/dist/echarts.js"></script>
+<script src="./example29_china_map_data.js"></script>
+<script>
+    /**
+     * 一，先初始化echarts对象
+     * 二，设置配置项
+     * 三，设置轴参数
+     * 四，系列中配置数据
+     */
+    /**
+     * 用地图数据注册地图，地图数据来源于阿里云。
+     * 地图数据拾取工具：http://datav.aliyun.com/portal/school/atlas/area_selector
+     * 地图数据：https://geo.datav.aliyun.com/areas_v3/bound/100000_full.json
+     */
+    echarts.registerMap('ChinaMap', CHINA_MAP_DATA)
+    const echartDom = document.getElementById('echart')
+    let echart = echarts.init(echartDom)
+    echart.setOption({
+        geo: { // 使用地理坐标组件
+            type: 'map', // 地理坐标组件类型为地图
+            map: 'ChinaMap', // 使用注册的地图
+            roam: true, // 是否可以拖拽/缩放地图
+        },
+        series: [{
+            type: 'scatter', // 散点图
+            data: [
+                {
+                    name: '北京', // 相应点的名称
+                    value: [116.38, 39.94, 200] // [经度, 纬度, 数据值]
+                }
+            ],
+            coordinateSystem: 'geo', // 坐标系使用geo坐标。也就是指定散点图用于地理坐标
+            symbolSize: 30,
+        }, {
+            type: 'effectScatter',  // 带有特殊效果的散点图
+            data: [
+                {
+                    name: '西安', // 相应点的名称
+                    value: [108.95, 34.26, 300] // [经度, 纬度, 数据值]
+                }
+            ],
+            rippleEffect: { // 涟漪效果
+                number: 2, // 波纹数量
+                scale: 4 // 涟漪缩放系数，放大多少倍
+            },
+            itemStyle: { // 设置点的样式
+                color: 'red' // 设置点的颜色。
+            },
+            coordinateSystem: 'geo', // 坐标系使用geo坐标。也就是指定散点图用于地理坐标
+        }]
+    })
+
+</script>
+</body>
+
+</html>

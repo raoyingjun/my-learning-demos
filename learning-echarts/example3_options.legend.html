@@ -1,0 +1,55 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #echart {
+            width: 500px;
+            height: 500px;
+            border: 1px solid black;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+
+<body>
+<div id="echart"></div>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.3.1/dist/echarts.js"></script>
+<script>
+    const echartDom = document.getElementById('echart')
+    let echart = echarts.init(echartDom)
+    echart.setOption({
+        title: {
+            text: '水果', // 主标题
+        },
+        xAxis: {
+            data: ['苹果', '西瓜', '香蕉', '橘子']
+        },
+        // 设置图表的图例
+        legend: {
+            show: true, // 是否显示图例
+            // icon: 'circle', // 设置图例的图标， circle表示圆形图标
+            top: '5%', // 设置图例距离的top值
+            itemWidth: 10, // 图例宽度
+            itemHeight: 20, // 图例高度
+            textStyle: {
+                color: 'red', // 图例的说明的颜色
+                fontSize: 20, // 图例的说明的字体大小
+                backgroundColor: 'blue' // 图例的说明的背景颜色
+            }
+        },
+        yAxis: {},
+        series: {
+            type: 'bar', // 图表类型，bar为柱状图
+            name: 'FruitData', // series 的名称
+            data: [500, 600, 580, 150] // 映射到图表的数据
+        }
+    })
+
+</script>
+</body>
+
+</html>

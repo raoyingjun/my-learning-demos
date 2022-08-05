@@ -1,0 +1,45 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #echart {
+            width: 500px;
+            height: 500px;
+            border: 1px solid black;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+
+<body>
+<div id="echart"></div>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.3.1/dist/echarts.js"></script>
+<script>
+    /**
+     * 一，先初始化echarts对象
+     * 二，设置配置项
+     * 三，设置轴参数
+     * 四，系列中配置数据
+     */
+    const echartDom = document.getElementById('echart')
+    let echart = echarts.init(echartDom, 'dark' /* 主题。light | dark | 不传入该参数 */)
+
+    echart.setOption({
+        xAxis: {
+            data: ['苹果', '西瓜', '香蕉', '橘子'],
+        },
+        yAxis: {},
+        series: {
+            type: 'bar', // 图表类型，bar为柱状图
+            data: [500, 600, 580, 150], // 映射到图表的数据
+        }
+    })
+
+</script>
+</body>
+
+</html>

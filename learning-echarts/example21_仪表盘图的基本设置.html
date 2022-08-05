@@ -1,0 +1,51 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #echart {
+            width: 500px;
+            height: 500px;
+            border: 1px solid black;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+
+<body>
+<div id="echart"></div>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.3.1/dist/echarts.js"></script>
+<script>
+    /**
+     * 一，先初始化echarts对象
+     * 二，设置配置项
+     * 三，设置轴参数
+     * 四，系列中配置数据
+     */
+    const echartDom = document.getElementById('echart')
+    let echart = echarts.init(echartDom)
+
+    echart.setOption({
+        series: {
+            type: 'gauge', // 图表类型，gauge为仪表盘图
+            data: [
+                {value: 45, name: '提示信息'}
+            ],
+            // 设置仪表盘详情，用于设置显示数据的相关样式
+            detail: {
+                valueAnimation: true // 是否开启仪表盘数据的数字的动画效果。
+            },
+            // 设置仪表盘进度条相关样式
+            progress: {
+                show: true, // 是否展示表盘外圈的进度条效果
+            }
+        },
+    })
+
+</script>
+</body>
+
+</html>

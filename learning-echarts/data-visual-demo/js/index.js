@@ -1,0 +1,5 @@
+renderBarChart()
+renderMapChart()
+renderPieChart()
+renderLineStackChart()
+renderBarStackChart()

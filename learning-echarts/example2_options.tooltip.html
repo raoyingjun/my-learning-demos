@@ -1,0 +1,70 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #echart {
+            width: 500px;
+            height: 500px;
+            border: 1px solid black;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+
+<body>
+<div id="echart"></div>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.3.1/dist/echarts.js"></script>
+<script>
+    const echartDom = document.getElementById('echart')
+    let echart = echarts.init(echartDom)
+    echart.setOption({
+        title: {
+            text: '水果', // 主标题
+        },
+        xAxis: {
+            data: ['苹果', '西瓜', '香蕉', '橘子']
+        },
+        tooltip: {
+            /**
+             * item 鼠标移动到对应图形内触发
+             * axis 鼠标移动到对应坐标轴内触发
+             * none 什么都不触发
+             */
+            trigger: 'axis', // 如何触发交互
+            axisPointer: { // 坐标轴指示器
+                /**
+                 * line 实线
+                 * shadow 阴影
+                 * cross 十字准星
+                 */
+                type: 'cross', // 鼠标移到图形时指示器的样式类型
+            },
+            // showContent: false, // 是否展示tooltip
+            backgroundColor: 'red',
+            borderColor: 'green',
+            borderWidth: 10,
+            textStyle: {
+                color: 'blue'
+            },
+            // formatter 用于自定义tooltip内容（支持html标签），支持下面两种方式
+            // formatter: '{a}（系列名称），{b}（类目值），{c}（数值）, {d}（无）' // 该该示例为柱状图
+            formatter(params) {
+                return `名字：${params[0].name}<br>数据：${params[0].data}`
+            },
+        },
+        yAxis: {},
+        series: {
+            type: 'bar', // 图表类型，bar为柱状图
+            name: 'FruitData', // series 的名称
+            data: [500, 600, 580, 150] // 映射到图表的数据
+        }
+    })
+
+</script>
+</body>
+
+</html>

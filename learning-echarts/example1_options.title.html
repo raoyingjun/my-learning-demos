@@ -1,0 +1,62 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #echart {
+            width: 500px;
+            height: 500px;
+            border: 1px solid black;
+        }
+    </style>
+</head>
+
+<body>
+<!-- 由于div的宽高默认是0，echarts生成的图表是看不到的，因此需要先设置一下宽高 -->
+<div id="echart"></div>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.3.1/dist/echarts.js"></script>
+<script>
+    const echartDom = document.getElementById('echart')
+    let echart = echarts.init(echartDom)
+    echart.setOption({
+        title: {
+            text: '主标题', // 主标题
+            link: 'https://www.baidu.com', // 跳转超链接
+            target: 'self', // 超链接跳转方式。 self（当前页面打开） 或者 blank（新页面打开）
+            backgroundColor: 'red', // rgba | rgb | 十六进制 | 颜色英文
+            borderColor: '#0000FF', // 边框颜色
+            borderWidth: 5, // 边框宽度
+            x: 'center', // 水平上的对其方式
+            subtext: '副标题', // 副标题
+            textStyle: { // 主标题文本样式
+                color: 'green', // 文本颜色
+                fontSize: 32, // 文字大小
+            },
+            subtextStyle: { // 主标题文本样式
+                color: 'yellow', // 文本颜色
+                fontSize: 20, // 文字大小
+            }
+        },
+        xAxis: {
+            data: ['A', 'B', 'C', 'D']
+        },
+        yAxis: {},
+        /**
+         * 配置相应图表系列的数据和其他项。这里是配置柱状图系列的数据和其他项
+         * 如果 series 属性值为一个对象（{}） ，说明只有一个系列，比如 series: {}
+         * 如果 series 属性值为一个数组（[]） ，说明有多个系列，比如 series: [{}, {}, {}]，其中每个对象是一个系列
+         */
+        series: {
+            type: 'bar', // 图表类型，bar为柱状图
+            name: '字母数据', // series 的名称
+            data: [500, 600, 580, 150] // 映射到图表的数据
+        }
+    })
+
+</script>
+</body>
+
+</html>

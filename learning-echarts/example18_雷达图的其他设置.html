@@ -1,0 +1,97 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #echart {
+            width: 500px;
+            height: 500px;
+            border: 1px solid black;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+
+<body>
+<div id="echart"></div>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.3.1/dist/echarts.js"></script>
+<script>
+    /**
+     * 一，先初始化echarts对象
+     * 二，设置配置项
+     * 三，设置轴参数
+     * 四，系列中配置数据
+     */
+    const echartDom = document.getElementById('echart')
+    let echart = echarts.init(echartDom)
+
+    echart.setOption({
+        radar: [{
+            shape: 'circle', // 设置雷达图的形状为圆形
+            // 雷达图指示器，在里面设置每个角的名字和参照数据
+            indicator: [
+                {name: 'A', max: 6500},
+                {name: 'B', max: 16000},
+                {name: 'C', max: 30000},
+                {name: 'D', max: 38000},
+                {name: 'E', max: 52000},
+            ],
+            radius: 100, // 设置雷达图的半径
+            /**
+             * y
+             * ↑
+             * |
+             * |
+             * |
+             * O——————————> x
+             *
+             * 将雷达图旋转。默认 startAngle 为 90 度
+             * startAngle 是以x轴为参照，逆时针旋转对应角度的
+             *
+             */
+            startAngle: 180,
+            splitNumber: 7, // 设置雷达图环数
+            axisName: {
+                formatter: '字母{value}', // 设置雷达图各个角的文本， {value} 为插值，对应 indicator.name 的值
+                color: 'red' // 设置雷达图各个角的文本颜色
+            },
+            // 设置分割区域
+            splitArea: {
+                // 设置分割的区域样式
+                areaStyle: {
+                    // 设置每个环对应的颜色，如果雷达图环数 > 色彩颜色的数量，则会循环色彩颜色
+                    color: ['red', 'green', 'blue', 'gray', 'yellow']
+                }
+            }
+
+        }],
+        series: {
+            type: 'radar', // 图表类型，radar为柱状图
+            data: [
+                {
+                    value: [
+                        4200, /* 4200/6500 */
+                        9000, /* 9000/16000 */
+                        20000, /* 20000/30000 */
+                        35000, /* 35000/38000 */
+                        50000 /* 50000/52000 */
+                    ],
+                    // 设置雷达图的线构成的多边形区域的的样式
+                    areaStyle: {
+                        color: 'green' // 设置多边形区域的颜色
+                    }
+                }
+            ],
+            lineStyle: {
+                type: 'dashed' // 设置雷达图的线的类型，dashed 为虚线
+            }
+        },
+    })
+
+</script>
+</body>
+
+</html>

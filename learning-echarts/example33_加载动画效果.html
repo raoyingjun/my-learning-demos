@@ -1,0 +1,72 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #echart {
+            width: 500px;
+            height: 500px;
+            border: 1px solid black;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+
+<body>
+<div id="echart"></div>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.3.1/dist/echarts.js"></script>
+<script>
+    /**
+     * 一，先初始化echarts对象
+     * 二，设置配置项
+     * 三，设置轴参数
+     * 四，系列中配置数据
+     */
+    const echartDom = document.getElementById('echart')
+    let echart = echarts.init(echartDom)
+    getChartData()
+    function renderChart() {
+        echart.setOption({
+            title: {
+                text: '饼状图',
+                left: 'center' // 设置标题水平居中
+            },
+            legend: {
+                left: 'left', // 设置图例水平居左
+                orient: 'vertical' // 设置图例的方向， vertical 垂直方向排列展示
+            },
+            series: {
+                type: 'pie', // 图表类型，pie为饼状图
+                name: 'LetterUsedCount', // series 的名称
+                data: [{
+                    value: 600,
+                    name: 'A'
+                }, {
+                    value: 200,
+                    name: 'B'
+                }, {
+                    value: 400,
+                    name: 'C'
+                }, {
+                    value: 350,
+                    name: 'D'
+                }], // 映射到图表的数据
+            }
+        })
+    }
+
+
+    function getChartData() {
+        echart.showLoading() // 显示【正在加载数据】状态
+        setTimeout(() => {
+            echart.hideLoading() // 隐藏【正在加载数据】状态
+            renderChart();
+        }, 1500)
+    }
+</script>
+</body>
+
+</html>

@@ -1,0 +1,63 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #echart {
+            width: 500px;
+            height: 500px;
+            border: 1px solid black;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+
+<body>
+<div id="echart"></div>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.3.1/dist/echarts.js"></script>
+<script>
+    /**
+     * 一，先初始化echarts对象
+     * 二，设置配置项
+     * 三，设置轴参数
+     * 四，系列中配置数据
+     */
+    const echartDom = document.getElementById('echart')
+    let echart = echarts.init(echartDom)
+
+    echart.setOption({
+        xAxis: {
+            data: ['A', 'B', 'C', 'D', 'E']
+        },
+        yAxis: {},
+        series: {
+            type: 'line', // 图表类型设置为折线图
+            data: [300, 250, 518, 430, 812], // 映射到图表的数据
+            markLine: { // 设置标线
+                data: [{
+                    type: 'average',
+                    name: '平均值'
+                }]
+            }
+        },
+        dataZoom: [
+            {
+                type: 'slider', // slider滑动条型数据区域缩放组件
+                xAxisIndex: 0, // 设置 dataZoom-slider 组件控制的 x 轴，在该图例中中指代仅有一个的 xAxis[0]，可以理解成 xAxis: [{}, {}, {}] 中的第 0 项
+                filterMode: 'none' // none不过滤数据，只改变数轴显示范围。
+            },
+            {
+                type: 'slider',
+                yAxisIndex: 0, // 设置 dataZoom-slider 组件控制的 y 轴，在该图例中指代仅有一个的 yAxis 并且还是缺省的 yAxis[0]，可以理解成 yAxis: [{}, {}, {}] 中的第 0 项
+                filterMode: 'none'
+            }
+        ]
+    })
+
+</script>
+</body>
+
+</html>

@@ -1,0 +1,51 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #echart {
+            width: 500px;
+            height: 500px;
+            border: 1px solid black;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+
+<body>
+<div id="echart"></div>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.3.1/dist/echarts.js"></script>
+<script src="./example29_china_map_data.js"></script>
+<script>
+    /**
+     * 一，先初始化echarts对象
+     * 二，设置配置项
+     * 三，设置轴参数
+     * 四，系列中配置数据
+     */
+    /**
+     * 用地图数据注册地图，地图数据来源于阿里云。
+     * 地图数据拾取工具：http://datav.aliyun.com/portal/school/atlas/area_selector
+     * 地图数据：https://geo.datav.aliyun.com/areas_v3/bound/100000_full.json
+     */
+    echarts.registerMap('ChinaMap', CHINA_MAP_DATA)
+    const echartDom = document.getElementById('echart')
+    let echart = echarts.init(echartDom)
+    echart.setOption({
+        geo: { // 使用地理坐标组件
+            type: 'map', // 地理坐标组件类型为地图
+            map: 'ChinaMap', // 使用注册的地图
+            roam: true, // 是否可以拖拽/缩放地图
+            zoom: 10, // 设置初始化缩放比例。默认为1
+            // 设置地图的中心点对应的经纬度，参数格式[经度, 纬度]。这里的经纬度对应的是北京
+            center: [116.387803, 39.940361],
+        },
+    })
+
+</script>
+</body>
+
+</html>

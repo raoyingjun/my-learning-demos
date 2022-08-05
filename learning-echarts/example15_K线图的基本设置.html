@@ -1,0 +1,71 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #echart {
+            width: 500px;
+            height: 500px;
+            border: 1px solid black;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+
+<body>
+<div id="echart"></div>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.3.1/dist/echarts.js"></script>
+<script>
+    /**
+     * 一，先初始化echarts对象
+     * 二，设置配置项
+     * 三，设置轴参数
+     * 四，系列中配置数据
+     */
+    const echartDom = document.getElementById('echart')
+    let echart = echarts.init(echartDom)
+
+    echart.setOption({
+        xAxis: {
+            data: ['苹果', '西瓜', '香蕉', '橘子'],
+        },
+        yAxis: {},
+        series: {
+            type: 'candlestick', // 图表类型，candlestick为K线图
+            // 映射到图表的数据
+            /**
+             * 每个数据是一个长度为4的数组，如下释义
+             * 比如 [20, 34, 10, 38]
+             *
+             * ↑       e
+             * |       |
+             * |  a __ | __ b
+             * |  |    |
+             * |  |    |
+             * |  c ——   —— d
+             * |       |
+             * |       |
+             * |       f
+             * O------------------------→
+             *
+             * 其中 O 为原点
+             * (20, 34) 对应 (c, a) 或者说是 (d, b)
+             * (10, 38) 对应 (f, e)
+             * 注：K线图中的颜色表示为“红涨绿跌”，红色是上涨，比如， (20, 34) 就是 从 20 涨到 34，返过来如果是 (34, 20) 那就是从 34 跌到 20
+             */
+            data: [
+                [20, 34, 10, 38],
+                [40, 35, 30, 50],
+                [31, 38, 33, 44],
+                [38, 15, 5, 42]
+            ],
+        },
+    })
+
+</script>
+</body>
+
+</html>
