@@ -4,8 +4,11 @@
     <h2>Use store with Composition API</h2>
     <label for="count">
       Input count:
-      <input type="number" @change="counterStore.update(Number($event.target.value))" id="count"
-             :value="counterStore.count">
+      <input
+        type="number"
+        @input="counterStore.update(Number($event.target.value))"
+        id="count"
+        :value="counterStore.count">
     </label>
     <p>
       Expression is
