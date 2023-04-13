@@ -16,102 +16,95 @@
 </head>
 
 <body>
-<div id="echart"></div>
-<script src="./echarts.js"></script>
-<script>
-    /**
-     * 一，先初始化echarts对象
-     * 二，设置配置项
-     * 三，设置轴参数
-     * 四，系列中配置数据
-     */
-    const echartDom = document.getElementById('echart')
-    let echart = echarts.init(echartDom)
+    <div id="echart"></div>
+    <script src="./echarts.js"></script>
+    <script>
+        /**
+         * 一，先初始化echarts对象
+         * 二，设置配置项
+         * 三，设置轴参数
+         * 四，系列中配置数据
+         */
+        const echartDom = document.getElementById('echart')
+        let echart = echarts.init(echartDom)
 
-    echart.setOption({
-        series: {
-            type: 'graph', // 图表类型，graph为关系图
-            data: [
-                {
-                    value: 1, // 设置值
-                    name: 'A',  // 鼠标悬浮到对应点上面显示的标签名
-                    symbolSize: 50 // 设置点的大小
+        echart.setOption({
+            series: {
+                type: 'graph', // 图表类型，graph为关系图
+                data: [
+                    {
+                        value: 1, // 设置值
+                        name: 'A',  // 鼠标悬浮到对应点上面显示的标签名
+                        symbolSize: 50 // 设置点的大小
+                    },
+                    { value: 2, name: 'B' },
+                    { value: 3, name: 'C' },
+                    { value: 4, name: 'D' },
+                    { value: 5, name: 'E' }
+                ],
+                // 设置布局方式。force力引导布局,circular环形布局
+                layout: 'force',
+                // 设置每个点的样式
+                itemStyle: {
+                    color: 'red' // 设置点的颜色
                 },
-                {value: 2, name: 'B'},
-                {value: 3, name: 'C'},
-                {value: 4, name: 'D'},
-                {value: 5, name: 'E'}
-            ],
-            // 设置布局方式。force力引导布局,circular环形布局
-            layout: 'force',
-            // 设置每个点的样式
-            itemStyle: {
-                color: 'red' // 设置点的颜色
+                // 设置标签的样式
+                label: {
+                    show: true, // true标签一直显示，false鼠标悬浮到点上才显示标签
+                    position: 'bottom', // 设置标签显示的位置
+                    distance: 10, // 标签距离点的距离
+                    fontSize: 20, // 设置标签文本大小
+                    align: 'left' // 标签与节点的垂直中线水平对齐方式，在这里是标签与节点垂直中线的左对齐
+                },
+                force: {
+                    // 节点之间的斥力因子，值越大则斥力越大。（白话就是repulsion的值越大，节点之间的距离越远）
+                    // repulsion: 500,
+                    // 节点受到的向中心的引力因子。该值越大节点越往中心点靠拢。（白话就是gravity值越大，节点会越往中心靠拢）
+                    gravity: .1,
+                    // 边的两个节点之间的距离，这个距离也会受 repulsion。（白话就是两个相连的节点的相隔的距离）
+                    edgeLength: 200,
+                },
+                // 设置关系数据
+                links: [
+                    {
+                        source: 'A', // A连接到B
+                        target: 'B', // A连接到B
+                        relation: {
+                            name: 'F', // source连接到target对应的线的标签名
+                        }
+                    },
+                    {
+                        source: 'D', // D连接到A
+                        target: 'A', // D连接到A
+                        relation: {
+                            name: 'G', // source连接到target对应的线的标签名
+                        }
+                    },
+                    {
+                        source: 'C', // 综上所述，以此类推
+                        target: 'E', // 综上所述，以此类推
+                        relation: {
+                            name: 'I', // 综上所述，以此类推
+                        }
+                    },
+                    {
+                        source: 'C',
+                        target: 'D',
+                        relation: {
+                            name: 'J',
+                        }
+                    },
+                ],
+                // 设置线的标签
+                edgeLabel: {
+                    show: true, // 显示线的对应标签
+                    position: 'middle', // start | middle | end。标签显示的位置
+                    formatter: params => params.data.relation.name // 引用 relation.name作为标签名
+                },
             },
-            // 设置标签的样式
-            label: {
-                show: true, // true标签一直显示，false鼠标悬浮到点上才显示标签
-                position: 'bottom', // 设置标签显示的位置
-                distance: 10, // 标签距离点的距离
-                fontSize: 20, // 设置标签文本大小
-                align: 'left' // 标签与节点的垂直中线水平对齐方式，在这里是标签与节点垂直中线的左对齐
-            },
-            force: {
-                // 节点之间的斥力因子，值越大则斥力越大。（白话就是repulsion的值越大，节点之间的距离越远）
-                // repulsion: 500,
-                // 节点受到的向中心的引力因子。该值越大节点越往中心点靠拢。（白话就是gravity值越大，节点会越往中心靠拢）
-                gravity: .1,
-                // 边的两个节点之间的距离，这个距离也会受 repulsion。（白话就是两个相连的节点的相隔的距离）
-                edgeLength: 200,
-            },
-            // 设置关系数据
-            links: [
-                {
-                    source: 'A', // A连接到B
-                    target: 'B', // A连接到B
-                    relation: {
-                        name: 'F', // source连接到target对应的线的标签名
-                    }
-                },
-                {
-                    source: 'D', // D连接到A
-                    target: 'A', // D连接到A
-                    relation: {
-                        name: 'G', // source连接到target对应的线的标签名
-                    }
-                },
-                {
-                    source: 'D', // 综上所述，以此类推
-                    target: 'A', // 综上所述，以此类推
-                    relation: {
-                        name: 'H', // 综上所述，以此类推
-                    }
-                },
-                {
-                    source: 'C',
-                    target: 'E',
-                    relation: {
-                        name: 'I',
-                    }
-                },
-                {
-                    source: 'C',
-                    target: 'D',
-                    relation: {
-                        name: 'J',
-                    }
-                },
-            ],
-            // 设置线的标签
-            edgeLabel: {
-                show: true, // 显示线的对应标签
-                position: 'middle', // start | middle | end。标签显示的位置
-                formatter: params => params.data.relation.name // 引用 relation.name作为标签名
-            },
-        },
-    })
+        })
 
-</script>
+    </script>
 </body>
 
 </html>
