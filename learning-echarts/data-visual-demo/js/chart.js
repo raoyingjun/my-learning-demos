@@ -38,7 +38,7 @@ function renderBarChart() {
                 show: true,
                 color: 'white',
                 position: 'insideRight',// 标签的位置
-                align: 'right' // 文本对齐标签的位置（position），这里是文本对齐标签的位置（position）的右端
+                align: 'right' // 文本对齐标签的位置（position），这里是文本与标签的位置（position）的右端对齐
             },
             itemStyle: {
                 borderRadius: [0, 20, 20, 0],
@@ -107,6 +107,8 @@ function renderMapChart() {
         }],
         // 视觉映射组件，用于进行『视觉编码』，也就是将数据映射到视觉元素（视觉通道）
         visualMap: {
+            // piecewise 分段型
+            // continuous 连续型
             type: 'continuous', // 类型为连续型
             min: 100, // 允许的最小值
             max: 1000, // 允许的最大值
@@ -192,7 +194,7 @@ function renderLineStackChart() {
         },
         xAxis: {
             data: CATEGORY_DATA,
-            boundaryGap: false, // 是否和图表的边界保持一定的间隙
+            boundaryGap: false, // 图形是否和图表的边界保持一定的间隙
             axisLine: { // 轴线条设置
                 lineStyle: { // 线条样式
                     color: 'white' // 线条颜色为白色（同时会设置轴上的标签文本颜色）
