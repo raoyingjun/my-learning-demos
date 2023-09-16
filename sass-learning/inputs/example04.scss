@@ -1,0 +1,25 @@
+.standrad-font-size {
+    font-size: 16px;
+    font-weight: normal;
+    letter-spacing: 8px;
+}
+
+.larger-font-size {
+    @extend .standrad-font-size;
+    font-size: 20px;
+}
+
+.everyone .younger {
+    font-size: 16px;
+    border: 1px solid gray;
+    box-shadow: 0 0 black;
+}
+
+.older {
+    @extend .younger;
+    font-size: 20px;
+}
+
+.a {
+    color: red
+}

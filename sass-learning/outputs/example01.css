@@ -1,0 +1,24 @@
+.foo {
+  color: red;
+}
+.foo .bar {
+  color: yellow;
+}
+.foo .bar.biz {
+  color: blue;
+}
+.foo.baz {
+  color: green;
+}
+
+.first {
+  color: red;
+}
+.second {
+  color: green;
+}
+.third {
+  color: blue;
+}
+
+/*# sourceMappingURL=example01.css.map */

@@ -1,0 +1,7 @@
+{
+"version": 3,
+"mappings": "AAAA,sCAAoB;EAChB,SAAS,EAAE,IAAI;EACf,WAAW,EAAE,MAAM;EACnB,cAAc,EAAE,GAAG;;;AAGvB,iBAAkB;EAEd,SAAS,EAAE,IAAI;;;AAGnB,oCAAmB;EACf,SAAS,EAAE,IAAI;EACf,MAAM,EAAE,cAAc;EACtB,UAAU,EAAE,SAAS;;;AAGzB,MAAO;EAEH,SAAS,EAAE,IAAI;;;AAGnB,EAAG;EACC,KAAK,EAAE,GAAG",
+"sources": ["../inputs/example04.scss"],
+"names": [],
+"file": "example04.css"
+}

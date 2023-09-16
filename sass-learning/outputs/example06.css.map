@@ -1,0 +1,7 @@
+{
+"version": 3,
+"mappings": "AAGA,KAAM;EAKE,KAAK,EAJC,IAAI;EAKV,MAAM,EALA,IAAI;;;AA0BlB,MAAO;EALC,KAAK,EAAE,MAAM",
+"sources": ["../inputs/example06.scss"],
+"names": [],
+"file": "example06.css"
+}

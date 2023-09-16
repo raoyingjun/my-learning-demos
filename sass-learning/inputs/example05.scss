@@ -1,0 +1,17 @@
+$a: foo;
+$b: bar;
+
+// 插值用在选择器
+.tool-#{$a} {
+    color: red
+}
+
+.tool-#{$b} {
+    color: yellow;
+}
+
+$c: color;
+.tool-color {
+    // 插值用在属性名
+    #{$c}: green
+}

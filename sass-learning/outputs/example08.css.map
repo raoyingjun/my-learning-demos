@@ -1,0 +1,7 @@
+{
+"version": 3,
+"mappings": "AAgBI,OAAU;EACN,MAAM,EAAE,GAAK;;;AADjB,OAAU;EACN,MAAM,EAAE,GAAK;;;AADjB,QAAU;EACN,MAAM,EAAE,IAAK;;;AADjB,QAAU;EACN,MAAM,EAAE,IAAK;;;AAIrB,OAAQ;EAEA,KAAO,EAbJ,GAAG;EAaN,gBAAO,EAZO,MAAM;EAYpB,YAAO,EAXG,KAAK",
+"sources": ["../inputs/example08.scss"],
+"names": [],
+"file": "example08.css"
+}

@@ -1,0 +1,30 @@
+.foo {
+    color: red;
+
+    .bar {
+        color: yellow;
+
+        &.biz {
+            color: blue;
+        }
+    }
+
+    &.baz {
+        color: green;
+    }
+}
+
+.first {
+    color: red;
+    // @at-root 指令将嵌套的选择器移至顶层
+    @at-root {
+        .second {
+            color: green;
+        }
+    }
+    // 以下写法与上面等价
+    @at-root .third {
+        color: blue
+    }
+
+}

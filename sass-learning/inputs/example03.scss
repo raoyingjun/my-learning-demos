@@ -1,0 +1,19 @@
+@mixin flex-centered {
+    display: flex;
+    justify-content: center;
+}
+
+.title {
+    @include flex-centered;
+    @include flex-centered(); // 也行
+}
+
+@mixin theme($color: red) {
+    color: $color;
+    border: 1px solid $color
+}
+
+.article {
+    @include theme();
+    @include theme(green);
+}

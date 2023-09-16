@@ -1,0 +1,33 @@
+$a: 5;
+$b: 2;
+
+.size {
+    $gt-size: 40px;
+    $lt-size: 20px;
+    $eq-size: 30px;
+    @if $a > $b {
+        width: $gt-size;
+        height: $gt-size;
+    }
+    @if $a < $b {
+        width: $lt-size;
+        height: $lt-size;
+    }
+    @if $a == $b {
+        width: $eq-size;
+        height: $eq-size;
+    }
+}
+
+@mixin fruit-color($fruit-name) {
+    @if $fruit-name == apple {
+        color: red;
+    } @else if $fruit-name == banana {
+        color: yellow;
+    } @else {
+        color: black;
+    }
+}
+.fruit {
+    @include fruit-color(banana);
+}

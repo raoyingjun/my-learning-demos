@@ -1,0 +1,13 @@
+.number {
+    width: 10px;
+    width: 10px*2;
+    // 除法比较特殊，必须添加括号包裹
+    width: 10px/2; // 不工作
+    width: (10px/2); // 工作
+    width: 10px/5px; // 不工作
+    width: (10px/5px); // 工作
+    width: 10px + 5px;
+    width: 10px + 5; // 自动单位转换 => 15px
+    width: 1in + 8pt; // 自动单位转换
+    width: 10px - 5px;
+}

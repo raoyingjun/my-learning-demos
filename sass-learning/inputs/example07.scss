@@ -1,0 +1,23 @@
+// 从 2 到 4，包头包尾
+@for $i from 2 through 4 {
+    .mt-#{$i} {
+        color: red;
+    }
+}
+
+// 从 2 到 4，包头不包尾
+@for $i from 2 to 4 {
+    .pd-#{$i} {
+        color: yellow;
+    }
+}
+
+$j: 18;
+
+// 从 18 到 14
+@while $j >= 14 {
+    .fz-#{$j} {
+        font-size: #{$j}px;
+        $j: $j - 1 // 设置 j--，否则 while 没有出口，陷入死循环。
+    }
+}

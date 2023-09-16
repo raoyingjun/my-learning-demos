@@ -1,0 +1,12 @@
+// 定义变量
+$shadow-color: gray;
+$shadow-radius: 8px !default; // 通过 !default 设置缺省值
+
+.gray-shadows {
+    // 使用变量
+    border-radius: $shadow-radius; // 缺省，则使用变量默认值 8px
+    $shadow-radius: 12px; // 覆盖默认变量值
+    border-radius: $shadow-radius; // 12px;
+    box-shadow: 0 0 $shadow-color;
+}
+

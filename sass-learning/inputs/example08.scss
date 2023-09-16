@@ -1,0 +1,26 @@
+// 定义数组
+$list1: 4px, 8px, 12px, 16px;
+$list2: 4px 8px 12px 16px; // 等价 $list1
+$list3: (
+    4px 8px) (12px 16px
+); // 数组内嵌套数组
+$list4: 4px 8px, 12px 16px; // 等价 $list3
+
+// 定义映射
+$map: (
+    color: red,
+    background-color: yellow,
+    border-color: green
+);
+
+@each $i in $list1 {
+    .mt-#{$i} {
+        margin: #{$i};
+    }
+}
+
+.colour {
+    @each $key, $value in $map {
+        #{$key}: $value;
+    }
+}
