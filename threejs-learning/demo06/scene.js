@@ -28,6 +28,7 @@ scene.add(axesHelper)
  * intensity：光照强度
  */
 const pointLight = new THREE.PointLight(0xffffff, 100000.0)
+// 设置点光源的位置
 pointLight.position.set(200, 300, 300);
 
 scene.add(pointLight)

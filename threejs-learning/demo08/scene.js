@@ -1,4 +1,5 @@
 import * as THREE from 'three'
+import {AmbientLight} from "three";
 // 场景：创建三维场景，用于存放物体
 const scene = new THREE.Scene();
 
@@ -19,17 +20,9 @@ scene.add(mesh)
 const axesHelper = new THREE.AxesHelper(100)
 // 把辅助坐标轴添加到场景
 scene.add(axesHelper)
-/**
- * 环境光（AmbientLight）：会发散到物体的每个方位。类似白天，人每个地方都会被照到，
- * 点光源（PointLight）：光纤像太阳一样发散
- * 平行光源（DirectionalLight）：只朝着某个方位发散
- * 聚光灯光源（SpotLight）：光线像手电筒一样发散
- * color：光源颜色
- * intensity：光照强度
- */
-const pointLight = new THREE.PointLight(0xffffff, 100000.0)
-// 设置点光源的位置
-pointLight.position.set(200, 300, 300);
+// 设置环境光提高物体整体亮度（多重光源可叠加）
+const ambientLight = new AmbientLight(0xffffff, 1.5);
+scene.add(ambientLight)
 
-scene.add(pointLight)
+
 export {scene}

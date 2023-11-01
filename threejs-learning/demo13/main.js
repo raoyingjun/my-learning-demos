@@ -1,0 +1,69 @@
+import * as THREE from 'three'
+import {scene} from "./scene";
+import {camera} from "./camera";
+import {OrbitControls} from "three/addons";
+import Stats from "three/addons/libs/stats.module";
+// 创建渲染器
+const renderer = new THREE.WebGLRenderer()
+/**
+ * object：这里传入相机，通过调整相机来进行控制
+ * domElement： 要监控的对象，一般是 Canvas 画布、
+ * 轨道控制操作包括改变旋转、缩放、平移
+ */
+const controls = new OrbitControls(camera, renderer.domElement)
+// 设置相机控制器的位置
+controls.target.set(1000, 0, 1000)
+// 设置后需要更新位置
+controls.update()
+// 监听是否发生了控制操作，如果发生了控制操作
+controls.addEventListener('change', () => {
+    console.log(camera.position)
+    // 重新渲染新的结果并呈现到页面
+    renderer.render(scene, camera)
+})
+
+// 指定场景和相机进行渲染
+renderer.render(scene, camera)
+// 获取渲染的结果
+const result = renderer.domElement
+// 将渲染结果呈现到页面
+document.body.appendChild(result)
+
+// 创建一个时钟，可用其生成一些渲染数据等
+const clock = new THREE.Clock()
+// 创建Stats性能指标看板，可以检查各个指标，如帧率、渲染间隔等
+const stats = new Stats()
+/**
+ * 选择默认显示什么
+ * 0：默认显示帧率
+ * 1：默认显示渲染间隔
+ */
+stats.setMode(1)
+// 将指标元素呈现到页面
+document.body.appendChild(stats.domElement)
+const spin = () => {
+    // 更新性能监视器数据
+    stats.update()
+    // 每次渲染的间隔时间（单位秒）
+    const split = clock.getDelta()
+    // 秒->毫秒
+    console.log('渲染间隔', split * 1000)
+    // 每秒可渲染多次次，即帧率
+    console.log('渲染帧率', 1000 / split * 1000)
+    renderer.render(scene, camera)
+    requestAnimationFrame(spin)
+}
+spin()
+
+const resize = () => {
+    const [w, h, r] = [window.innerWidth, window.innerHeight, window.innerWidth / window.innerHeight]
+    // 重设渲染尺寸
+    renderer.setSize(w, h)
+    // 调整相机尺寸
+    camera.aspect = r;
+    // 调整相机尺寸后，通知相机更新投影矩阵
+    camera.updateProjectionMatrix()
+}
+resize()
+window.onresize = resize
+

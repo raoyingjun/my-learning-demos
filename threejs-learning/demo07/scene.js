@@ -27,9 +27,12 @@ scene.add(axesHelper)
  * color：光源颜色
  * intensity：光照强度
  */
-const pointLight = new THREE.PointLight(0xffffff, 100000.0)
+const pointLight = new THREE.PointLight(0xffffff, 100000)
 // 设置点光源的位置
-pointLight.position.set(200, 300, 300);
-
+pointLight.position.set(-200, -300, -300);
 scene.add(pointLight)
+// 创建一个点光源辅助观察对象，可以显示点光源的位置，方便观察
+const pointLightHelper = new THREE.PointLightHelper(pointLight, 10)
+scene.add(pointLightHelper)
+
 export {scene}
