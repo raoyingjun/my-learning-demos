@@ -2,11 +2,11 @@ import * as THREE from 'three'
 // 顶点数据，需要使用类型化数据（Typed Array）存放
 const vertices = new Float32Array([
     0, 0, 0,
-    50, 0, 0,
-    0, 100, 0,
-    0, 0, 10,
-    0, 0, 100,
-    50, 0, 10,
+    80, 0, 0,
+    80, 80, 0,
+    0, 0, 0,
+    80, 80, 0,
+    0, 80, 0,
 ])
 // 定义一个缓冲几何体（没有任何顶点数据，也就是空几何体）
 const geometry = new THREE.BufferGeometry();
@@ -53,6 +53,6 @@ const material = new THREE.MeshBasicMaterial({
  * 再次依次连接 a->b->c 会发现连接顺序是顺时针。
  * 以上就是 Threejs 中区分三角形正反面的方式
  */
-const triangleMesh = new THREE.Mesh(geometry, material)
+const rectMesh = new THREE.Mesh(geometry, material)
 
-export {triangleMesh}
+export {rectMesh}

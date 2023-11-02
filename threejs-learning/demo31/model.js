@@ -1,12 +1,22 @@
 import * as THREE from 'three'
 // 顶点数据，需要使用类型化数据（Typed Array）存放
 const vertices = new Float32Array([
-    0, 0, 0,
-    50, 0, 0,
-    0, 100, 0,
-    0, 0, 10,
-    0, 0, 100,
-    50, 0, 10,
+    0, 0, 0, // index -> 0
+    80, 0, 0,// index -> 1
+    80, 80, 0, // index -> 2
+    0, 80, 0, // index -> 3
+])
+// 顶点索引，本例中，每个顶点索引对应 vertices 中一个顶点坐标。
+// 本利中，对应关系参照 vertices 中的注释
+const indexes = new Uint16Array([
+    0, 1, 2, 0, 2, 3
+])
+// 定义
+const normals = new Float32Array([
+    0, 0, 1,
+    0, 0, 1,
+    0, 0, 1,
+    0, 0, 1,
 ])
 // 定义一个缓冲几何体（没有任何顶点数据，也就是空几何体）
 const geometry = new THREE.BufferGeometry();
@@ -18,11 +28,30 @@ const geometry = new THREE.BufferGeometry();
  * 别对应 x、y、z。
  */
 const attrs = new THREE.BufferAttribute(vertices, 3)
+
 // 将存放了顶点数据的属性设置到几何体
 geometry.attributes.position = attrs
-
+/**
+ * 定义一个缓冲属性，可以存放顶点索引。方便快速定位顶点坐标
+ * array：顶点索引的数组
+ * itemSize：数据中每几个数组项作为一个顶点坐标索引。
+ * 本示例中，数组中每一个项数据作为一个顶点索引，一
+ * 个顶点索引对应一个顶点坐标（x、y、z）。
+ */
+// 依据顶点索引构建几何体
+geometry.index = new THREE.BufferAttribute(indexes, 1)
+/**
+ * 定义一个缓冲属性，可以存放顶点法线数据。
+ * 正确设置法线，光源材质才能正常显示！
+ * 本例中，法线坐标以索引为参照
+ * array：法线数组
+ * itemSize：数据中每几个数组项作为一个法线坐标。
+ * 本示例中，法线数组中每三项数据（x, y, z）作为一个法线坐标
+ */
+// 依据顶点索引构建几何体
+geometry.attributes.normal = new THREE.BufferAttribute(normals, 3)
 // 创建网格材质
-const material = new THREE.MeshBasicMaterial({
+const material = new THREE.MeshLambertMaterial({
     // 线条的颜色
     color: 0xff0000,
     side: THREE.DoubleSide
@@ -53,6 +82,6 @@ const material = new THREE.MeshBasicMaterial({
  * 再次依次连接 a->b->c 会发现连接顺序是顺时针。
  * 以上就是 Threejs 中区分三角形正反面的方式
  */
-const triangleMesh = new THREE.Mesh(geometry, material)
+const rectMesh = new THREE.Mesh(geometry, material)
 
-export {triangleMesh}
+export {rectMesh}
