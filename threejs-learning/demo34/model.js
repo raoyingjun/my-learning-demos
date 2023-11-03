@@ -54,5 +54,4 @@ v.normalize()
  * 故 Mesh 在三个轴方向都会产生平移效果
  */
 mesh.translateOnAxis(v, 80)
-// mesh.translateY(46)
 export {mesh}
