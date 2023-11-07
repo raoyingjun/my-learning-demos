@@ -24,7 +24,7 @@ const camera = new THREE.PerspectiveCamera(50, RATE, 0.2, 2000)
  *      |___________________________________________________|
  */
 // 设置相机的位置（相机位于哪里）
-camera.position.set(200, 200, 200);
+camera.position.set(400, 400, 400);
 // 设置相机视线，用于设置相机要看向哪里
 camera.lookAt(0, 0, 0)
 
