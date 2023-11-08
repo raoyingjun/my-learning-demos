@@ -19,7 +19,11 @@ const useRefresh = () => {
 
 const useResize = () => {
     const resize = () => {
-        const {width, height} = winSize()
+        const {width, height, ratio} = winSize()
+
+        camera.aspect = ratio
+        camera.updateProjectionMatrix()
+
         renderer.setSize(width, height)
     }
     window.addEventListener('resize', resize)

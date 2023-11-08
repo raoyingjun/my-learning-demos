@@ -18,3 +18,22 @@ export const loadModel = (url, isDracoCompress) => {
         loader.load(url, resolve, null, reject)
     })
 }
+export const randomRange = (min, max) => {
+    return Math.floor((Math.floor((max - min + 1) * Math.random())) + min)
+}
+
+export const randomHexColor = () => {
+    let hexColor = ''
+    for (let i = 0; i < 3; i++) {
+        hexColor += randomRange(0, 255).toString(16).padStart(2, '0')
+    }
+    return `#${hexColor}`
+}
+
+export const visualToWebglCoords = (x, y) => {
+    const {width, height} = winSize()
+    return {
+        x: width / 2 - (width - x),
+        y: height / 2 - (height - y)
+    }
+}
