@@ -2,13 +2,16 @@ import {WebGLRenderer} from "three";
 import {camera} from "./camera";
 import {scene} from "./scene";
 import {winSize} from "./util";
+import {OrbitControls} from "three/addons";
 
-const render = new WebGLRenderer()
+const renderer = new WebGLRenderer({
+    antialias: true
+})
 
 
 const useRefresh = () => {
     const refresh = () => {
-        render.render(scene, camera)
+        renderer.render(scene, camera)
         requestAnimationFrame(refresh)
     }
     refresh()
@@ -17,10 +20,23 @@ const useRefresh = () => {
 const useResize = () => {
     const resize = () => {
         const {width, height} = winSize()
-        render.setSize(width, height)
+        renderer.setSize(width, height)
     }
-    window.addEventListener('load', resize)
+    window.addEventListener('resize', resize)
     resize()
 }
 
-export {useRefresh, useResize}
+const renderElement = renderer.domElement
+const renderToBody = () => {
+    document.body.append(renderElement)
+}
+const useControls = () => {
+    const orbitControls = new OrbitControls(camera, renderer.domElement)
+}
+
+renderer.setClearColor(0xffffff)
+
+export {
+    useRefresh, useResize, renderToBody, useControls,
+    renderer, renderElement
+}
