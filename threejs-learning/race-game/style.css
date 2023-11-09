@@ -1,8 +1,34 @@
 body {
     margin: 0;
     overflow: hidden;
+    text-align: center;
 }
 
 li {
     list-style: none;
+}
+
+.absolute {
+    position: absolute;
+    color: white;
+    inset: 0;
+}
+
+h1 {
+    font-size: 84px;
+    margin-top: 20vh;
+    font-weight: bolder;
+}
+
+p {
+    font-size: 14px;
+}
+
+.unselectable {
+    pointer-events: none;
+    user-select: none;
+}
+
+.animation {
+    transition: 3000ms opacity;
 }

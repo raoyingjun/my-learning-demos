@@ -1,6 +1,6 @@
 [
   {
-    "name": "rock_01",
+    "name": "bricks",
     "scale": [
       100,
       100,
@@ -10,10 +10,11 @@
       90,
       0,
       0
-    ]
+    ],
+    "filename": "rocks/rock_01"
   },
   {
-    "name": "rock_02",
+    "name": "Cube4153_1",
     "scale": [
       60,
       90,
@@ -23,10 +24,11 @@
       90,
       0,
       90
-    ]
+    ],
+    "filename": "rocks/rock_02"
   },
   {
-    "name": "rock_03",
+    "name": "menhir_petit",
     "scale": [
       30,
       15,
@@ -36,6 +38,7 @@
       0,
       0,
       0
-    ]
+    ],
+    "filename": "rocks/rock_03"
   }
 ]

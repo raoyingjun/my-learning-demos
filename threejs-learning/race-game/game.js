@@ -1,26 +1,43 @@
-import {startPage, gamingPage, endPage} from "./models";
+import {endPage, gamingPage, startPage} from "./models";
 import {scene} from "./scene";
-import {car} from "./models/car";
-import {randomHexColor, randomRange, visualToWebglCoords, winSize, numAnimate, getModelBox3Size} from "./util";
-import {blocks} from './models/block'
-import {ROAD_WIDTH, roads, ROAD_NUM} from "./models/road";
+import {numAnimate, randomHexColor, randomRange, visualToWebglCoords, winSize, $, rgbToHex} from "./util";
+import {BlOCK_NUM, getRandomBlock} from './models/block'
+import {ROAD_NUM, ROAD_WIDTH, roads} from "./models/road";
+import {renderer} from "./render";
+import {cars} from "./models/car";
+
 
 const GENERATE_BLOCK_MAX_INTERVAL = 1500
 const GENERATE_BLOCK_MIN_INTERVAL = 1000
 
 const CHECK_INTERVAL = 1000 / 30
+const DEPRECATE_INTERVAL = 1000 / 15
+
+const GAME_STARTED = 0
+const GAME_GAMING = 1
+const GAME_STOPPED = 2
 
 class Game {
+    state = GAME_STARTED
     score = 0
     blocks = []
+    selectedCar = 0
 
-    constructor(car, roads) {
-        this.setCar(new Car(car))
-        this.setRoads(new Roads(roads))
+    constructor() {
+        this.setCar(cars)
+        this.setRoads(roads)
+        this.interaction = new Interaction(this)
     }
 
     run() {
+        this.state = GAME_STARTED
+
+        startPage.add(this.car.object)
         scene.add(startPage)
+
+        this.registerController()
+
+        this.interaction.openStartPage()
     }
 
     addBlock(block) {
@@ -50,21 +67,23 @@ class Game {
 
     offGenerateBlock() {
         clearInterval(this.generateBlockTimer)
+
         for (const block of this.blocks) {
             block.offMove()
         }
     }
 
-
-    setCar(car) {
-        this.car = car
+    setCar(cars) {
+        this.car = new Car(cars.children[this.selectedCar])
     }
 
     setRoads(roads) {
-        this.roads = roads
+        this.roads = new Roads(roads)
     }
 
     start() {
+        this.state = GAME_GAMING
+
         scene.remove(startPage)
 
         gamingPage.add(this.car.object)
@@ -74,46 +93,115 @@ class Game {
         this.car.registerController()
         this.onGenerateBlock()
         this.onCheck()
+
+        this.interaction.closeStartPage()
     }
 
     stop() {
-        // scene.remove(gamingPage)
+        this.state = GAME_STOPPED
 
-        // endPage.add(this.car.object)
-        // scene.add(endPage)
+        scene.remove(gamingPage)
+
+        endPage.add(this.car.object)
+        scene.add(endPage)
+
         this.car.dismissController()
         this.offGenerateBlock()
         this.offCheck()
-        this.offGenerateBlock()
     }
 
     onCheck() {
-        const check = () => {
-            requestAnimationFrame(() => {
-                for (let block of this.blocks) {
-                    if (this.car.check(block)) {
-                        this.stop()
-                        break;
-                    }
+        this.check = setInterval(() => {
+            for (let block of this.blocks) {
+                if (this.car.check(block)) {
+                    this.stop()
+                    break;
                 }
-                check()
-            })
-        }
-        check()
-
-        // this.check = setInterval(() => {
-        //     for (let block of this.blocks) {
-        //         if (this.car.check(block)) {
-        //             this.stop()
-        //             break;
-        //         }
-        //     }
-        // }, CHECK_INTERVAL)
+            }
+        }, CHECK_INTERVAL)
 
     }
 
     offCheck() {
         clearInterval(this.check)
+    }
+
+    registerController() {
+        this.controller = ({key}) => {
+            console.log(key)
+            switch (key) {
+                case ' ':
+                    if (this.state !== GAME_GAMING) {
+                        this.start()
+                    }
+                    break;
+                default:
+                    break;
+            }
+
+        }
+        document.addEventListener('keydown', this.controller)
+    }
+
+    dismissController() {
+        document.removeEventListener('keydown', this.controller)
+    }
+}
+
+class Interaction {
+    constructor(game) {
+        this.game = game
+    }
+
+    flags = {
+        startPage: {
+            aborted: false
+        }
+    }
+
+    doms = {
+        startPage: $('startPage')
+    }
+
+    openStartPage() {
+        const rot = () => {
+            if (!this.flags.startPage.aborted)
+                requestAnimationFrame(() => {
+                    startPage.rotateY(0.003)
+                    rot()
+                })
+        }
+        rot();
+
+        renderer.setClearColor(0x000000)
+    }
+
+    closeStartPage() {
+        this.flags.startPage.aborted = true
+
+        this.game.car.object.rotateY(Math.PI / 2)
+
+        this.doms.startPage.style.opacity = 0
+
+        numAnimate({
+            from: 0,
+            to: 255,
+            onStep: v => renderer.setClearColor(rgbToHex(...Array(3).fill(v))),
+            step: 30
+        })
+    }
+
+    gamingPageAnimation() {
+        let aborted = false
+        const rot = () => {
+            if (!aborted)
+                requestAnimationFrame(() => {
+                    rot()
+                })
+        }
+        return () => {
+            aborted = true
+        }
     }
 }
 
@@ -123,17 +211,28 @@ class Block {
     moving = false
 
     constructor(distance = 4) {
-        const object = blocks.children[randomRange(0, 2)].clone(true)
-        object.material.color.set(randomHexColor())
+        const object = getRandomBlock()
+        Block.decorate(object)
         this.object = object
 
-        const {width} = winSize()
+        const {height} = winSize()
         this.set(
-            randomRange(width / 2, width * 2),
+            randomRange(height * 2, height * 4),
             Roads.getVerticalCenterPosition(randomRange(0, 4))
         )
 
         this.distance = distance
+    }
+
+    static decorate(model) {
+        model.material.color.set(randomHexColor())
+        model.material.transparent = true
+        numAnimate({
+            from: 0,
+            to: 1,
+            onStep: v => model.material.opacity = v,
+            step: 200
+        })
     }
 
     set(x, z) {
@@ -159,14 +258,12 @@ class Block {
     }
 
     onDeprecated(callback) {
-        const deprecate = () => {
+        this.deprecated = setInterval(() => {
             if (this.x < 0 && Math.abs(this.x) > winSize().height) {
+                clearInterval(this.deprecated)
                 callback && callback()
-            } else {
-                requestAnimationFrame(deprecate)
             }
-        }
-        deprecate()
+        }, DEPRECATE_INTERVAL)
     }
 
 }
@@ -177,20 +274,6 @@ class Car {
     check(block) {
         const {position: {x: bpx, z: bpz}, scale: {x: bsx, z: bsz}} = block.object
         const {position: {x: cpx, z: cpz}, scale: {x: csx, z: csz}} = this.object
-        console.log(
-            'bpx', bpx,
-            'cpx', cpx,
-            'csx / 2 + bsx / 2', csx / 2 + bsx / 2,
-            'csx', csx,
-            'bsx', bsx
-        )
-        console.log(
-            'bpz', bpz,
-            'cpz', cpz,
-            'csz / 2 + bsz / 2', csz / 2 + bsz / 2,
-            'csz', csz,
-            'bsz', bsz
-        )
         const xCheck = Math.abs(bpx - cpx) <= (csx / 2 + bsx / 2)
         const zCheck = Math.abs(bpz - cpz) <= (csz / 2 + bsz / 2)
         return xCheck && zCheck;
@@ -203,21 +286,21 @@ class Car {
 
     toLeft() {
         if (this.roadIndex > 0) {
-            numAnimate(
-                this.object.position.z,
-                Roads.getVerticalCenterPosition(--this.roadIndex),
-                v => this.object.position.setZ(v)
-            )
+            numAnimate({
+                from: this.object.position.z,
+                to: Roads.getVerticalCenterPosition(--this.roadIndex),
+                onStep: v => this.object.position.setZ(v)
+            })
         }
     }
 
     toRight() {
         if (this.roadIndex < ROAD_NUM - 1) {
-            numAnimate(
-                this.object.position.z,
-                Roads.getVerticalCenterPosition(++this.roadIndex),
-                v => this.object.position.setZ(v)
-            )
+            numAnimate({
+                from: this.object.position.z,
+                to: Roads.getVerticalCenterPosition(++this.roadIndex),
+                onStep: v => this.object.position.setZ(v)
+            })
         }
     }
 
@@ -251,7 +334,6 @@ class Roads {
         const offset = (winSize().width - (ROAD_NUM * ROAD_WIDTH)) / 2 + ROAD_WIDTH / 2
         const {x} = visualToWebglCoords(offset + roadIndex * ROAD_WIDTH)
         return x
-
     }
 }
 

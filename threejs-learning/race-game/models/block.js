@@ -1,21 +1,31 @@
-import {loadModel} from "../util";
-import {AxesHelper, Group, PlaneHelper} from "three";
-import blockData from './resource/block-data.json'
-
-const getBlockAbsolutePath = (name) => `/race-game/models/resource/rocks/${name}.gltf`
+import {generateModels, getRandomModel, isEmpty} from "../util";
+import blockData from './resource/rocks/block-data.json'
+import {AxesHelper, Group} from "three";
+import {cars} from "./car";
+import {decorate} from "./index";
 
 const BlOCK_NUM = blockData.length
-const generateBlocks = async (num) => {
-    const blocks = new Group();
-    for (let i = 0; i < num; i++) {
-        const url = new URL(getBlockAbsolutePath(blockData[i].name), location.href).href
-        const block = (await loadModel(url, true)).scene.getObjectByProperty('isMesh', true)
-        block.scale.set(...blockData[i].scale)
-        block.rotation.set(...blockData[i].rotation.map(rot => Math.PI / 180 * rot))
-        block.add(new AxesHelper(20))
-        blocks.add(block)
+
+const models = await generateModels(blockData)
+
+const findByName = async (index, model) => {
+    return model.getObjectByName(blockData[index].name)
+}
+
+const findAll = async () => {
+    const blocks = new Group()
+    for (const [index, modelPromise] of models.entries()) {
+        const model = await findByName(index, await modelPromise)
+        decorate(model, blockData[index])
+        blocks.add(model)
     }
     return blocks
 }
-const blocks = await generateBlocks(BlOCK_NUM)
-export {blocks, BlOCK_NUM}
+
+const blocks = await findAll()
+
+const getRandomBlock = () => getRandomModel(blocks)
+
+console.log('blocks', blocks)
+export {BlOCK_NUM, getRandomBlock}
+
