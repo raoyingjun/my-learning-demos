@@ -1,4 +1,5 @@
 import {DRACOLoader, GLTFLoader} from "three/addons";
+import {Box3, Vector3} from "three";
 
 export const winSize = () => {
     const width = window.innerWidth,
@@ -36,4 +37,30 @@ export const visualToWebglCoords = (x, y) => {
         x: width / 2 - (width - x),
         y: height / 2 - (height - y)
     }
+}
+
+const STEP = 50
+export const numAnimate = (from, to, stepCallback, completeCallback) => {
+    const step = (to - from) / STEP
+    const stepFn = () => {
+        if (from === to) {
+            completeCallback && completeCallback(to)
+        } else if (from !== to) {
+            from += step
+            if (Math.abs(from - to) < 1) {
+                from = to
+            }
+            stepCallback && stepCallback(from)
+            requestAnimationFrame(stepFn)
+        }
+    }
+    stepFn()
+}
+
+export const getModelBox3Size = (model) => {
+    const box = new Box3()
+    const v = new Vector3()
+    box.expandByObject(model)
+    box.getSize(v)
+    return v
 }
