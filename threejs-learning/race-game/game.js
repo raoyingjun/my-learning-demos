@@ -2,7 +2,7 @@ import {endPage, gamingPage, startPage} from "./models";
 import {scene} from "./scene";
 import {numAnimate, randomHexColor, randomRange, visualToWebglCoords, winSize, $, rgbToHex} from "./util";
 import {BlOCK_NUM, getRandomBlock} from './models/block'
-import {ROAD_NUM, ROAD_WIDTH, roads} from "./models/road";
+import {ROAD_NUM, ROAD_WIDTH, roads, roadTexture} from "./models/road";
 import {setBackground, fadeInBackground, fadeOutBackground} from "./render";
 import {cars} from "./models/car";
 
@@ -17,6 +17,12 @@ const GAME_STARTED = 0
 const GAME_GAMING = 1
 const GAME_STOPPED = 2
 
+const BLOCK_SPEED = 4
+const BLOCK_ACCELERATION = 0.01
+
+const ROAD_SPEED = 0.02
+const ROAD_ACCELERATION = 0.00001
+
 class Game {
     state = GAME_STARTED
     score = 0
@@ -27,6 +33,8 @@ class Game {
         this.interaction = new Interaction(this)
         this.setCar(cars)
         this.setRoads(roads)
+
+        this.registerController()
     }
 
     addBlock(block) {
@@ -37,7 +45,6 @@ class Game {
     removeBlock(block) {
         const index = this.blocks.indexOf(block)
         this.blocks.splice(index, 1)
-        console.log('block.object', block.object)
         gamingPage.remove(block.object)
     }
 
@@ -71,24 +78,22 @@ class Game {
     }
 
     setCar(cars) {
-        this.car = new Car(cars.children[this.selectedCar])
+        this.car = new Car(cars.children[this.selectedCar].clone())
     }
 
     toggleCar(increment) {
-        console.log('incre', increment);
         if ((this.selectedCar + increment) === cars.children.length) {
-            console.log('do if')
             this.selectedCar = 0
         } else if ((this.selectedCar + increment) === -1) {
-            console.log('do elseif')
             this.selectedCar = cars.children.length - 1
         } else {
             this.selectedCar += increment
         }
 
-        const car = cars.children[this.selectedCar]
+        this.car.object.removeFromParent()
 
-        cars.add(this.car.object)
+        const car = cars.children[this.selectedCar].clone()
+
         startPage.add(car)
 
         this.car.object = car
@@ -104,9 +109,7 @@ class Game {
         this.toggleCar(0)
         scene.add(startPage)
 
-        this.car.fitHead()
-
-        this.registerController()
+        this.car.fitCar()
 
         this.interaction.openStartPage()
         this.interaction.closeEndPage()
@@ -122,6 +125,8 @@ class Game {
         scene.add(gamingPage)
 
         this.car.registerController()
+        this.roads.onMove()
+
         this.onGenerateBlock()
         this.onCheck()
 
@@ -135,7 +140,10 @@ class Game {
         scene.remove(gamingPage)
 
         scene.add(endPage)
+
         this.car.dismissController()
+        this.roads.offMove()
+
         this.offGenerateBlock()
         this.offCheck()
         this.clearBlocks()
@@ -162,7 +170,6 @@ class Game {
 
     registerController() {
         this.controller = ({key}) => {
-            console.log(key)
             switch (key) {
                 case ' ':
                     switch (this.state) {
@@ -170,7 +177,6 @@ class Game {
                             this.start()
                             break;
                         case GAME_GAMING:
-                            // this.start();
                             break;
                         case GAME_STOPPED:
                             this.run()
@@ -257,12 +263,56 @@ class Interaction {
     }
 }
 
-class Block {
+class Speed {
+    constructor(speed, acceleration) {
+        this.speed = speed
+        this.acceleration = acceleration
+
+        this.max = speed * 2
+        this.canOverMax(false)
+    }
+
+    setMax(max) {
+        this.max = max
+    }
+
+    overLimit() {
+        return this.speed > this.max
+    }
+
+    canOverMax(limit) {
+        this.limit = !limit
+    }
+
+    forward(callback, accelerated) {
+        this.moving = true
+        let acceleration = accelerated ? this.acceleration : 0
+        const move = () => {
+            if (this.moving) {
+                if (this.limit && this.overLimit()) {
+                    acceleration = 0
+                }
+                callback && callback(this.speed)
+                this.speed += acceleration
+                requestAnimationFrame(move)
+            }
+        }
+        move()
+    }
+
+    halt() {
+        this.moving = false
+    }
+}
+
+class Block extends Speed {
     x = 0
     z = 0
     moving = false
 
-    constructor(distance = 4) {
+    constructor(speed = BLOCK_SPEED, acceleration = BLOCK_ACCELERATION) {
+        super(speed, acceleration)
+
         const object = getRandomBlock()
         Block.decorate(object)
         this.object = object
@@ -272,8 +322,6 @@ class Block {
             randomRange(height * 2, height * 4),
             Roads.getVerticalCenterPosition(randomRange(0, 4))
         )
-
-        this.distance = distance
     }
 
     static decorate(model) {
@@ -295,18 +343,14 @@ class Block {
     }
 
     onMove() {
-        this.moving = true
-        const move = () => {
-            if (this.moving) {
-                this.set(this.x - this.distance, this.z)
-            }
-            requestAnimationFrame(move)
-        }
-        move()
+        this.forward(speed => {
+            console.log(this.speed)
+            this.set(this.x - this.speed, this.z)
+        })
     }
 
     offMove() {
-        this.moving = false
+        this.halt()
     }
 
     onDeprecated(callback) {
@@ -333,12 +377,11 @@ class Car {
 
 
     constructor(car) {
-        this.object = car
+        this.object = car.clone()
     }
 
-    fitHead() {
+    fitCar() {
         this.object.position.set(0, 0, 0)
-        this.object.rotation.set(0, Math.PI / 2, 0)
     }
 
     toLeft() {
@@ -382,8 +425,11 @@ class Car {
     }
 }
 
-class Roads {
-    constructor() {
+class Roads extends Speed {
+    move = false
+
+    constructor(roads, speed = ROAD_SPEED, acceleration = ROAD_ACCELERATION) {
+        super(speed, acceleration)
         this.object = roads
     }
 
@@ -391,6 +437,16 @@ class Roads {
         const offset = (winSize().width - (ROAD_NUM * ROAD_WIDTH)) / 2 + ROAD_WIDTH / 2
         const {x} = visualToWebglCoords(offset + roadIndex * ROAD_WIDTH)
         return x
+    }
+
+    onMove() {
+        this.forward(speed => {
+            roadTexture.offset.y -= speed
+        }, true)
+    }
+
+    offMove() {
+        this.halt()
     }
 }
 

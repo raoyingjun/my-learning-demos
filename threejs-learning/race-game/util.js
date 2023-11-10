@@ -84,7 +84,6 @@ export const generateModels = async (rawModels) => rawModels.map(async rawModel 
 
 
 export const getRandomModel = (models) => {
-    console.log('models', models.children[randomRange(0, models.children.length - 1)])
     const model = models.children[randomRange(0, models.children.length - 1)].clone()
     model.material = model.material.clone()
     model.geometry = model.geometry.clone()
