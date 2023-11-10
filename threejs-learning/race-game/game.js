@@ -24,9 +24,9 @@ class Game {
     selectedCar = 0
 
     constructor() {
+        this.interaction = new Interaction(this)
         this.setCar(cars)
         this.setRoads(roads)
-        this.interaction = new Interaction(this)
     }
 
     addBlock(block) {
@@ -74,15 +74,34 @@ class Game {
         this.car = new Car(cars.children[this.selectedCar])
     }
 
+    toggleCar(increment) {
+        console.log('incre', increment);
+        if ((this.selectedCar + increment) === cars.children.length) {
+            console.log('do if')
+            this.selectedCar = 0
+        } else if ((this.selectedCar + increment) === -1) {
+            console.log('do elseif')
+            this.selectedCar = cars.children.length - 1
+        } else {
+            this.selectedCar += increment
+        }
+
+        const car = cars.children[this.selectedCar]
+
+        cars.add(this.car.object)
+        startPage.add(car)
+
+        this.car.object = car
+    }
+
     setRoads(roads) {
         this.roads = new Roads(roads)
     }
 
     run() {
-        console.log('run')
         this.state = GAME_STARTED
 
-        startPage.add(this.car.object)
+        this.toggleCar(0)
         scene.add(startPage)
 
         this.car.fitHead()
@@ -115,9 +134,7 @@ class Game {
 
         scene.remove(gamingPage)
 
-        endPage.add(this.car.object)
         scene.add(endPage)
-
         this.car.dismissController()
         this.offGenerateBlock()
         this.offCheck()
@@ -148,7 +165,6 @@ class Game {
             console.log(key)
             switch (key) {
                 case ' ':
-                    console.log(this.state)
                     switch (this.state) {
                         case GAME_STARTED:
                             this.start()
@@ -164,6 +180,16 @@ class Game {
 
                     }
                     break;
+                case 'ArrowLeft':
+                case 'ArrowRight':
+                    if (this.state === GAME_STARTED) {
+                        if (key === 'ArrowLeft') {
+                            this.toggleCar(-1);
+                        } else {
+                            this.toggleCar(1);
+                        }
+                    }
+                    break
                 default:
                     break;
             }
@@ -257,7 +283,7 @@ class Block {
             from: 0,
             to: 1,
             onStep: v => model.material.opacity = v,
-            step: 200
+            step: 300
         })
     }
 
@@ -311,6 +337,7 @@ class Car {
     }
 
     fitHead() {
+        this.object.position.set(0, 0, 0)
         this.object.rotation.set(0, Math.PI / 2, 0)
     }
 

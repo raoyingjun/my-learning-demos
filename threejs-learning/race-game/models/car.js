@@ -20,5 +20,4 @@ const findAll = async () => {
 
 const cars = await findAll()
 
-console.log('cars', cars)
 export {CAR_NUM, cars}

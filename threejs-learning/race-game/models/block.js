@@ -27,6 +27,5 @@ const blocks = await findAll()
 
 const getRandomBlock = () => getRandomModel(blocks)
 
-console.log('blocks', blocks)
 export {BlOCK_NUM, getRandomBlock}
 
