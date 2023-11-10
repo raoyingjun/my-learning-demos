@@ -12,6 +12,7 @@ const findAll = async () => {
     for (const [index, modelPromise] of models.entries()) {
         const model = await modelPromise
         decorate(model, carData[index])
+        model.add(new AxesHelper(200))
         cars.add(model)
     }
     return cars

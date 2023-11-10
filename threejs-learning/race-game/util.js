@@ -31,7 +31,7 @@ export const randomHexColor = () => {
     return `#${hexColor}`
 }
 
-export const rgbToHex = (...rgb) => '#' + rgb.map(v => v.toString(16)).join('')
+export const rgbToHex = (...rgb) => '#' + rgb.map(v => v.toString(16).padStart(2, '0')).join('')
 
 export const visualToWebglCoords = (x, y) => {
     const {width, height} = winSize()

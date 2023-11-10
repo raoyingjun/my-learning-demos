@@ -32,3 +32,7 @@ p {
 .animation {
     transition: 3000ms opacity;
 }
+
+.invisible {
+    opacity: 0;
+}

@@ -16,6 +16,7 @@ const findAll = async () => {
     const blocks = new Group()
     for (const [index, modelPromise] of models.entries()) {
         const model = await findByName(index, await modelPromise)
+        model.add(new AxesHelper(200))
         decorate(model, blockData[index])
         blocks.add(model)
     }

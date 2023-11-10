@@ -3,7 +3,7 @@ import {scene} from "./scene";
 import {numAnimate, randomHexColor, randomRange, visualToWebglCoords, winSize, $, rgbToHex} from "./util";
 import {BlOCK_NUM, getRandomBlock} from './models/block'
 import {ROAD_NUM, ROAD_WIDTH, roads} from "./models/road";
-import {renderer} from "./render";
+import {setBackground, fadeInBackground, fadeOutBackground} from "./render";
 import {cars} from "./models/car";
 
 
@@ -29,17 +29,6 @@ class Game {
         this.interaction = new Interaction(this)
     }
 
-    run() {
-        this.state = GAME_STARTED
-
-        startPage.add(this.car.object)
-        scene.add(startPage)
-
-        this.registerController()
-
-        this.interaction.openStartPage()
-    }
-
     addBlock(block) {
         this.blocks.push(block)
         gamingPage.add(block.object)
@@ -48,7 +37,15 @@ class Game {
     removeBlock(block) {
         const index = this.blocks.indexOf(block)
         this.blocks.splice(index, 1)
+        console.log('block.object', block.object)
         gamingPage.remove(block.object)
+    }
+
+    clearBlocks() {
+        for (const block of this.blocks) {
+            gamingPage.remove(block.object)
+        }
+        this.blocks = []
     }
 
     onGenerateBlock() {
@@ -81,6 +78,21 @@ class Game {
         this.roads = new Roads(roads)
     }
 
+    run() {
+        console.log('run')
+        this.state = GAME_STARTED
+
+        startPage.add(this.car.object)
+        scene.add(startPage)
+
+        this.car.fitHead()
+
+        this.registerController()
+
+        this.interaction.openStartPage()
+        this.interaction.closeEndPage()
+    }
+
     start() {
         this.state = GAME_GAMING
 
@@ -95,6 +107,7 @@ class Game {
         this.onCheck()
 
         this.interaction.closeStartPage()
+        this.interaction.openGamingPage()
     }
 
     stop() {
@@ -108,6 +121,10 @@ class Game {
         this.car.dismissController()
         this.offGenerateBlock()
         this.offCheck()
+        this.clearBlocks()
+
+        this.interaction.closeGamingPage()
+        this.interaction.openEndPage()
     }
 
     onCheck() {
@@ -131,8 +148,20 @@ class Game {
             console.log(key)
             switch (key) {
                 case ' ':
-                    if (this.state !== GAME_GAMING) {
-                        this.start()
+                    console.log(this.state)
+                    switch (this.state) {
+                        case GAME_STARTED:
+                            this.start()
+                            break;
+                        case GAME_GAMING:
+                            // this.start();
+                            break;
+                        case GAME_STOPPED:
+                            this.run()
+                            break;
+                        default:
+                            break;
+
                     }
                     break;
                 default:
@@ -155,17 +184,19 @@ class Interaction {
 
     flags = {
         startPage: {
-            aborted: false
+            carSelfRotate: false
         }
     }
 
     doms = {
-        startPage: $('startPage')
+        startPage: $('startPage'),
+        endPage: $('endPage')
     }
 
     openStartPage() {
+        this.flags.startPage.carSelfRotate = false
         const rot = () => {
-            if (!this.flags.startPage.aborted)
+            if (!this.flags.startPage.carSelfRotate)
                 requestAnimationFrame(() => {
                     startPage.rotateY(0.003)
                     rot()
@@ -173,35 +204,30 @@ class Interaction {
         }
         rot();
 
-        renderer.setClearColor(0x000000)
+        setBackground(0x000000)
+        this.doms.startPage.style.opacity = 1
     }
 
     closeStartPage() {
-        this.flags.startPage.aborted = true
-
-        this.game.car.object.rotateY(Math.PI / 2)
-
+        this.flags.startPage.carSelfRotate = true
         this.doms.startPage.style.opacity = 0
-
-        numAnimate({
-            from: 0,
-            to: 255,
-            onStep: v => renderer.setClearColor(rgbToHex(...Array(3).fill(v))),
-            step: 30
-        })
     }
 
-    gamingPageAnimation() {
-        let aborted = false
-        const rot = () => {
-            if (!aborted)
-                requestAnimationFrame(() => {
-                    rot()
-                })
-        }
-        return () => {
-            aborted = true
-        }
+    openGamingPage() {
+        fadeInBackground()
+    }
+
+    closeGamingPage() {
+
+    }
+
+    openEndPage() {
+        this.doms.endPage.style.opacity = 1
+        fadeOutBackground()
+    }
+
+    closeEndPage() {
+        this.doms.endPage.style.opacity = 0
     }
 }
 
@@ -282,6 +308,10 @@ class Car {
 
     constructor(car) {
         this.object = car
+    }
+
+    fitHead() {
+        this.object.rotation.set(0, Math.PI / 2, 0)
     }
 
     toLeft() {

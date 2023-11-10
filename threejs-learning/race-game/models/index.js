@@ -8,7 +8,7 @@ const endPage = new Group()
 
 const decorate = (model, {rotation, scale}) => {
     model.scale.set(...scale)
-    model.rotation.set(...rotation)
+    model.rotation.set(...rotation.map(rot => Math.PI / 180 * rot))
 }
 
 
