@@ -5,11 +5,11 @@ import {BlOCK_NUM, getRandomBlock} from './models/block'
 import {ROAD_NUM, ROAD_WIDTH, roads, roadTexture} from "./models/road";
 import {setBackground, fadeInBackground, fadeOutBackground} from "./render";
 import {cars} from "./models/car";
-import {min} from "three/nodes";
+import {moveView} from './camera'
 
 
-const GENERATE_BLOCK_MAX_INTERVAL = 1500
-const GENERATE_BLOCK_MIN_INTERVAL = 1000
+const GENERATE_BLOCK_MAX_INTERVAL = 600
+const GENERATE_BLOCK_MIN_INTERVAL = 300
 
 const CHECK_INTERVAL = 1000 / 30
 const DEPRECATE_INTERVAL = 1000 / 15
@@ -18,11 +18,11 @@ const GAME_STARTED = 0
 const GAME_GAMING = 1
 const GAME_STOPPED = 2
 
-const BLOCK_SPEED = 4
-const BLOCK_ACCELERATION = 0.01
+const BLOCK_SPEED = 3
+const BLOCK_ACCELERATION = BLOCK_SPEED / 10
 
-const ROAD_SPEED = 0.02
-const ROAD_ACCELERATION = 0.00001
+const ROAD_SPEED = 0.01
+const ROAD_ACCELERATION = ROAD_SPEED / 500
 
 class Game {
     state = GAME_STARTED
@@ -109,6 +109,7 @@ class Game {
         scene.add(startPage)
 
         this.car.fitCar()
+        this.roads.reset()
 
         this.interaction.openStartPage()
         this.interaction.closeEndPage()
@@ -168,39 +169,64 @@ class Game {
     }
 
     registerController() {
-        this.controller = ({key}) => {
+        this.controller = ({key, type}) => {
             switch (key) {
                 case ' ':
-                    switch (this.state) {
-                        case GAME_STARTED:
-                            this.start()
-                            break;
-                        case GAME_GAMING:
-                            break;
-                        case GAME_STOPPED:
-                            this.run()
-                            break;
-                        default:
-                            break;
+                    if (type === 'keyup') {
+                        switch (this.state) {
+                            case GAME_STARTED:
+                                this.start()
+                                break;
+                            case GAME_GAMING:
+                                break;
+                            case GAME_STOPPED:
+                                this.run()
+                                break;
+                            default:
+                                break;
 
+                        }
                     }
                     break;
                 case 'ArrowLeft':
                 case 'ArrowRight':
-                    if (this.state === GAME_STARTED) {
-                        if (key === 'ArrowLeft') {
-                            this.toggleCar(-1);
-                        } else {
-                            this.toggleCar(1);
+                    if (type === 'keyup') {
+                        if (this.state === GAME_STARTED) {
+                            if (key === 'ArrowLeft') {
+                                this.toggleCar(-1);
+                            } else {
+                                this.toggleCar(1);
+                            }
                         }
                     }
                     break
                 case 'ArrowUp':
-                    console.log('dd')
-                    this.roads.canAccelerate(true)
-                    break;
                 case  'ArrowDown':
-                    this.roads.canAccelerate(false)
+                    const isArrowUp = key === 'ArrowUp'
+                    const isKeydown = type === 'keydown'
+                    const isKeyup = type === 'keyup'
+                    if (isKeydown) {
+                        this.roads.acceleration *= isArrowUp
+                            ? this.roads.acceleration >= 0
+                                ? 1 : -1
+                            : -1
+                        this.roads.updateSpeed(this.roads.acceleration)
+                        for (const block of this.blocks) {
+                            block.acceleration *= isArrowUp
+                                ? block.acceleration >= 0
+                                    ? 1 : -1
+                                : -1
+                            block.acceleration.updateSpeed(this.roads.acceleration)
+                        }
+                    } else if (isKeyup) {
+                        this.roads.acceleration *= this.roads.acceleration >= 0 ? -1 : 1
+                        this.roads.updateSpeed(this.roads.acceleration)
+                        for (const block of this.blocks) {
+                            block.acceleration *= block.acceleration >= 0 ? -1 : 1
+                            block.acceleration.updateSpeed(this.roads.acceleration)
+
+                        }
+                    }
                     break;
                 default:
                     break;
@@ -208,10 +234,13 @@ class Game {
 
         }
         document.addEventListener('keydown', this.controller)
+        document.addEventListener('keyup', this.controller)
     }
 
     dismissController() {
         document.removeEventListener('keydown', this.controller)
+        document.removeEventListener('keyup', this.controller)
+
     }
 }
 
@@ -229,6 +258,10 @@ class Interaction {
     doms = {
         startPage: $('startPage'),
         endPage: $('endPage')
+    }
+
+    static moveView(x) {
+        moveView(Roads.getVerticalCenterPosition(x))
     }
 
     openStartPage() {
@@ -275,34 +308,53 @@ class Speed {
         this.acceleration = acceleration
 
         this.max = speed * 2
+        this.min = speed / 2
+
+        this.canAccelerate(true)
         this.canOverMax(false)
     }
 
-    setMax(max) {
-        this.max = max
+    reset() {
+        this.speed = this.min
+        this.acceleration *= this.acceleration >= 0 ? -1 : 1
     }
 
-    overLimit() {
-        console.log(this.speed, this.max)
-        return this.speed > this.max
+    updateSpeed(acceleration) {
+        this.speed += acceleration
     }
-    canAccelerate(enabled){
+
+    overMin() {
+        const isOver = this.speed < this.min
+        isOver && (this.speed = this.min)
+        return isOver
+    }
+
+    inRange() {
+        return !this.overMin() && !this.overMax()
+    }
+
+    overMax() {
+        const isOver = this.speed > this.max
+        isOver && (this.speed = this.max)
+        return isOver
+    }
+
+    canAccelerate(enabled) {
         this.accelerated = enabled
     }
+
     canOverMax(enabled) {
         this.limited = !enabled
     }
 
-    forward(callback, accelerated) {
+    forward(callback) {
         this.moving = true
-        this.canAccelerate(accelerated)
         const move = () => {
             let acceleration = this.accelerated ? this.acceleration : 0
             if (this.moving) {
-                if (this.limited && this.overLimit()) {
+                if (this.limited && !this.inRange()) {
                     acceleration = 0
                 }
-                console.log('acc',acceleration, this.moving)
                 callback && callback(this.speed)
                 this.speed += acceleration
                 requestAnimationFrame(move)
@@ -330,9 +382,11 @@ class Block extends Speed {
 
         const {height} = winSize()
         this.set(
-            randomRange(height * 2, height * 4),
+            randomRange(height * 3, height * 4),
             Roads.getVerticalCenterPosition(randomRange(0, 4))
         )
+
+        this.min = this.speed
     }
 
     static decorate(model) {
@@ -356,11 +410,11 @@ class Block extends Speed {
     onMove() {
         this.forward(speed => {
             this.set(this.x - this.speed, this.z)
+
         })
     }
 
     offMove() {
-        console.log('block off')
         this.halt()
     }
 
@@ -392,7 +446,9 @@ class Car {
     }
 
     fitCar() {
+        this.roadIndex = Math.floor(ROAD_NUM / 2)
         this.object.position.set(0, 0, 0)
+        Interaction.moveView(this.roadIndex)
     }
 
     toLeft() {
@@ -420,9 +476,11 @@ class Car {
             switch (key) {
                 case 'ArrowLeft':
                     this.toLeft();
+                    Interaction.moveView(this.roadIndex)
                     break;
                 case 'ArrowRight':
                     this.toRight();
+                    Interaction.moveView(this.roadIndex)
                     break;
                 default:
                     break;
@@ -437,7 +495,6 @@ class Car {
 }
 
 class Roads extends Speed {
-    move = false
 
     constructor(roads, speed = ROAD_SPEED, acceleration = ROAD_ACCELERATION) {
         super(speed, acceleration)
@@ -453,6 +510,7 @@ class Roads extends Speed {
     onMove() {
         this.forward(speed => {
             roadTexture.offset.y -= speed
+            console.log('Block forward', this.speed)
         })
     }
 

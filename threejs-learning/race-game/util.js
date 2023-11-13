@@ -42,14 +42,14 @@ export const visualToWebglCoords = (x, y) => {
 }
 
 const STEP = 50
-export const numAnimate = ({from, to, onStep, completeCallback, step = 50}) => {
+export const numAnimate = ({from, to, onStep, onComplete, step = 50}) => {
     const SCALE_FACTOR = 100
     to *= SCALE_FACTOR
     from *= SCALE_FACTOR
     const dis = (to - from) / step
     const stepFn = () => {
         if (from === to) {
-            completeCallback && completeCallback(to)
+            onComplete && onComplete(to)
         } else if (from !== to) {
             from += dis
             if (Math.abs(from - to) < 1) {
