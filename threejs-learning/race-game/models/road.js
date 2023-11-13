@@ -6,12 +6,14 @@ const ROAD_WIDTH = 150
 const ROAD_HEIGHT = 5000
 const ROAD_NUM = 5
 
+const TEXTURE_ORIGIN_HEIGHT = 368
+
 const roadTexture = await loadTexture('road')
 
 
 roadTexture.wrapS = RepeatWrapping
 roadTexture.wrapT = RepeatWrapping
-roadTexture.repeat.set(1, ROAD_HEIGHT / ROAD_WIDTH)
+roadTexture.repeat.set(1, ROAD_HEIGHT / TEXTURE_ORIGIN_HEIGHT)
 
 const generateRoads = (num) => {
     const roads = new Group()

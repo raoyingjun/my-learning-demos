@@ -5,6 +5,7 @@ import {BlOCK_NUM, getRandomBlock} from './models/block'
 import {ROAD_NUM, ROAD_WIDTH, roads, roadTexture} from "./models/road";
 import {setBackground, fadeInBackground, fadeOutBackground} from "./render";
 import {cars} from "./models/car";
+import {min} from "three/nodes";
 
 
 const GENERATE_BLOCK_MAX_INTERVAL = 1500
@@ -50,6 +51,7 @@ class Game {
 
     clearBlocks() {
         for (const block of this.blocks) {
+            block.offMove()
             gamingPage.remove(block.object)
         }
         this.blocks = []
@@ -64,6 +66,7 @@ class Game {
             this.addBlock(block)
 
             block.onDeprecated(() => {
+                block.offMove()
                 this.removeBlock(block)
             })
         }, randomRange(GENERATE_BLOCK_MIN_INTERVAL, GENERATE_BLOCK_MAX_INTERVAL))
@@ -71,10 +74,6 @@ class Game {
 
     offGenerateBlock() {
         clearInterval(this.generateBlockTimer)
-
-        for (const block of this.blocks) {
-            block.offMove()
-        }
     }
 
     setCar(cars) {
@@ -196,6 +195,13 @@ class Game {
                         }
                     }
                     break
+                case 'ArrowUp':
+                    console.log('dd')
+                    this.roads.canAccelerate(true)
+                    break;
+                case  'ArrowDown':
+                    this.roads.canAccelerate(false)
+                    break;
                 default:
                     break;
             }
@@ -277,21 +283,26 @@ class Speed {
     }
 
     overLimit() {
+        console.log(this.speed, this.max)
         return this.speed > this.max
     }
-
-    canOverMax(limit) {
-        this.limit = !limit
+    canAccelerate(enabled){
+        this.accelerated = enabled
+    }
+    canOverMax(enabled) {
+        this.limited = !enabled
     }
 
     forward(callback, accelerated) {
         this.moving = true
-        let acceleration = accelerated ? this.acceleration : 0
+        this.canAccelerate(accelerated)
         const move = () => {
+            let acceleration = this.accelerated ? this.acceleration : 0
             if (this.moving) {
-                if (this.limit && this.overLimit()) {
+                if (this.limited && this.overLimit()) {
                     acceleration = 0
                 }
+                console.log('acc',acceleration, this.moving)
                 callback && callback(this.speed)
                 this.speed += acceleration
                 requestAnimationFrame(move)
@@ -344,12 +355,12 @@ class Block extends Speed {
 
     onMove() {
         this.forward(speed => {
-            console.log(this.speed)
             this.set(this.x - this.speed, this.z)
         })
     }
 
     offMove() {
+        console.log('block off')
         this.halt()
     }
 
@@ -442,7 +453,7 @@ class Roads extends Speed {
     onMove() {
         this.forward(speed => {
             roadTexture.offset.y -= speed
-        }, true)
+        })
     }
 
     offMove() {
