@@ -104,7 +104,7 @@ class Game {
 
         this.toggleCar(0)
         scene.add(startPage)
-        
+
         this.roads.reset()
 
         this.interaction.openStartPage()
@@ -209,6 +209,11 @@ class Game {
                 case  'ArrowDown':
                     const isArrowUp = key === 'ArrowUp'
                     const isKeydown = type === 'keydown'
+                    if (this.roads.isDoubleAcceleration) {
+                        this.roads.acceleration /= 2
+                        this.roads.isDoubleAcceleration = false
+                    }
+
                     for (const block of this.blocks) {
                         if (block.isDoubleAcceleration) {
                             block.acceleration /= 2
@@ -217,7 +222,23 @@ class Game {
                     }
 
                     if (isKeydown) {
-                        if (!isArrowUp) {
+                        if (isArrowUp) {
+                            const isGltZero = this.roads.acceleration >= 0
+                            this.roads.acceleration *= isGltZero ? 1 : -1
+                            this.roads.updateSpeed(this.roads.acceleration)
+
+                            for (const block of this.blocks) {
+                                const isGltZero = block.acceleration >= 0
+                                block.acceleration *= isGltZero ? 1 : -1
+                                block.updateSpeed(block.acceleration)
+                            }
+                        } else {
+                            const isGltZero = this.roads.acceleration >= 0
+                            if (!this.roads.isDoubleAcceleration) {
+                                this.roads.acceleration *= isGltZero ? -2 : 2
+                                this.roads.isDoubleAcceleration = true
+                            }
+
                             for (const block of this.blocks) {
                                 const isGltZero = block.acceleration >= 0
                                 if (!block.isDoubleAcceleration) {
@@ -226,18 +247,19 @@ class Game {
                                 }
                                 block.updateSpeed(block.acceleration)
                             }
-                        } else {
-                            const isGltZero = this.roads.acceleration >= 0
-                            this.roads.acceleration *= isGltZero ? -1 : 1
-                            this.roads.updateSpeed(this.roads.acceleration)
                         }
                     } else {
+                        const isGltZero = this.roads.acceleration >= 0
+                        this.roads.acceleration *= isGltZero ? -1 : 1
+                        this.roads.updateSpeed(this.roads.acceleration)
+
                         for (const block of this.blocks) {
                             const isGltZero = block.acceleration >= 0
                             block.acceleration *= isGltZero ? -1 : 1
                             block.updateSpeed(block.acceleration)
                         }
                     }
+
                     break;
                 default:
                     break;
@@ -326,7 +348,7 @@ class Interaction {
 class Speed {
     constructor(speed) {
         this.speed = speed
-        this.acceleration = this.speed / 10
+        this.acceleration = this.speed / 5
 
         this.max = speed * 2
         this.min = speed / 2
@@ -522,7 +544,7 @@ class Roads extends Speed {
     constructor(roads, speed = ROAD_SPEED) {
         super(speed)
         this.object = roads
-        this.acceleration = this.speed / 500
+        // this.acceleration = this.speed / 500
     }
 
     static getVerticalCenterPosition(roadIndex) {
@@ -534,6 +556,7 @@ class Roads extends Speed {
     onMove() {
         this.forward(speed => {
             roadTexture.offset.y -= speed
+            console.log('speed', speed)
         })
     }
 
