@@ -1,23 +1,18 @@
 import {generateModels, getRandomModel, isEmpty} from "../util";
 import blockData from './resource/rocks/block-data.json'
 import {AxesHelper, Group} from "three";
-import {cars} from "./car";
-import {decorate} from "./index";
+import {importModelSetting} from "./index";
 
 const BlOCK_NUM = blockData.length
 
 const models = await generateModels(blockData)
 
-const findByName = async (index, model) => {
-    return model.getObjectByName(blockData[index].name)
-}
-
 const findAll = async () => {
     const blocks = new Group()
     for (const [index, modelPromise] of models.entries()) {
-        const model = await findByName(index, await modelPromise)
+        const model = await modelPromise
         model.add(new AxesHelper(200))
-        decorate(model, blockData[index])
+        importModelSetting(model.children[0], blockData[index])
         blocks.add(model)
     }
     return blocks

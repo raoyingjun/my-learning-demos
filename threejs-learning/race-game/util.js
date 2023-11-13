@@ -1,5 +1,5 @@
 import {DRACOLoader, GLTFLoader} from "three/addons";
-import {Box3, Vector3} from "three";
+import {Box3, Group, Vector3} from "three";
 
 export const winSize = () => {
     const width = window.innerWidth,
@@ -77,19 +77,20 @@ export const getModelAbsolutePath = (filename) => `${RESOURCE_PATH}/${filename}.
 export const generateModel = async (rawModel) => {
     const {filename} = rawModel
     const url = new URL(getModelAbsolutePath(filename), location.href).href
-    return (await loadModel(url, true)).scene
+    const model = new Group()
+    model.add((await loadModel(url, true)).scene)
+    model.userData = rawModel
+    return model
 }
 
 export const generateModels = async (rawModels) => rawModels.map(async rawModel => await generateModel(rawModel))
 
 
 export const getRandomModel = (models) => {
-    const model = models.children[randomRange(0, models.children.length - 1)].clone()
-    model.material = model.material.clone()
-    model.geometry = model.geometry.clone()
-    return model
+    return models.children[randomRange(0, models.children.length - 1)].clone()
 }
 
 export const isEmpty = o => !Object.keys(o).length
 
 export const $ = (id) => document.getElementById(id)
+export const all = (selector) => document.querySelectorAll(selector)

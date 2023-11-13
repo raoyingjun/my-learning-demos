@@ -1,6 +1,6 @@
 import {endPage, gamingPage, startPage} from "./models";
 import {scene} from "./scene";
-import {numAnimate, randomHexColor, randomRange, visualToWebglCoords, winSize, $, rgbToHex} from "./util";
+import {numAnimate, randomHexColor, randomRange, visualToWebglCoords, winSize, $, rgbToHex, all} from "./util";
 import {BlOCK_NUM, getRandomBlock} from './models/block'
 import {ROAD_NUM, ROAD_WIDTH, roads, roadTexture} from "./models/road";
 import {setBackground, fadeInBackground, fadeOutBackground} from "./render";
@@ -8,8 +8,8 @@ import {cars} from "./models/car";
 import {moveView} from './camera'
 
 
-const GENERATE_BLOCK_MAX_INTERVAL = 600
-const GENERATE_BLOCK_MIN_INTERVAL = 300
+const GENERATE_BLOCK_MAX_INTERVAL = 400
+const GENERATE_BLOCK_MIN_INTERVAL = 200
 
 const CHECK_INTERVAL = 1000 / 30
 const DEPRECATE_INTERVAL = 1000 / 15
@@ -18,11 +18,8 @@ const GAME_STARTED = 0
 const GAME_GAMING = 1
 const GAME_STOPPED = 2
 
-const BLOCK_SPEED = 3
-const BLOCK_ACCELERATION = BLOCK_SPEED / 10
-
+const BLOCK_SPEED = .2
 const ROAD_SPEED = 0.01
-const ROAD_ACCELERATION = ROAD_SPEED / 500
 
 class Game {
     state = GAME_STARTED
@@ -46,13 +43,13 @@ class Game {
     removeBlock(block) {
         const index = this.blocks.indexOf(block)
         this.blocks.splice(index, 1)
-        gamingPage.remove(block.object)
+        block.object.removeFromParent()
     }
 
     clearBlocks() {
         for (const block of this.blocks) {
             block.offMove()
-            gamingPage.remove(block.object)
+            block.object.removeFromParent()
         }
         this.blocks = []
     }
@@ -107,8 +104,7 @@ class Game {
 
         this.toggleCar(0)
         scene.add(startPage)
-
-        this.car.fitCar()
+        
         this.roads.reset()
 
         this.interaction.openStartPage()
@@ -118,13 +114,13 @@ class Game {
     start() {
         this.state = GAME_GAMING
 
-        scene.remove(startPage)
-
+        startPage.removeFromParent()
         gamingPage.add(this.car.object)
         gamingPage.add(this.roads.object)
         scene.add(gamingPage)
 
         this.car.registerController()
+        this.car.fitCar()
         this.roads.onMove()
 
         this.onGenerateBlock()
@@ -137,7 +133,7 @@ class Game {
     stop() {
         this.state = GAME_STOPPED
 
-        scene.remove(gamingPage)
+        gamingPage.removeFromParent()
 
         scene.add(endPage)
 
@@ -154,10 +150,19 @@ class Game {
 
     onCheck() {
         this.check = setInterval(() => {
-            for (let block of this.blocks) {
-                if (this.car.check(block)) {
-                    this.stop()
-                    break;
+            foreach: for (let i = 0; i < this.blocks.length; i++) {
+                const block = this.blocks[i]
+                if (this.car.check(block) && !block.checked) {
+                    switch (block.object.userData.name) {
+                        case 'coin':
+                            this.interaction.gamingScore(++this.score)
+                            block.object.removeFromParent()
+                            break;
+                        default:
+                            this.stop();
+                            break foreach;
+                    }
+                    block.checked = true
                 }
             }
         }, CHECK_INTERVAL)
@@ -204,34 +209,39 @@ class Game {
                 case  'ArrowDown':
                     const isArrowUp = key === 'ArrowUp'
                     const isKeydown = type === 'keydown'
-                    const isKeyup = type === 'keyup'
-                    if (isKeydown) {
-                        this.roads.acceleration *= isArrowUp
-                            ? this.roads.acceleration >= 0
-                                ? 1 : -1
-                            : -1
-                        this.roads.updateSpeed(this.roads.acceleration)
-                        for (const block of this.blocks) {
-                            block.acceleration *= isArrowUp
-                                ? block.acceleration >= 0
-                                    ? 1 : -1
-                                : -1
-                            block.acceleration.updateSpeed(this.roads.acceleration)
+                    for (const block of this.blocks) {
+                        if (block.isDoubleAcceleration) {
+                            block.acceleration /= 2
+                            block.isDoubleAcceleration = false
                         }
-                    } else if (isKeyup) {
-                        this.roads.acceleration *= this.roads.acceleration >= 0 ? -1 : 1
-                        this.roads.updateSpeed(this.roads.acceleration)
-                        for (const block of this.blocks) {
-                            block.acceleration *= block.acceleration >= 0 ? -1 : 1
-                            block.acceleration.updateSpeed(this.roads.acceleration)
+                    }
 
+                    if (isKeydown) {
+                        if (!isArrowUp) {
+                            for (const block of this.blocks) {
+                                const isGltZero = block.acceleration >= 0
+                                if (!block.isDoubleAcceleration) {
+                                    block.acceleration *= isGltZero ? -2 : 2
+                                    block.isDoubleAcceleration = true
+                                }
+                                block.updateSpeed(block.acceleration)
+                            }
+                        } else {
+                            const isGltZero = this.roads.acceleration >= 0
+                            this.roads.acceleration *= isGltZero ? -1 : 1
+                            this.roads.updateSpeed(this.roads.acceleration)
+                        }
+                    } else {
+                        for (const block of this.blocks) {
+                            const isGltZero = block.acceleration >= 0
+                            block.acceleration *= isGltZero ? -1 : 1
+                            block.updateSpeed(block.acceleration)
                         }
                     }
                     break;
                 default:
                     break;
             }
-
         }
         document.addEventListener('keydown', this.controller)
         document.addEventListener('keyup', this.controller)
@@ -240,6 +250,7 @@ class Game {
     dismissController() {
         document.removeEventListener('keydown', this.controller)
         document.removeEventListener('keyup', this.controller)
+
 
     }
 }
@@ -256,8 +267,17 @@ class Interaction {
     }
 
     doms = {
-        startPage: $('startPage'),
-        endPage: $('endPage')
+        startPage: $('startPage'), gamingPage: $('gamingPage'), endPage: $('endPage'), score: all('.score')
+    }
+
+    gamingScore(score) {
+        console.log(score)
+        if (score === undefined) {
+            return this.doms.score[0].innerHTML
+        } else {
+            console.log(this.doms.score)
+            this.doms.score.forEach(v => v.innerHTML = score)
+        }
     }
 
     static moveView(x) {
@@ -267,11 +287,12 @@ class Interaction {
     openStartPage() {
         this.flags.startPage.carSelfRotate = false
         const rot = () => {
-            if (!this.flags.startPage.carSelfRotate)
+            if (!this.flags.startPage.carSelfRotate) {
                 requestAnimationFrame(() => {
                     startPage.rotateY(0.003)
                     rot()
                 })
+            }
         }
         rot();
 
@@ -303,9 +324,9 @@ class Interaction {
 }
 
 class Speed {
-    constructor(speed, acceleration) {
+    constructor(speed) {
         this.speed = speed
-        this.acceleration = acceleration
+        this.acceleration = this.speed / 10
 
         this.max = speed * 2
         this.min = speed / 2
@@ -371,33 +392,34 @@ class Speed {
 class Block extends Speed {
     x = 0
     z = 0
-    moving = false
+    checked = false
 
-    constructor(speed = BLOCK_SPEED, acceleration = BLOCK_ACCELERATION) {
-        super(speed, acceleration)
+    constructor(speed = BLOCK_SPEED) {
+        super(speed)
 
-        const object = getRandomBlock()
-        Block.decorate(object)
-        this.object = object
+        this.object = getRandomBlock()
+        this.decorate()
 
         const {height} = winSize()
-        this.set(
-            randomRange(height * 3, height * 4),
-            Roads.getVerticalCenterPosition(randomRange(0, 4))
-        )
-
-        this.min = this.speed
+        this.set(randomRange(height * 3, height * 4), Roads.getVerticalCenterPosition(randomRange(0, 4)))
+        // this.max = this.speed * 2
+        // this.min = this.speed / 2
+        // this.acceleration = this.speed / 2
     }
 
-    static decorate(model) {
-        model.material.color.set(randomHexColor())
-        model.material.transparent = true
-        numAnimate({
-            from: 0,
-            to: 1,
-            onStep: v => model.material.opacity = v,
-            step: 300
-        })
+    decorate() {
+        const model = this.object
+        if (model.userData.name === 'coin') {
+            const rot = () => {
+                requestAnimationFrame(() => {
+                    if (this.moving) {
+                        model.rotateY(0.05)
+                        rot()
+                    }
+                })
+            }
+            rot()
+        }
     }
 
     set(x, z) {
@@ -448,6 +470,7 @@ class Car {
     fitCar() {
         this.roadIndex = Math.floor(ROAD_NUM / 2)
         this.object.position.set(0, 0, 0)
+        this.object.rotation.set(0, Math.PI / 180 * 90, 0)
         Interaction.moveView(this.roadIndex)
     }
 
@@ -496,9 +519,10 @@ class Car {
 
 class Roads extends Speed {
 
-    constructor(roads, speed = ROAD_SPEED, acceleration = ROAD_ACCELERATION) {
-        super(speed, acceleration)
+    constructor(roads, speed = ROAD_SPEED) {
+        super(speed)
         this.object = roads
+        this.acceleration = this.speed / 500
     }
 
     static getVerticalCenterPosition(roadIndex) {
@@ -510,7 +534,6 @@ class Roads extends Speed {
     onMove() {
         this.forward(speed => {
             roadTexture.offset.y -= speed
-            console.log('Block forward', this.speed)
         })
     }
 

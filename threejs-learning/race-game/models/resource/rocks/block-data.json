@@ -6,24 +6,34 @@
       100,
       100
     ],
+    "position": [
+      0,
+      0,
+      0
+    ],
     "rotation": [
-      90,
+      0,
       0,
       0
     ],
     "filename": "rocks/rock_01"
   },
   {
-    "name": "Cube4153",
+    "name": "door",
     "scale": [
       60,
       90,
       80
     ],
     "rotation": [
-      90,
       0,
-      90
+      -90,
+      0
+    ],
+    "position": [
+      0,
+      0,
+      0
     ],
     "filename": "rocks/rock_02"
   },
@@ -39,6 +49,30 @@
       0,
       0
     ],
+    "position": [
+      0,
+      0,
+      0
+    ],
     "filename": "rocks/rock_03"
+  },
+  {
+    "name": "coin",
+    "scale": [
+      80,
+      80,
+      80
+    ],
+    "rotation": [
+      0,
+      0,
+      0
+    ],
+    "position": [
+      0,
+      50,
+      0
+    ],
+    "filename": "props/prop_01"
   }
 ]

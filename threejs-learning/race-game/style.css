@@ -36,3 +36,15 @@ p {
 .invisible {
     opacity: 0;
 }
+
+.al-end {
+    text-align: end;
+}
+
+.mr-24 {
+    margin-right: 24px;
+}
+
+.tx-black {
+    color: black;
+}

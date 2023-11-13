@@ -8,7 +8,12 @@
     ],
     "rotation": [
       0,
-      90,
+      0,
+      0
+    ],
+    "position": [
+      0,
+      0,
       0
     ],
     "filename": "cars/car_01"
@@ -22,7 +27,12 @@
     ],
     "rotation": [
       0,
-      90,
+      0,
+      0
+    ],
+    "position": [
+      0,
+      0,
       0
     ],
     "filename": "cars/car_02"
@@ -36,7 +46,12 @@
     ],
     "rotation": [
       0,
-      90,
+      0,
+      0
+    ],
+    "position": [
+      0,
+      0,
       0
     ],
     "filename": "cars/car_03"
