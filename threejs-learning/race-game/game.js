@@ -1,9 +1,9 @@
 import {endPage, gamingPage, startPage} from "./models";
 import {scene} from "./scene";
-import {numAnimate, randomHexColor, randomRange, visualToWebglCoords, winSize, $, rgbToHex, all} from "./util";
-import {BlOCK_NUM, getRandomBlock} from './models/block'
+import {$, all, numAnimate, randomRange, visualToWebglCoords, winSize} from "./util";
+import {getRandomBlock} from './models/block'
 import {ROAD_NUM, ROAD_WIDTH, roads, roadTexture} from "./models/road";
-import {setBackground, fadeInBackground, fadeOutBackground} from "./render";
+import {fadeInBackground, fadeOutBackground, setBackground} from "./render";
 import {cars} from "./models/car";
 import {moveView} from './camera'
 
@@ -20,7 +20,6 @@ const ROAD_SPEED = 0.01
 
 class Game {
     state = GAME_STARTED
-    score = 0
     blocks = []
     selectedCar = 0
 
@@ -55,6 +54,10 @@ class Game {
         const generate = () => {
             const block = new Block()
 
+            if (this.blocks.length) {
+                block.acceleration = this.blocks.reduce((s, v) => s + v.acceleration, 0) / this.blocks.length
+            }
+
             block.onMove()
 
             this.addBlock(block)
@@ -63,7 +66,7 @@ class Game {
                 block.offMove()
                 this.removeBlock(block)
             })
-            this.generateBlockTimer = setTimeout(generate, this.blocks.length * 30)
+            this.generateBlockTimer = setTimeout(generate, this.blocks.length * 10)
         }
         generate()
     }
@@ -104,7 +107,6 @@ class Game {
         this.toggleCar(0)
         scene.add(startPage)
 
-        this.roads.reset()
         this.car.fitCar()
 
         this.interaction.openStartPage()
@@ -121,6 +123,8 @@ class Game {
 
         this.car.registerController()
         this.car.fitCar()
+
+        this.roads.reset()
         this.roads.onMove()
 
         this.onGenerateBlock()
@@ -155,7 +159,7 @@ class Game {
                 if (this.car.check(block) && !block.checked) {
                     switch (block.object.userData.name) {
                         case 'coin':
-                            this.interaction.gamingScore(++this.score)
+                            this.interaction.html(++this.interaction.score)
                             block.object.removeFromParent()
                             break;
                         default:
@@ -210,7 +214,6 @@ class Game {
                 case  'ArrowDown':
                     const isArrowUp = key === 'ArrowUp'
                     const isKeydown = type === 'keydown'
-
                     if (isKeydown) {
                         if (isArrowUp) {
                             const isGltZero = this.roads.acceleration >= 0
@@ -225,15 +228,15 @@ class Game {
                         } else {
                             const isGltZero = this.roads.acceleration >= 0
                             if (!this.roads.isRatioAcceleration) {
-                                this.roads.acceleration *= isGltZero ? -2 : 2
+                                this.roads.acceleration *= isGltZero ? -10 : 10
                                 this.roads.isRatioAcceleration = true
                             }
                             this.roads.updateSpeed(this.roads.acceleration)
-                            
+
                             for (const block of this.blocks) {
                                 const isGltZero = block.acceleration >= 0
                                 if (!block.isRatioAcceleration) {
-                                    block.acceleration *= isGltZero ? -5 : 5
+                                    block.acceleration *= isGltZero ? -10 : 10
                                     block.isRatioAcceleration = true
                                 }
                                 block.updateSpeed(block.acceleration)
@@ -251,12 +254,12 @@ class Game {
                         }
                     }
                     if (this.roads.isRatioAcceleration) {
-                        this.roads.acceleration /= 2
+                        this.roads.acceleration /= 10
                         this.roads.isRatioAcceleration = false
                     }
                     for (const block of this.blocks) {
                         if (block.isRatioAcceleration) {
-                            block.acceleration /= 5
+                            block.acceleration /= 10
                             block.isRatioAcceleration = false
                         }
                     }
@@ -278,6 +281,9 @@ class Game {
 }
 
 class Interaction {
+    score = 0
+    time = 0
+
     constructor(game) {
         this.game = game
     }
@@ -289,14 +295,18 @@ class Interaction {
     }
 
     doms = {
-        startPage: $('startPage'), gamingPage: $('gamingPage'), endPage: $('endPage'), score: all('.score')
+        startPage: $('startPage'),
+        gamingPage: $('gamingPage'),
+        endPage: $('endPage'),
+        score: all('.score'),
+        time: all('.time')
     }
 
-    gamingScore(score) {
-        if (score === undefined) {
-            return this.doms.score[0].innerHTML
+    html(elements, value) {
+        if (value === undefined) {
+            return elements.innerHTML
         } else {
-            this.doms.score.forEach(v => v.innerHTML = score)
+            elements.forEach(v => v.innerHTML = value)
         }
     }
 
@@ -319,8 +329,9 @@ class Interaction {
         setBackground(0x000000)
         this.doms.startPage.style.opacity = 1
 
-        this.game.score = 0
-        this.gamingScore(0)
+
+        this.html(this.doms.score, (this.score = 0))
+        this.html(this.doms.time, `${(this.time = 0)} seconds`)
     }
 
     closeStartPage() {
@@ -328,12 +339,23 @@ class Interaction {
         this.doms.startPage.style.opacity = 0
     }
 
+    startTimer() {
+        this.timer = setInterval(() => {
+            this.html(this.doms.time, `${++this.time} seconds`)
+        }, 1000)
+    }
+
+    stopTimer() {
+        clearInterval(this.timer)
+    }
+
     openGamingPage() {
         fadeInBackground()
+        this.startTimer()
     }
 
     closeGamingPage() {
-
+        this.stopTimer()
     }
 
     openEndPage() {
@@ -348,14 +370,15 @@ class Interaction {
 
 class Speed {
     constructor(speed) {
-        this.speed = speed
+        this._speed = speed
         this.acceleration = this.speed / 10
-
         this.max = speed * 2
         this.min = speed / 2
 
         this.canAccelerate(true)
         this.canOverMax(false)
+
+        this.reset()
     }
 
     reset() {
@@ -430,9 +453,11 @@ class Block extends Speed {
         const ratio = randomRange(Block_OFFSET_MIN, Block_OFFSET_MAX)
         this.set(height * ratio, Roads.getVerticalCenterPosition(randomRange(0, 4)))
 
-        this.max = this.speed * (ratio / Block_OFFSET_MAX) * 10
-        this.min = this.speed / 2
-        this.acceleration = this.speed / 100
+        this.max = this._speed * 10
+        this.min = this._speed
+        this.acceleration = this._speed / 80
+
+        this.reset()
     }
 
     decorate() {
@@ -460,6 +485,7 @@ class Block extends Speed {
     onMove() {
         this.forward(speed => {
             this.set(this.x - speed, this.z)
+            console.log(this.object.uuid, this.checked, this.moving, this.speed)
         })
     }
 
@@ -550,9 +576,10 @@ class Roads extends Speed {
         super(speed)
         this.object = roads
 
-        this.max = this.speed * 3
-        this.min = this.speed / 2
-        this.acceleration = this.speed / 500
+        this.max = this._speed * 3
+        this.acceleration = this._speed / 500
+
+        this.reset()
     }
 
     static getVerticalCenterPosition(roadIndex) {
