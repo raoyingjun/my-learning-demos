@@ -20,7 +20,16 @@ const findAll = async () => {
 
 const blocks = await findAll()
 
-const getRandomBlock = () => getRandomModel(blocks)
+const getRandomBlock = () => {
+    const model = getRandomModel(blocks)
+    model.traverse(o => {
+        if (o.isMesh) {
+            o.material = o.material.clone()
+            o.material.transparent = true
+        }
+    })
+    return model
+}
 
 export {BlOCK_NUM, getRandomBlock}
 

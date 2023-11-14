@@ -53,20 +53,23 @@ class Game {
     onGenerateBlock() {
         const generate = () => {
             const block = new Block()
+            const len = this.blocks.length
 
-            if (this.blocks.length) {
-                block.acceleration = this.blocks.reduce((s, v) => s + v.acceleration, 0) / this.blocks.length
-            }
+            const avgSpeed = len ? this.blocks.reduce((s, v) => s + v.acceleration, 0) / len : block.acceleration
+
+            block.acceleration = avgSpeed
+
 
             block.onMove()
 
             this.addBlock(block)
 
+
             block.onDeprecated(() => {
                 block.offMove()
                 this.removeBlock(block)
             })
-            this.generateBlockTimer = setTimeout(generate, this.blocks.length * 10)
+            this.generateBlockTimer = setTimeout(generate, 1 / Math.abs(avgSpeed) * 10 * (len / 5))
         }
         generate()
     }
@@ -473,6 +476,16 @@ class Block extends Speed {
             }
             rot()
         }
+        model.traverse(o => {
+            if (o.isMesh) {
+                numAnimate({
+                    from: 0,
+                    to: 1,
+                    onStep: v => o.material.opacity = v,
+                    step: 400
+                })
+            }
+        })
     }
 
     set(x, z) {
@@ -485,7 +498,6 @@ class Block extends Speed {
     onMove() {
         this.forward(speed => {
             this.set(this.x - speed, this.z)
-            console.log(this.object.uuid, this.checked, this.moving, this.speed)
         })
     }
 
