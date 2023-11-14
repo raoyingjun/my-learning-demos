@@ -8,9 +8,6 @@ import {cars} from "./models/car";
 import {moveView} from './camera'
 
 
-const GENERATE_BLOCK_MAX_INTERVAL = 400
-const GENERATE_BLOCK_MIN_INTERVAL = 200
-
 const CHECK_INTERVAL = 1000 / 30
 const DEPRECATE_INTERVAL = 1000 / 15
 
@@ -18,7 +15,7 @@ const GAME_STARTED = 0
 const GAME_GAMING = 1
 const GAME_STOPPED = 2
 
-const BLOCK_SPEED = .2
+const BLOCK_SPEED = 2
 const ROAD_SPEED = 0.01
 
 class Game {
@@ -55,7 +52,7 @@ class Game {
     }
 
     onGenerateBlock() {
-        this.generateBlockTimer = setInterval(() => {
+        const generate = () => {
             const block = new Block()
 
             block.onMove()
@@ -66,7 +63,9 @@ class Game {
                 block.offMove()
                 this.removeBlock(block)
             })
-        }, randomRange(GENERATE_BLOCK_MIN_INTERVAL, GENERATE_BLOCK_MAX_INTERVAL))
+            this.generateBlockTimer = setTimeout(generate, this.blocks.length * 50)
+        }
+        generate()
     }
 
     offGenerateBlock() {
@@ -106,6 +105,7 @@ class Game {
         scene.add(startPage)
 
         this.roads.reset()
+        this.car.fitCar()
 
         this.interaction.openStartPage()
         this.interaction.closeEndPage()
@@ -202,6 +202,7 @@ class Game {
                             } else {
                                 this.toggleCar(1);
                             }
+                            this.car.fitCar()
                         }
                     }
                     break
@@ -209,17 +210,6 @@ class Game {
                 case  'ArrowDown':
                     const isArrowUp = key === 'ArrowUp'
                     const isKeydown = type === 'keydown'
-                    if (this.roads.isDoubleAcceleration) {
-                        this.roads.acceleration /= 2
-                        this.roads.isDoubleAcceleration = false
-                    }
-
-                    for (const block of this.blocks) {
-                        if (block.isDoubleAcceleration) {
-                            block.acceleration /= 2
-                            block.isDoubleAcceleration = false
-                        }
-                    }
 
                     if (isKeydown) {
                         if (isArrowUp) {
@@ -234,16 +224,17 @@ class Game {
                             }
                         } else {
                             const isGltZero = this.roads.acceleration >= 0
-                            if (!this.roads.isDoubleAcceleration) {
+                            if (!this.roads.isRatioAcceleration) {
                                 this.roads.acceleration *= isGltZero ? -2 : 2
-                                this.roads.isDoubleAcceleration = true
+                                this.roads.isRatioAcceleration = true
                             }
-
+                            this.roads.updateSpeed(this.roads.acceleration)
+                            
                             for (const block of this.blocks) {
                                 const isGltZero = block.acceleration >= 0
-                                if (!block.isDoubleAcceleration) {
-                                    block.acceleration *= isGltZero ? -2 : 2
-                                    block.isDoubleAcceleration = true
+                                if (!block.isRatioAcceleration) {
+                                    block.acceleration *= isGltZero ? -4 : 4
+                                    block.isRatioAcceleration = true
                                 }
                                 block.updateSpeed(block.acceleration)
                             }
@@ -259,7 +250,16 @@ class Game {
                             block.updateSpeed(block.acceleration)
                         }
                     }
-
+                    if (this.roads.isRatioAcceleration) {
+                        this.roads.acceleration /= 2
+                        this.roads.isRatioAcceleration = false
+                    }
+                    for (const block of this.blocks) {
+                        if (block.isRatioAcceleration) {
+                            block.acceleration /= 4
+                            block.isRatioAcceleration = false
+                        }
+                    }
                     break;
                 default:
                     break;
@@ -293,11 +293,9 @@ class Interaction {
     }
 
     gamingScore(score) {
-        console.log(score)
         if (score === undefined) {
             return this.doms.score[0].innerHTML
         } else {
-            console.log(this.doms.score)
             this.doms.score.forEach(v => v.innerHTML = score)
         }
     }
@@ -320,6 +318,9 @@ class Interaction {
 
         setBackground(0x000000)
         this.doms.startPage.style.opacity = 1
+
+        this.game.score = 0
+        this.gamingScore(0)
     }
 
     closeStartPage() {
@@ -348,7 +349,7 @@ class Interaction {
 class Speed {
     constructor(speed) {
         this.speed = speed
-        this.acceleration = this.speed / 5
+        this.acceleration = this.speed / 10
 
         this.max = speed * 2
         this.min = speed / 2
@@ -411,6 +412,9 @@ class Speed {
     }
 }
 
+const Block_OFFSET_MAX = 5
+const Block_OFFSET_MIN = 4
+
 class Block extends Speed {
     x = 0
     z = 0
@@ -423,10 +427,12 @@ class Block extends Speed {
         this.decorate()
 
         const {height} = winSize()
-        this.set(randomRange(height * 3, height * 4), Roads.getVerticalCenterPosition(randomRange(0, 4)))
-        // this.max = this.speed * 2
-        // this.min = this.speed / 2
-        // this.acceleration = this.speed / 2
+        const ratio = randomRange(Block_OFFSET_MIN, Block_OFFSET_MAX)
+        this.set(height * ratio, Roads.getVerticalCenterPosition(randomRange(0, 4)))
+
+        this.max = this.speed * (ratio / Block_OFFSET_MAX) * 10
+        this.min = this.speed / 2
+        this.acceleration = this.speed / 200
     }
 
     decorate() {
@@ -453,8 +459,7 @@ class Block extends Speed {
 
     onMove() {
         this.forward(speed => {
-            this.set(this.x - this.speed, this.z)
-
+            this.set(this.x - speed, this.z)
         })
     }
 
@@ -544,7 +549,10 @@ class Roads extends Speed {
     constructor(roads, speed = ROAD_SPEED) {
         super(speed)
         this.object = roads
-        // this.acceleration = this.speed / 500
+
+        this.max = this.speed * 3
+        this.min = this.speed / 2
+        this.acceleration = this.speed / 500
     }
 
     static getVerticalCenterPosition(roadIndex) {
@@ -556,7 +564,7 @@ class Roads extends Speed {
     onMove() {
         this.forward(speed => {
             roadTexture.offset.y -= speed
-            console.log('speed', speed)
+            console.log(this.speed)
         })
     }
 
