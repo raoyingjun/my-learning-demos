@@ -26,6 +26,7 @@ const generateRoads = (num) => {
                 map: roadTexture
             })
         )
+        road.receiveShadow = true
         const offset = (winSize().width - num * ROAD_WIDTH) / 2 + +ROAD_WIDTH / 2
         const {x} = visualToWebglCoords(offset + i * ROAD_WIDTH)
         road.position.z = x

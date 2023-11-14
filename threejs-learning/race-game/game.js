@@ -63,7 +63,7 @@ class Game {
                 block.offMove()
                 this.removeBlock(block)
             })
-            this.generateBlockTimer = setTimeout(generate, this.blocks.length * 50)
+            this.generateBlockTimer = setTimeout(generate, this.blocks.length * 30)
         }
         generate()
     }
@@ -233,7 +233,7 @@ class Game {
                             for (const block of this.blocks) {
                                 const isGltZero = block.acceleration >= 0
                                 if (!block.isRatioAcceleration) {
-                                    block.acceleration *= isGltZero ? -4 : 4
+                                    block.acceleration *= isGltZero ? -5 : 5
                                     block.isRatioAcceleration = true
                                 }
                                 block.updateSpeed(block.acceleration)
@@ -256,7 +256,7 @@ class Game {
                     }
                     for (const block of this.blocks) {
                         if (block.isRatioAcceleration) {
-                            block.acceleration /= 4
+                            block.acceleration /= 5
                             block.isRatioAcceleration = false
                         }
                     }
@@ -432,7 +432,7 @@ class Block extends Speed {
 
         this.max = this.speed * (ratio / Block_OFFSET_MAX) * 10
         this.min = this.speed / 2
-        this.acceleration = this.speed / 200
+        this.acceleration = this.speed / 100
     }
 
     decorate() {
@@ -564,7 +564,6 @@ class Roads extends Speed {
     onMove() {
         this.forward(speed => {
             roadTexture.offset.y -= speed
-            console.log(this.speed)
         })
     }
 

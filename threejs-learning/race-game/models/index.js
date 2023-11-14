@@ -1,8 +1,10 @@
 import {Group, TextureLoader} from "three";
 
 const startPage = new Group()
+startPage.position.set(-100, -120, 0)
 
 const gamingPage = new Group()
+gamingPage.position.set(-100, -120, 0)
 
 const endPage = new Group()
 

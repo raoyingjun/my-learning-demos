@@ -5,8 +5,9 @@ import {numAnimate, rgbToHex, winSize} from "./util";
 import {OrbitControls} from "three/addons";
 
 const renderer = new WebGLRenderer({
-    antialias: true
+    antialias: true,
 })
+renderer.shadowMap.enabled = true
 
 
 const useRefresh = () => {
