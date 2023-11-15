@@ -52,23 +52,23 @@ class Game {
 
     onGenerateBlock() {
         const generate = () => {
-            const block = new Block()
             const len = this.blocks.length
+            const avgSpeed = len ? this.blocks.reduce((s, v) => s + v.acceleration, 0) / len : 0
 
-            const avgSpeed = len ? this.blocks.reduce((s, v) => s + v.acceleration, 0) / len : block.acceleration
+            if (!this.interaction.isReducing) {
+                const block = new Block()
 
-            block.acceleration = avgSpeed
+                block.acceleration = avgSpeed || block.acceleration
 
+                block.onMove()
 
-            block.onMove()
+                this.addBlock(block)
 
-            this.addBlock(block)
-
-
-            block.onDeprecated(() => {
-                block.offMove()
-                this.removeBlock(block)
-            })
+                block.onDeprecated(() => {
+                    block.offMove()
+                    this.removeBlock(block)
+                })
+            }
             this.generateBlockTimer = setTimeout(generate, 1 / Math.abs(avgSpeed) * len)
         }
         generate()
@@ -217,8 +217,11 @@ class Game {
                 case  'ArrowDown':
                     const isArrowUp = key === 'ArrowUp'
                     const isKeydown = type === 'keydown'
+
+                    this.interaction.isReducing = true
                     if (isKeydown) {
                         if (isArrowUp) {
+                            this.interaction.isReducing = false
                             const isGltZero = this.roads.acceleration >= 0
                             this.roads.acceleration *= isGltZero ? 1 : -1
                             this.roads.updateSpeed(this.roads.acceleration)
@@ -286,6 +289,7 @@ class Game {
 class Interaction {
     score = 0
     time = 0
+    isReducing = true
 
     constructor(game) {
         this.game = game
@@ -458,7 +462,7 @@ class Block extends Speed {
 
         this.max = this._speed * 10
         this.min = this._speed
-        this.acceleration = this._speed / 80
+        this.acceleration = this._speed / 50
 
         this.reset()
     }
