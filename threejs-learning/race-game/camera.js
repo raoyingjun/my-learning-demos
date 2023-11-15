@@ -5,7 +5,7 @@ import {gui} from "./models/helper";
 
 const camera = new PerspectiveCamera(CAMERA_FOV, winSize().ratio, CAMERA_NEAR, CAMERA_FAR)
 
-const defaultView = {x: -280, y: 30, z: 0}
+const defaultView = {x: -280, y: -30, z: 0}
 const currentView = {...{defaultView}}
 
 const moveView = (position, target, updateCallback, doneCallback) => {
