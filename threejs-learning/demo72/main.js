@@ -5,6 +5,8 @@ import {OrbitControls} from "three/addons";
 
 // 创建渲染器
 const renderer = new THREE.WebGLRenderer()
+// 启用投影效果
+renderer.shadowMap.enabled = true
 
 /**
  * object：这里传入相机，通过调整相机来进行控制

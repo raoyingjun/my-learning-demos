@@ -3,13 +3,28 @@ import {camera} from "./camera";
 import {AxesHelper} from "three";
 
 
-const model = new THREE.Mesh(
+const plane = new THREE.Mesh(
     new THREE.PlaneGeometry(300, 300, 300),
-    new THREE.MeshBasicMaterial({
-        color: 0xff0000,
+        new THREE.MeshStandardMaterial({
+        color: 0xffffff,
     })
 )
+plane.rotateX(-Math.PI / 2)
+// 设置平面接收光源的投射阴影
+plane.receiveShadow = true
 
-model.position.setX(30)
+const box = new THREE.Mesh(
+    new THREE.BoxGeometry(50, 50, 50),
+    new THREE.MeshStandardMaterial({
+        color: 0x00ffff
+    })
+)
+box.position.y = 25
+// 开启模型的投射阴影
+box.castShadow = true
 
-export {model}
+const model = new THREE.Group()
+
+
+model.add(plane, box)
+export {model,plane, box}

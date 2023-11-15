@@ -25,15 +25,6 @@ const camera = new THREE.PerspectiveCamera(50, RATE, 0.2, 2000)
  *      |___________________________________________________|
  */
 // 设置相机的位置（相机位于哪里）
-camera.position.set(400, 400, 400);
-// 设置相机视线，用于设置相机要看向哪里
-camera.lookAt(0, 0, 0)
+camera.position.set(-200, 150, 150);
 
-// up 属性设置哪条轴朝上
-// 设置 x 轴朝上
-camera.up.set(1, 0, 0)
-// 设置 z 轴朝上
-camera.up.set(0, 0, 1)
-// 当设置 up 后，需要重新计算相机朝向
-camera.lookAt(0, 0, 0)
 export {WIDTH, HEIGHT, camera}
