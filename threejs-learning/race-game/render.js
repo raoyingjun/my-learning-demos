@@ -1,5 +1,5 @@
-import {WebGLRenderer} from "three";
-import {camera} from "./camera";
+import {AxesHelper, WebGLRenderer} from "three";
+import {camera, defaultView, moveView, resetView} from "./camera";
 import {scene} from "./scene";
 import {numAnimate, rgbToHex, winSize} from "./util";
 import {OrbitControls} from "three/addons";
@@ -32,11 +32,11 @@ const useResize = () => {
 }
 
 const renderElement = renderer.domElement
+
+const orbitControls = new OrbitControls(camera, renderElement)
+
 const renderToBody = () => {
     document.body.append(renderElement)
-}
-const useControls = () => {
-    const orbitControls = new OrbitControls(camera, renderer.domElement)
 }
 
 const setBackground = (color) => renderer.setClearColor(color)
@@ -55,7 +55,7 @@ const fadeInBackground = (from = 0, to = 255) => fade(from, to)
 const fadeOutBackground = (from = 255, to = 0) => fade(from, to)
 
 export {
-    useRefresh, useResize, renderToBody, useControls,
+    useRefresh, useResize, renderToBody,
     setBackground, fadeInBackground, fadeOutBackground,
-    renderer, renderElement
+    renderer, renderElement, orbitControls
 }

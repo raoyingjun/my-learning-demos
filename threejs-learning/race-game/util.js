@@ -94,3 +94,11 @@ export const isEmpty = o => !Object.keys(o).length
 
 export const $ = (id) => document.getElementById(id)
 export const all = (selector) => document.querySelectorAll(selector)
+
+export const debounce = (fn, threshold = 300) => {
+    let timer;
+    return () => {
+        clearTimeout(timer)
+        timer = setTimeout(fn, threshold)
+    }
+}

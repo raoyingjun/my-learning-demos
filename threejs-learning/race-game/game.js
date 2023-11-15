@@ -1,11 +1,11 @@
 import {endPage, gamingPage, startPage} from "./models";
 import {scene} from "./scene";
-import {$, all, numAnimate, randomRange, visualToWebglCoords, winSize} from "./util";
+import {$, all, debounce, numAnimate, randomRange, visualToWebglCoords, winSize} from "./util";
 import {getRandomBlock} from './models/block'
 import {ROAD_NUM, ROAD_WIDTH, roads, roadTexture} from "./models/road";
-import {fadeInBackground, fadeOutBackground, setBackground} from "./render";
+import {fadeInBackground, fadeOutBackground, setBackground, orbitControls} from "./render";
 import {cars} from "./models/car";
-import {moveView} from './camera'
+import {defaultView, moveView, camera} from './camera'
 
 
 const CHECK_INTERVAL = 1000 / 30
@@ -293,6 +293,8 @@ class Interaction {
 
     constructor(game) {
         this.game = game
+
+        this.useOrbitControls()
     }
 
     flags = {
@@ -317,8 +319,8 @@ class Interaction {
         }
     }
 
-    static moveView(x) {
-        moveView(Roads.getVerticalCenterPosition(x))
+    static moveView(v) {
+        moveView({z: Roads.getVerticalCenterPosition(v)}, camera.position)
     }
 
     openStartPage() {
@@ -372,6 +374,14 @@ class Interaction {
 
     closeEndPage() {
         this.doms.endPage.style.opacity = 0
+    }
+
+    useOrbitControls() {
+        orbitControls.addEventListener('end', debounce(() => {
+            const z = {z: Roads.getVerticalCenterPosition(this.game.car.roadIndex)}
+            moveView({...defaultView, ...(this.game.state === GAME_GAMING ? z : null)}, camera.position, orbitControls.update)
+            moveView({x: 0, y: 0, ...z}, orbitControls.target, orbitControls.update)
+        }, 1000))
     }
 }
 
@@ -540,6 +550,13 @@ class Car {
         this.roadIndex = Math.floor(ROAD_NUM / 2)
         this.object.position.set(0, 0, 0)
         this.object.rotation.set(0, Math.PI / 180 * 90, 0)
+
+        this.object.traverse(o => {
+            if (o.castShadow !== undefined) {
+                o.castShadow = true
+            }
+        })
+
         Interaction.moveView(this.roadIndex)
     }
 

@@ -1,4 +1,4 @@
-import {DoubleSide, Group, Mesh, MeshBasicMaterial, PlaneGeometry, RepeatWrapping} from "three";
+import {DoubleSide, Group, Mesh, MeshStandardMaterial, PlaneGeometry, RepeatWrapping} from "three";
 import {randomHexColor, visualToWebglCoords, winSize} from "../util";
 import {loadTexture} from "./index";
 
@@ -20,7 +20,7 @@ const generateRoads = (num) => {
     for (let i = 0; i < num; i++) {
         const road = new Mesh(
             new PlaneGeometry(ROAD_WIDTH, ROAD_HEIGHT),
-            new MeshBasicMaterial({
+            new MeshStandardMaterial({
                 // color: randomHexColor(),
                 side: DoubleSide,
                 map: roadTexture,
@@ -32,6 +32,7 @@ const generateRoads = (num) => {
         road.position.z = x
         road.rotateY(Math.PI / 2)
         road.receiveShadow = true
+
         roads.add(road)
     }
     roads.rotateZ(Math.PI / 2)
