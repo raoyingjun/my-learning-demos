@@ -6,6 +6,7 @@ import {ROAD_NUM, ROAD_WIDTH, roads, roadTexture} from "./models/road";
 import {fadeInBackground, fadeOutBackground, setBackground, orbitControls} from "./render";
 import {cars} from "./models/car";
 import {defaultView, moveView, camera} from './camera'
+import {directionalLight} from "./models/light";
 
 
 const CHECK_INTERVAL = 1000 / 30
@@ -550,12 +551,6 @@ class Car {
         this.roadIndex = Math.floor(ROAD_NUM / 2)
         this.object.position.set(0, 0, 0)
         this.object.rotation.set(0, Math.PI / 180 * 90, 0)
-
-        this.object.traverse(o => {
-            if (o.castShadow !== undefined) {
-                o.castShadow = true
-            }
-        })
 
         Interaction.moveView(this.roadIndex)
     }

@@ -15,6 +15,11 @@ const findAll = async () => {
         model.add(new AxesHelper(100))
         cars.add(model)
     }
+    cars.traverse(o => {
+        if (o.castShadow !== undefined) {
+            o.castShadow = true
+        }
+    })
     return cars
 }
 
