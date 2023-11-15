@@ -80,7 +80,6 @@ export const generateModel = async (rawModel) => {
     const model = new Group()
     model.add((await loadModel(url, true)).scene)
     model.userData = rawModel
-    model.castShadow = true
     return model
 }
 

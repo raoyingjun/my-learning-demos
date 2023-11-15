@@ -23,14 +23,15 @@ const generateRoads = (num) => {
             new MeshBasicMaterial({
                 // color: randomHexColor(),
                 side: DoubleSide,
-                map: roadTexture
+                map: roadTexture,
             })
         )
-        road.receiveShadow = true
+
         const offset = (winSize().width - num * ROAD_WIDTH) / 2 + +ROAD_WIDTH / 2
         const {x} = visualToWebglCoords(offset + i * ROAD_WIDTH)
         road.position.z = x
         road.rotateY(Math.PI / 2)
+        road.receiveShadow = true
         roads.add(road)
     }
     roads.rotateZ(Math.PI / 2)

@@ -26,6 +26,7 @@ const getRandomBlock = () => {
         if (o.isMesh) {
             o.material = o.material.clone()
             o.material.transparent = true
+            o.castShadow = true
         }
     })
     return model
