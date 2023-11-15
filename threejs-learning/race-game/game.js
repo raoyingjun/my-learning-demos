@@ -69,7 +69,7 @@ class Game {
                 block.offMove()
                 this.removeBlock(block)
             })
-            this.generateBlockTimer = setTimeout(generate, 1 / Math.abs(avgSpeed) * 10 * (len / 5))
+            this.generateBlockTimer = setTimeout(generate, 1 / Math.abs(avgSpeed) * len)
         }
         generate()
     }
@@ -162,7 +162,7 @@ class Game {
                 if (this.car.check(block) && !block.checked) {
                     switch (block.object.userData.name) {
                         case 'coin':
-                            this.interaction.html(++this.interaction.score)
+                            this.interaction.html(this.interaction.doms.score, ++this.interaction.score)
                             block.object.removeFromParent()
                             break;
                         default:
@@ -482,7 +482,7 @@ class Block extends Speed {
                     from: 0,
                     to: 1,
                     onStep: v => o.material.opacity = v,
-                    step: 400
+                    step: 500
                 })
             }
         })
