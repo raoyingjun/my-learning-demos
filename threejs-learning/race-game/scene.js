@@ -14,14 +14,14 @@ const useScene = () => {
 
 
     gui.add(directionalLight.shadow.camera, 'near', 0, 10)
-    gui.add(directionalLight.shadow.camera, 'far', 0, 2000)
+    gui.add(directionalLight.shadow.camera, 'far', 0, 5000)
 
-    gui.add(directionalLight.shadow.camera, 'left', -2000, 2000)
-    gui.add(directionalLight.shadow.camera, 'right', -2000, 2000)
-    gui.add(directionalLight.shadow.camera, 'top', -2000, 2000)
-    gui.add(directionalLight.shadow.camera, 'bottom', -2000, 2000)
+    gui.add(directionalLight.shadow.camera, 'left', -5000, 5000)
+    gui.add(directionalLight.shadow.camera, 'right', -5000, 5000)
+    gui.add(directionalLight.shadow.camera, 'top', -5000, 5000)
+    gui.add(directionalLight.shadow.camera, 'bottom', -5000, 5000)
 
-    gui.add(directionalLight.shadow, 'radius', -2000, 2000)
+    gui.add(directionalLight.shadow, 'radius', -200, 200)
 
     gui.add(directionalLight.shadow.mapSize, 'width', 0, 4096)
     gui.add(directionalLight.shadow.mapSize, 'height', 0, 4096)
@@ -33,8 +33,5 @@ const useScene = () => {
     })
 
 }
-const useConfig = () => {
-    // scene.rotateY(Math.PI / 2)
-}
 
-export {useScene, useConfig, scene}
+export {useScene, scene}
