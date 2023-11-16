@@ -591,13 +591,13 @@ class Car {
     roadIndex = Math.floor(ROAD_NUM / 2)
 
     check(block) {
-        const {position: {x: bpx, z: bpz}, scale: {x: bsx, z: bsz}} = block.object
+
+        const {position: {x: bpx, z: bpz}, children: {0: {scale: {x: bsx, z: bsz}}}} = block.object
         const {position: {x: cpx, z: cpz}, scale: {x: csx, z: csz}} = this.object
         const xCheck = Math.abs(bpx - cpx) <= (csx / 2 + bsx / 2)
         const zCheck = Math.abs(bpz - cpz) <= (csz / 2 + bsz / 2)
         return xCheck && zCheck;
     }
-
 
     constructor(car) {
         this.object = car.clone()
