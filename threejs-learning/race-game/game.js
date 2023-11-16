@@ -354,7 +354,7 @@ class Interaction {
         for (const [index, target] of targetMap.entries()) {
             const isOpacity = keyMap[index] === 'opacity'
             const isPositionY = (keyMap[index] === 'y') && (target === block.object.position)
-            const step = isPositionY ? 60 : isOpacity ? 50 : 100
+            const step = isPositionY ? 60 : isOpacity ? 60 : 100
             numAnimate({
                 from: target[keyMap[index]],
                 to: valueMap[index],

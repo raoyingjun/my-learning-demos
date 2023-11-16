@@ -1,7 +1,7 @@
 import {generateModels, getRandomModel, isEmpty} from "../util";
 import carData from './resource/cars/car-data.json'
-import {AxesHelper, Group} from "three";
 import {importModelSetting} from "./index";
+import {Group} from "three";
 
 const CAR_NUM = carData.length
 
@@ -12,7 +12,6 @@ const findAll = async () => {
     for (const [index, modelPromise] of models.entries()) {
         const model = await modelPromise
         importModelSetting(model, carData[index])
-        model.add(new AxesHelper(100))
         cars.add(model)
     }
     cars.traverse(o => {

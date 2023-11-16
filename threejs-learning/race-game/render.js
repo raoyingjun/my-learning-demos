@@ -1,4 +1,4 @@
-import {AxesHelper, WebGLRenderer} from "three";
+import {WebGLRenderer} from "three";
 import {camera, defaultView, moveView, resetView} from "./camera";
 import {scene} from "./scene";
 import {numAnimate, rgbToHex, winSize} from "./util";

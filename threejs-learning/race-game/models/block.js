@@ -1,7 +1,7 @@
 import {generateModels, getRandomModel, isEmpty} from "../util";
 import blockData from './resource/rocks/block-data.json'
-import {AxesHelper, Group} from "three";
 import {importModelSetting} from "./index";
+import {Group} from "three";
 
 const BlOCK_NUM = blockData.length
 
@@ -11,7 +11,6 @@ const findAll = async () => {
     const blocks = new Group()
     for (const [index, modelPromise] of models.entries()) {
         const model = await modelPromise
-        model.add(new AxesHelper(200))
         importModelSetting(model.children[0], blockData[index])
         blocks.add(model)
     }

@@ -1,5 +1,4 @@
-import {AmbientLight, AxesHelper, DirectionalLight, DirectionalLightHelper, PointLight} from "three";
-import {startPage} from "./index";
+import {AmbientLight, DirectionalLight, DirectionalLightHelper} from "three";
 
 const ambientLight = new AmbientLight(0xffffff, 1)
 const directionalLight = new DirectionalLight(0xcccccc, 10)
@@ -17,6 +16,5 @@ directionalLight.shadow.camera.top = 1000
 directionalLight.shadow.camera.bottom = -5000
 directionalLight.shadow.camera.left = -3000
 directionalLight.shadow.camera.right = 1000
-const directionalLightHelper = new DirectionalLightHelper(directionalLight, 50)
 
-export {ambientLight, directionalLight, directionalLightHelper}
+export {ambientLight, directionalLight}

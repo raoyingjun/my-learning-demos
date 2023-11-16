@@ -1,16 +1,12 @@
-import {AxesHelper, CameraHelper, Scene} from "three";
-import {axesHelper} from "./models/helper";
-import {ambientLight, directionalLight, directionalLightHelper} from "./models/light";
+import {CameraHelper, Scene} from "three";
+import {ambientLight, directionalLight} from "./models/light";
 import {gui} from "./models/helper";
 
 const scene = new Scene()
 
 const useScene = () => {
-    scene.add(axesHelper)
     scene.add(ambientLight)
-    scene.add(directionalLight, directionalLightHelper)
-    const cameraHelper = new CameraHelper(directionalLight.shadow.camera)
-    scene.add(cameraHelper)
+    scene.add(directionalLight)
 
 
     gui.add(directionalLight.shadow.camera, 'near', 0, 10)
@@ -26,12 +22,10 @@ const useScene = () => {
     gui.add(directionalLight.shadow.mapSize, 'width', 0, 4096)
     gui.add(directionalLight.shadow.mapSize, 'height', 0, 4096)
 
-// 当值改变了，更新相机视图
+    // 当值改变了，更新相机视图
     gui.onChange(() => {
         directionalLight.shadow.camera.updateProjectionMatrix()
-        cameraHelper.update()
     })
-
 }
 
 export {useScene, scene}
