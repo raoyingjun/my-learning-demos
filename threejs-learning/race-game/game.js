@@ -11,7 +11,7 @@ import {directionalLight} from "./models/light";
 
 const CHECK_INTERVAL = 1000 / 30
 const DEPRECATE_INTERVAL = 1000 / 15
-const GENERATE_INTERVAL = 1000 / 50
+const GENERATE_INTERVAL = 1000 / 5
 
 
 const GAME_STARTED = 0
