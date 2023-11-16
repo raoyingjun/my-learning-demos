@@ -11,6 +11,8 @@ import {directionalLight} from "./models/light";
 
 const CHECK_INTERVAL = 1000 / 30
 const DEPRECATE_INTERVAL = 1000 / 15
+const GENERATE_INTERVAL = 1000 / 50
+
 
 const GAME_STARTED = 0
 const GAME_GAMING = 1
@@ -70,7 +72,7 @@ class Game {
                     this.removeBlock(block)
                 })
             }
-            this.generateBlockTimer = setTimeout(generate, 1 / Math.abs(avgSpeed) * len)
+            this.generateBlockTimer = setTimeout(generate, GENERATE_INTERVAL)
         }
         generate()
     }
@@ -310,24 +312,23 @@ class Interaction {
         score: all('.score'),
         time: all('.time')
     }
+
     bounce(ele) {
         ele.classList.add('bounce')
         ele.onanimationend = () => ele.classList.remove('bounce')
     }
+
     collectCoin(block) {
         block.offMove()
 
         const {offsetLeft, offsetTop} = this.doms.score[0]
         let {x: z, y} = visualToWebglCoords(offsetLeft, offsetTop)
         z += block.z
-        console.log(z)
 
-        console.log(offsetLeft, z, '|', offsetTop, y)
         const done = () => {
             this.html(this.doms.score, ++this.score)
             this.bounce(this.doms.score[0])
             block.object.removeFromParent()
-            console.log('done')
         }
 
         const parts = []
