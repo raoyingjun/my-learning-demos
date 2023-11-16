@@ -71,6 +71,7 @@ gui.add(directionalLight.shadow, 'radius', -100, 100)
 
 gui.add(directionalLight.shadow.mapSize, 'width', 0, 4096)
 gui.add(directionalLight.shadow.mapSize, 'height', 0, 4096)
+gui.add(scene.rotation, 'y', 0, Math.PI * 2)
 
 // 当值改变了，更新相机视图
 gui.onChange(() => {
