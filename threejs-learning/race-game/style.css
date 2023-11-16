@@ -48,3 +48,14 @@ p {
 .tx-black {
     color: black;
 }
+
+@keyframes bounce {
+    50% {
+        transform: scale(3);
+    }
+}
+
+.bounce {
+    animation: bounce 1000ms;
+    display: inline-block;
+}

@@ -163,8 +163,7 @@ class Game {
                 if (this.car.check(block) && !block.checked) {
                     switch (block.object.userData.name) {
                         case 'coin':
-                            this.interaction.html(this.interaction.doms.score, ++this.interaction.score)
-                            block.object.removeFromParent()
+                            this.interaction.collectCoin(block)
                             break;
                         default:
                             this.stop();
@@ -310,6 +309,62 @@ class Interaction {
         endPage: $('endPage'),
         score: all('.score'),
         time: all('.time')
+    }
+    bounce(ele) {
+        ele.classList.add('bounce')
+        ele.onanimationend = () => ele.classList.remove('bounce')
+    }
+    collectCoin(block) {
+        block.offMove()
+
+        const {offsetLeft, offsetTop} = this.doms.score[0]
+        let {x: z, y} = visualToWebglCoords(offsetLeft, offsetTop)
+        z += block.z
+        console.log(z)
+
+        console.log(offsetLeft, z, '|', offsetTop, y)
+        const done = () => {
+            this.html(this.doms.score, ++this.score)
+            this.bounce(this.doms.score[0])
+            block.object.removeFromParent()
+            console.log('done')
+        }
+
+        const parts = []
+        block.object.traverse(o => o.isMesh && parts.push(o.material))
+
+        const targetMap = [
+            block.object.position,
+            block.object.position,
+            block.object.scale,
+            block.object.scale,
+            block.object.scale,
+        ].concat(parts)
+        const keyMap = ['y', 'z', 'x', 'y', 'z'].concat(Array(parts.length).fill('opacity'))
+        const valueMap = [y, z, 0, 0, 0].concat(Array(parts.length).fill(0))
+
+        let [f, t] = [0, targetMap.length]
+
+        const stepMap = {
+            y: 200,
+            opacity: 75,
+        }
+
+        for (const [index, target] of targetMap.entries()) {
+            const isOpacity = keyMap[index] === 'opacity'
+            const isPositionY = (keyMap[index] === 'y') && (target === block.object.position)
+            const step = isPositionY ? 60 : isOpacity ? 50 : 100
+            numAnimate({
+                from: target[keyMap[index]],
+                to: valueMap[index],
+                onStep: v => target[keyMap[index]] = v,
+                onComplete: () => {
+                    isOpacity && (target['visible'] = false)
+                    ;(++f === t) && done()
+                },
+                step: step
+            })
+        }
     }
 
     html(elements, value) {

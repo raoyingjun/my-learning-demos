@@ -37,7 +37,7 @@ export const visualToWebglCoords = (x, y) => {
     const {width, height} = winSize()
     return {
         x: width / 2 - (width - x),
-        y: height / 2 - (height - y)
+        y: (height / 2 - (height - y)) * -1
     }
 }
 

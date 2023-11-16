@@ -27,7 +27,7 @@ const generateRoads = (num) => {
             })
         )
 
-        const offset = (winSize().width - num * ROAD_WIDTH) / 2 + +ROAD_WIDTH / 2
+        const offset = (winSize().width - num * ROAD_WIDTH) / 2 + ROAD_WIDTH / 2
         const {x} = visualToWebglCoords(offset + i * ROAD_WIDTH)
         road.position.z = x
         road.rotateY(Math.PI / 2)
