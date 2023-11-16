@@ -1,5 +1,5 @@
 import {generateModels, getRandomModel, isEmpty} from "../util";
-import carData from './resource/cars/car-data.json'
+import carData from './configs/car-data.json'
 import {importModelSetting} from "./index";
 import {Group} from "three";
 
@@ -23,5 +23,5 @@ const findAll = async () => {
 }
 
 const cars = await findAll()
-console.log(cars)
+
 export {CAR_NUM, cars}

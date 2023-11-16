@@ -13,8 +13,5 @@ const importModelSetting = (model, {rotation, scale, position}) => {
     model.rotation.set(...(rotation || []).map(rot => Math.PI / 180 * rot))
     model.position.set(...(position || []))
 }
-const loadTexture = async (name) =>
-    new Promise((resolve, reject) =>
-        new TextureLoader().load(`/race-game/textures/${name}.png`, resolve, null, reject))
 
-export {startPage, gamingPage, endPage, importModelSetting, loadTexture}
+export {startPage, gamingPage, endPage, importModelSetting}

@@ -1,5 +1,5 @@
 import {generateModels, getRandomModel, isEmpty} from "../util";
-import blockData from './resource/rocks/block-data.json'
+import blockData from './configs/block-data.json'
 import {importModelSetting} from "./index";
 import {Group} from "three";
 

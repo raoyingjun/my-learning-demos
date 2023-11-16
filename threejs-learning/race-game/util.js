@@ -1,5 +1,5 @@
 import {DRACOLoader, GLTFLoader} from "three/addons";
-import {Box3, Group, Vector3} from "three";
+import {Box3, Group, TextureLoader, Vector3} from "three";
 
 export const winSize = () => {
     const width = window.innerWidth,
@@ -70,9 +70,7 @@ export const getModelBox3Size = (model) => {
     return v
 }
 
-const RESOURCE_PATH = '/race-game/models/resource'
-
-export const getModelAbsolutePath = (filename) => `${RESOURCE_PATH}/${filename}.gltf`
+export const getModelAbsolutePath = (filename) => `/resource/${filename}.gltf`
 
 export const generateModel = async (rawModel) => {
     const {filename} = rawModel
@@ -102,3 +100,8 @@ export const debounce = (fn, threshold = 300) => {
         timer = setTimeout(fn, threshold)
     }
 }
+
+export const loadTexture = async (name) =>
+    new Promise((resolve, reject) =>
+        new TextureLoader().load(`/resource/textures/${name}.png`, resolve, null, reject)
+    )

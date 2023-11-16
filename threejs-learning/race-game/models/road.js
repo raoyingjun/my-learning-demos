@@ -1,6 +1,6 @@
 import {DoubleSide, Group, Mesh, MeshStandardMaterial, PlaneGeometry, RepeatWrapping} from "three";
 import {randomHexColor, visualToWebglCoords, winSize} from "../util";
-import {loadTexture} from "./index";
+import {loadTexture} from "../util";
 
 const ROAD_WIDTH = 150
 const ROAD_HEIGHT = 5000
