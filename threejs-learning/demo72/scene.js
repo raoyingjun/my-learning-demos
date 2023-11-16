@@ -1,6 +1,5 @@
 import * as THREE from 'three'
 import {model} from "./model";
-import {directionalLightHelper} from "../race-game/models/light";
 import {CameraHelper} from "three";
 import {camera} from "./camera";
 import {GUI} from "three/addons/libs/lil-gui.module.min";
