@@ -528,7 +528,7 @@ class Block extends Speed {
 
         this.max = this._speed * 10
         this.min = this._speed
-        this.acceleration = this._speed / 80
+        this.acceleration = this._speed / 200
 
         this.reset()
     }
