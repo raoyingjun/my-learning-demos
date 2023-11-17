@@ -110,17 +110,36 @@ export const loadTexture = async (name) =>
 const clock = new THREE.Clock()
 
 export const global = {
-    fps: 144,
-    fpsRatio: 1,
-    animationRatio: 1,
+    fps: 60,
+    fpsRatio: 2.4,
+    animationRatio: 2.4,
 }
-export const updateFps = () => {
-    let fps = 1 / (clock.getDelta() || 1)
-    fps = fps > 144 ? 144 : fps
-    fps = fps < 60 ? 60 : fps
-    const fpsRatio = 144 / fps
-    global.fps = fps
-    global.fpsRatio = fpsRatio
-    global.animationRatio = fpsRatio
-    console.log('fpsRatio', fpsRatio)
+
+export let updateFps = (ready) => {
+    if (!updateFps.ready) {
+        if (updateFps.checkFpsTimes++ < updateFps.checkFpsThreshold) {
+            let fps = 1 / (clock.getDelta() || 1)
+            fps = fps > 144 ? 144 : fps
+            fps = fps < 60 ? 60 : fps
+            updateFps.avgFps += fps
+
+        } else {
+            let fps = updateFps.avgFps / updateFps.checkFpsThreshold
+            console.log(fps)
+            fps = [60, 90, 120, 144].find(v => fps > v - 15 && fps < v + 15)
+            // 139-15= 124 , 139+15 =154
+            console.log(fps)
+            const fpsRatio = 144 / fps
+            global.fps = fps
+            global.fpsRatio = fpsRatio
+            global.animationRatio = fpsRatio
+            updateFps.ready = true
+            ready && ready()
+        }
+    }
+
 }
+updateFps.checkFpsThreshold = 30
+updateFps.checkFpsTimes = 0
+updateFps.avgFps = 0
+updateFps.ready = false

@@ -1,6 +1,6 @@
 import {endPage, gamingPage, startPage} from "./models";
 import {scene} from "./scene";
-import {$, all, debounce, global, numAnimate, randomRange, visualToWebglCoords, winSize} from "./util";
+import {$, all, debounce, global, numAnimate, randomRange, updateFps, visualToWebglCoords, winSize} from "./util";
 import {getRandomBlock} from './models/block'
 import {ROAD_NUM, ROAD_WIDTH, roads, roadTexture} from "./models/road";
 import {fadeInBackground, fadeOutBackground, setBackground, orbitControls} from "./render";
@@ -26,12 +26,23 @@ class Game {
     blocks = []
     selectedCar = 0
 
-    constructor() {
-        this.interaction = new Interaction(this)
-        this.setCar(cars)
-        this.setRoads(roads)
-        this.registerController()
+    ready(done) {
+        requestAnimationFrame(() => {
+            updateFps(() => {
+                this.interaction = new Interaction(this)
 
+                this.setCar(cars)
+                this.setRoads(roads)
+                this.registerController()
+
+                done && done()
+
+                console.log(global)
+            })
+            if (!updateFps.ready) {
+                this.ready(done)
+            }
+        })
     }
 
     addBlock(block) {
@@ -656,17 +667,13 @@ class Car {
 class Roads extends Speed {
 
     constructor(roads, speed = ROAD_SPEED) {
-        super(speed)
+        super(speed * global.animationRatio)
         this.object = roads
+        this._speed *= global.animationRatio
+        this.max = this._speed * 3
+        this.acceleration = this._speed / 500
 
-        setTimeout(() => {
-            this._speed *= global.animationRatio
-            this.max = this._speed * 3
-            this.min = this._speed / 2
-            this.acceleration = this._speed / 500
-
-            this.reset()
-        }, 200)
+        this.reset()
 
     }
 

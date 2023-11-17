@@ -13,7 +13,6 @@ renderer.shadowMap.enabled = true
 const useRefresh = () => {
     const refresh = () => {
         renderer.render(scene, camera)
-        updateFps()
         requestAnimationFrame(refresh)
     }
     refresh()

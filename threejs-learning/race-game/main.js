@@ -13,7 +13,7 @@ renderToBody()
 useScene()
 
 const game = new Game()
-game.run()
-// game.start()
+game.ready(() => game.run())
+
 
 // https://blog.csdn.net/nanchen_J/article/details/131759699
