@@ -9,6 +9,50 @@ export const winSize = () => {
     return {width, height, ratio}
 }
 
+
+const loading = (progress, url) => {
+    const {loaded, total, lengthComputable} = progress
+
+    let mask = document.getElementById('tempMask')
+    if (!mask) {
+        mask = document.createElement('div')
+        mask.style.position = 'absolute'
+        mask.style.inset = '0'
+        mask.style.zIndex = '10'
+        mask.style.color = 'orange'
+        mask.style.backgroundColor = 'rgba(255, 255, 255, .5)'
+        mask.id = 'tempMask'
+        mask.innerHTML = '正在加载模型：'
+    }
+
+    let paraElement = document.getElementById('pid:' + url)
+    if (!paraElement) {
+        paraElement = document.createElement('p')
+        paraElement.innerHTML = `loading model [${url}] progress：`
+        paraElement.id = 'pid:' + url
+    }
+
+    let progressElement = document.getElementById('progressid:' + url)
+    if (!progressElement) {
+        progressElement = document.createElement('progress')
+        progressElement.max = 100
+        progressElement.value = 0
+        progressElement.id = 'progressid:' + url
+    }
+
+    paraElement.appendChild(progressElement)
+    mask.appendChild(paraElement)
+    document.body.appendChild(mask)
+
+    progressElement.value = loaded / total * 100
+
+}
+const loaded = () => {
+    if (all('progress[value="100"]').length === 7) {
+        setTimeout(() => document.body.removeChild($('tempMask')), 1000)
+    }
+}
+
 export const loadModel = (url, isDracoCompress = true) => {
     const loader = new GLTFLoader()
     if (isDracoCompress) {
@@ -17,7 +61,10 @@ export const loadModel = (url, isDracoCompress = true) => {
         loader.setDRACOLoader(dracoLoader)
     }
     return new Promise((resolve, reject) => {
-        loader.load(url, resolve, null, reject)
+        loader.load(url, (data) => {
+            resolve(data)
+            loaded()
+        }, e => loading(e, url), reject)
     })
 }
 export const randomRange = (min, max) => {
@@ -43,7 +90,6 @@ export const visualToWebglCoords = (x, y) => {
 }
 
 export const numAnimate = ({from, to, onStep, onComplete, step = 50}) => {
-    console.log(global.animationRatio)
     const SCALE_FACTOR = 100 * global.animationRatio
     to *= SCALE_FACTOR
     from *= SCALE_FACTOR
@@ -63,14 +109,6 @@ export const numAnimate = ({from, to, onStep, onComplete, step = 50}) => {
         }
     }
     stepFn()
-}
-
-export const getModelBox3Size = (model) => {
-    const box = new Box3()
-    const v = new Vector3()
-    box.expandByObject(model)
-    box.getSize(v)
-    return v
 }
 
 export const getModelAbsolutePath = (filename) => `/resource/${filename}.gltf`
