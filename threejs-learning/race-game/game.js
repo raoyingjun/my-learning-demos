@@ -72,7 +72,7 @@ class Game {
                     this.removeBlock(block)
                 })
             }
-            this.generateBlockTimer = setTimeout(generate, GENERATE_INTERVAL)
+            this.generateBlockTimer = setTimeout(generate, GENERATE_INTERVAL * global.animationRatio)
         }
         generate()
     }
