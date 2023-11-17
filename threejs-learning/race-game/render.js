@@ -1,7 +1,7 @@
 import {WebGLRenderer} from "three";
 import {camera, defaultView, moveView, resetView} from "./camera";
 import {scene} from "./scene";
-import {numAnimate, rgbToHex, winSize} from "./util";
+import {updateFps, numAnimate, rgbToHex, winSize} from "./util";
 import {OrbitControls} from "three/addons";
 
 const renderer = new WebGLRenderer({
@@ -13,6 +13,7 @@ renderer.shadowMap.enabled = true
 const useRefresh = () => {
     const refresh = () => {
         renderer.render(scene, camera)
+        updateFps()
         requestAnimationFrame(refresh)
     }
     refresh()

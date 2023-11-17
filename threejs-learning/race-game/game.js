@@ -1,6 +1,6 @@
 import {endPage, gamingPage, startPage} from "./models";
 import {scene} from "./scene";
-import {$, all, debounce, numAnimate, randomRange, visualToWebglCoords, winSize} from "./util";
+import {$, all, debounce, global, numAnimate, randomRange, visualToWebglCoords, winSize} from "./util";
 import {getRandomBlock} from './models/block'
 import {ROAD_NUM, ROAD_WIDTH, roads, roadTexture} from "./models/road";
 import {fadeInBackground, fadeOutBackground, setBackground, orbitControls} from "./render";
@@ -30,8 +30,8 @@ class Game {
         this.interaction = new Interaction(this)
         this.setCar(cars)
         this.setRoads(roads)
-
         this.registerController()
+
     }
 
     addBlock(block) {
@@ -236,7 +236,7 @@ class Game {
                         } else {
                             const isGltZero = this.roads.acceleration >= 0
                             if (!this.roads.isRatioAcceleration) {
-                                this.roads.acceleration *= isGltZero ? -10 : 10
+                                this.roads.acceleration *= (isGltZero ? -10 : 10) * global.animationRatio
                                 this.roads.isRatioAcceleration = true
                             }
                             this.roads.updateSpeed(this.roads.acceleration)
@@ -244,7 +244,7 @@ class Game {
                             for (const block of this.blocks) {
                                 const isGltZero = block.acceleration >= 0
                                 if (!block.isRatioAcceleration) {
-                                    block.acceleration *= isGltZero ? -10 : 10
+                                    block.acceleration *= (isGltZero ? -10 : 10) * global.animationRatio
                                     block.isRatioAcceleration = true
                                 }
                                 block.updateSpeed(block.acceleration)
@@ -262,12 +262,12 @@ class Game {
                         }
                     }
                     if (this.roads.isRatioAcceleration) {
-                        this.roads.acceleration /= 10
+                        this.roads.acceleration /= 10 * global.animationRatio
                         this.roads.isRatioAcceleration = false
                     }
                     for (const block of this.blocks) {
                         if (block.isRatioAcceleration) {
-                            block.acceleration /= 10
+                            block.acceleration /= 10 * global.animationRatio
                             block.isRatioAcceleration = false
                         }
                     }
@@ -385,7 +385,7 @@ class Interaction {
         const rot = () => {
             if (!this.flags.startPage.carSelfRotate) {
                 requestAnimationFrame(() => {
-                    startPage.rotateY(0.003)
+                    startPage.rotateY(0.003 * global.animationRatio)
                     rot()
                 })
             }
@@ -451,13 +451,12 @@ class Speed {
 
         this.canAccelerate(true)
         this.canOverMax(false)
-
         this.reset()
     }
 
     reset() {
         this.speed = this.min
-        this.acceleration *= this.acceleration >= 0 ? -1 : 1
+        this.acceleration *= (this.acceleration >= 0 ? -1 : 1)
     }
 
     updateSpeed(acceleration) {
@@ -518,7 +517,7 @@ class Block extends Speed {
     checked = false
 
     constructor(speed = BLOCK_SPEED) {
-        super(speed)
+        super(speed * global.animationRatio)
 
         this.object = getRandomBlock()
         this.decorate()
@@ -540,7 +539,7 @@ class Block extends Speed {
             const rot = () => {
                 requestAnimationFrame(() => {
                     if (this.moving) {
-                        model.rotateY(0.05)
+                        model.rotateY(0.05 * global.animationRatio)
                         rot()
                     }
                 })
@@ -660,10 +659,15 @@ class Roads extends Speed {
         super(speed)
         this.object = roads
 
-        this.max = this._speed * 3
-        this.acceleration = this._speed / 500
+        setTimeout(() => {
+            this._speed *= global.animationRatio
+            this.max = this._speed * 3
+            this.min = this._speed / 2
+            this.acceleration = this._speed / 500
 
-        this.reset()
+            this.reset()
+        }, 200)
+
     }
 
     static getVerticalCenterPosition(roadIndex) {

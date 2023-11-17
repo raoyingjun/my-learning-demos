@@ -1,5 +1,6 @@
 import {DRACOLoader, GLTFLoader} from "three/addons";
 import {Box3, Group, TextureLoader, Vector3} from "three";
+import * as THREE from "three";
 
 export const winSize = () => {
     const width = window.innerWidth,
@@ -41,18 +42,17 @@ export const visualToWebglCoords = (x, y) => {
     }
 }
 
-const STEP = 50
 export const numAnimate = ({from, to, onStep, onComplete, step = 50}) => {
-    const SCALE_FACTOR = 100
+    const SCALE_FACTOR = 100 * global.animationRatio
     to *= SCALE_FACTOR
     from *= SCALE_FACTOR
-    const dis = (to - from) / step
+    const dis = ((to - from) / step) * global.animationRatio
     const stepFn = () => {
         if (from === to) {
             onComplete && onComplete(to)
         } else if (from !== to) {
             from += dis
-            if (Math.abs(from - to) < 1) {
+            if (Math.abs(from - to) < Math.abs(dis)) {
                 from = to
             }
             onStep && onStep(from / SCALE_FACTOR)
@@ -105,3 +105,22 @@ export const loadTexture = async (name) =>
     new Promise((resolve, reject) =>
         new TextureLoader().load(`/resource/textures/${name}.png`, resolve, null, reject)
     )
+
+
+const clock = new THREE.Clock()
+
+export const global = {
+    fps: 144,
+    fpsRatio: 1,
+    animationRatio: 1,
+}
+export const updateFps = () => {
+    let fps = 1 / (clock.getDelta() || 1)
+    fps = fps > 144 ? 144 : fps
+    fps = fps < 60 ? 60 : fps
+    const fpsRatio = 144 / fps
+    global.fps = fps
+    global.fpsRatio = fpsRatio
+    global.animationRatio = fpsRatio
+    console.log('fpsRatio', fpsRatio)
+}
