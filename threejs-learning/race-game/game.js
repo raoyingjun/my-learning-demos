@@ -36,8 +36,6 @@ class Game {
                 this.registerController()
 
                 done && done()
-
-                console.log(global)
             })
             if (!updateFps.ready) {
                 this.ready(done)
@@ -247,7 +245,7 @@ class Game {
                         } else {
                             const isGltZero = this.roads.acceleration >= 0
                             if (!this.roads.isRatioAcceleration) {
-                                this.roads.acceleration *= (isGltZero ? -10 : 10)
+                                this.roads.acceleration *= (isGltZero ? -10 : 10) * global.animationRatio
                                 this.roads.isRatioAcceleration = true
                             }
                             this.roads.updateSpeed(this.roads.acceleration)
@@ -255,7 +253,7 @@ class Game {
                             for (const block of this.blocks) {
                                 const isGltZero = block.acceleration >= 0
                                 if (!block.isRatioAcceleration) {
-                                    block.acceleration *= (isGltZero ? -10 : 10)
+                                    block.acceleration *= (isGltZero ? -10 : 10) * global.animationRatio
                                     block.isRatioAcceleration = true
                                 }
                                 block.updateSpeed(block.acceleration)
@@ -273,12 +271,12 @@ class Game {
                         }
                     }
                     if (this.roads.isRatioAcceleration) {
-                        this.roads.acceleration /= 10
+                        this.roads.acceleration /= 10 * global.animationRatio
                         this.roads.isRatioAcceleration = false
                     }
                     for (const block of this.blocks) {
                         if (block.isRatioAcceleration) {
-                            block.acceleration /= 10
+                            block.acceleration /= 10 * global.animationRatio
                             block.isRatioAcceleration = false
                         }
                     }
