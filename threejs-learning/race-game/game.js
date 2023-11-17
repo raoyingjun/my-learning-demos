@@ -83,7 +83,7 @@ class Game {
                     this.removeBlock(block)
                 })
             }
-            this.generateBlockTimer = setTimeout(generate, GENERATE_INTERVAL * global.animationRatio)
+            this.generateBlockTimer = setTimeout(generate, GENERATE_INTERVAL)
         }
         generate()
     }
@@ -247,7 +247,7 @@ class Game {
                         } else {
                             const isGltZero = this.roads.acceleration >= 0
                             if (!this.roads.isRatioAcceleration) {
-                                this.roads.acceleration *= (isGltZero ? -10 : 10) * global.animationRatio
+                                this.roads.acceleration *= (isGltZero ? -10 : 10)
                                 this.roads.isRatioAcceleration = true
                             }
                             this.roads.updateSpeed(this.roads.acceleration)
@@ -255,7 +255,7 @@ class Game {
                             for (const block of this.blocks) {
                                 const isGltZero = block.acceleration >= 0
                                 if (!block.isRatioAcceleration) {
-                                    block.acceleration *= (isGltZero ? -10 : 10) * global.animationRatio
+                                    block.acceleration *= (isGltZero ? -10 : 10)
                                     block.isRatioAcceleration = true
                                 }
                                 block.updateSpeed(block.acceleration)
@@ -273,12 +273,12 @@ class Game {
                         }
                     }
                     if (this.roads.isRatioAcceleration) {
-                        this.roads.acceleration /= 10 * global.animationRatio
+                        this.roads.acceleration /= 10
                         this.roads.isRatioAcceleration = false
                     }
                     for (const block of this.blocks) {
                         if (block.isRatioAcceleration) {
-                            block.acceleration /= 10 * global.animationRatio
+                            block.acceleration /= 10
                             block.isRatioAcceleration = false
                         }
                     }
@@ -669,7 +669,7 @@ class Roads extends Speed {
     constructor(roads, speed = ROAD_SPEED) {
         super(speed * global.animationRatio)
         this.object = roads
-        this._speed *= global.animationRatio
+
         this.max = this._speed * 3
         this.acceleration = this._speed / 500
 

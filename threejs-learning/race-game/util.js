@@ -1,6 +1,7 @@
 import {DRACOLoader, GLTFLoader} from "three/addons";
 import {Box3, Group, TextureLoader, Vector3} from "three";
 import * as THREE from "three";
+import {Number} from "three/addons/transpiler/AST";
 
 export const winSize = () => {
     const width = window.innerWidth,
@@ -46,15 +47,18 @@ export const numAnimate = ({from, to, onStep, onComplete, step = 50}) => {
     const SCALE_FACTOR = 100 * global.animationRatio
     to *= SCALE_FACTOR
     from *= SCALE_FACTOR
-    const dis = ((to - from) / step) * global.animationRatio
+    const dis = ((to - from) / step)
     const stepFn = () => {
+        from = parseFloat(from.toFixed(2))
+        to = parseFloat(to.toFixed(2))
         if (from === to) {
-            onComplete && onComplete(to)
+            onComplete && onComplete(to, from)
         } else if (from !== to) {
             from += dis
             if (Math.abs(from - to) < Math.abs(dis)) {
                 from = to
             }
+            console.log(Math.abs(from - to), Math.abs(dis), to)
             onStep && onStep(from / SCALE_FACTOR)
             requestAnimationFrame(stepFn)
         }
@@ -126,8 +130,7 @@ export let updateFps = (ready) => {
         } else {
             let fps = updateFps.avgFps / updateFps.checkFpsThreshold
             console.log(fps)
-            fps = [60, 90, 120, 144].find(v => fps > v - 15 && fps < v + 15)
-            // 139-15= 124 , 139+15 =154
+            fps = [60, 75, 90, 120, 144].find(v => fps > v - 15 && fps < v + 15)
             console.log(fps)
             const fpsRatio = 144 / fps
             global.fps = fps
@@ -139,7 +142,7 @@ export let updateFps = (ready) => {
     }
 
 }
-updateFps.checkFpsThreshold = 30
+updateFps.checkFpsThreshold = 60
 updateFps.checkFpsTimes = 0
 updateFps.avgFps = 0
 updateFps.ready = false
