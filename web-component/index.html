@@ -1,0 +1,46 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <template id="card-template">
+        <style>
+            #card-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+            p {
+                color: grey
+            }
+        </style>
+        <div id="card-wrapper">
+            <div id="card-header">
+                <span id="card-close">x</span>
+            </div>
+            <div id="card-main"></div>
+            <div id="card-footer">
+                <!-- 放置一个占位插槽，作为后备选项 -->
+                <slot name="card-footer">Default foolter</slot>
+            </div>
+        </div>
+    </template>
+    <com-card shadow title="Card Componet" content="I am the Card from Web Components!">
+        <!-- 用其他内容替换插槽及其默认内容 -->
+        <span slot="card-footer">Custom footer</span>
+    </com-card>
+    <script src="./todolist.js"></script>
+    <script>
+        // 订阅组件的关闭卡片事件
+        document.querySelector('com-card').addEventListener('oncardclose',e => {
+            console.log(e);
+            alert('Card Closing...')
+        })
+    </script>
+</body>
+
+</html>
