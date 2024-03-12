@@ -1,0 +1,96 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="manifest" href="manifest.json">
+</head>
+
+<body>
+    <h1>Hello PWA</h1>
+    <p>A demo for PWA</p>
+    <hr>
+    <p>即使设备离线时，该图片正常展示</p>
+    <img src="./static/logo.png" width="100">
+    <hr>
+    <p>当设备离线时，该图片无法展示</p>
+    <img src="./static/screenshot.png" width="100">
+    <hr>
+    <p>当网站处于离线状态，后台同步会等待接入互联网后再加载样式。</p>
+    <button onclick="loadStyle()">加载阴影样式</button>
+    <hr>
+    <p>当网站刷新，服务器会主动向客户端推送消息。消息将以通知形式展示</p>
+    <hr>
+    <p>在手机上展示可能无法正常工作...</p>
+    <script>
+        let swRegistration
+        const bc = new BroadcastChannel('sw')
+
+        navigator.serviceWorker.register('./serviceWorker.js')
+        // 需要 SW 执行一些任务，则需要等其准备好
+        navigator.serviceWorker.ready.then(async _swRegistration => {
+            console.log('[ready]Service Worker 已注册，可以执行任务了', _swRegistration);
+            swRegistration = _swRegistration
+
+            try {
+                let sub = await swRegistration.pushManager.getSubscription()
+                if (sub) {
+                    console.log('[notification]已存在订阅推送服务', sub);
+                } else {
+                    console.log('[notification]未订阅推送服务...');
+                    sub = await swRegistration.pushManager.subscribe({
+                        userVisibleOnly: true,
+                        // 服务器返回的公钥。这是服务器向客户端发送信息的公钥。（这里应该是用公钥解密服务器所返回信息）
+                        applicationServerKey: urlBase64ToUint8Array('BCnmqk6EF_Blunfxlrk3oTMU26Y7TyKwZk5LxIhF_4VH9DJn49EN48-1Nxgf9WLATGrel4OtxGYdxZCMw189Kt0')
+                    })
+
+                    console.log('[notification]订阅推送服务成功', sub);
+                }
+                console.log('[notification]当前订阅推送服务客户端已发送至服务器', sub);
+                // 已订阅推送父亲。请求服务端推送信息到客户端
+                fetch('https://localhost:3000/push', {
+                    method: 'post',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(sub)
+                })
+            } catch (e) {
+                console.log('[notification]获取订阅的推送时出错', e);
+            }
+
+
+        })
+
+        // 当接收到 Service Worker 广播信息，则插入样式
+        bc.onmessage = e => {
+            console.log('[message]接收到消息', e.data);
+            const style = document.createElement('style')
+            style.textContent = e.data
+            document.querySelector('head').appendChild(style)
+        }
+
+        function loadStyle() {
+            // 后台同步。先注册样式事件，当有网络时去请求样式。
+            swRegistration.sync.register('load-style')
+            console.log('[sync]发送后台同步任务到 Service Worker');
+        }
+        function urlBase64ToUint8Array(base64String) {
+            const padding = '='.repeat((4 - base64String.length % 4) % 4);
+            const base64 = (base64String + padding)
+                .replace(/\-/g, '+')
+                .replace(/_/g, '/');
+
+            const rawData = window.atob(base64);
+            const outputArray = new Uint8Array(rawData.length);
+
+            for (let i = 0; i < rawData.length; ++i) {
+                outputArray[i] = rawData.charCodeAt(i);
+            }
+            return outputArray;
+        }
+    </script>
+</body>
+
+</html>

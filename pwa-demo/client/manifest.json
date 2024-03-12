@@ -1,0 +1,30 @@
+{
+    "name": "PWA Demo",
+    "short_name": "Demo",
+    "start_url": ".",
+    "display": "standalone",
+    "background_color": "#fff",
+    "description": "A demo for PWA",
+    "icons": [
+      {
+        "src": "static/logo.png",
+        "sizes": "144x144",
+        "type": "image/png"
+      }
+    ],
+    "screenshots":[
+      {
+        "src": "static/screenshot.png",
+        "sizes": "333x548",
+        "type": "image/png",
+        "form_factor": "wide"
+      },
+      {
+        "src": "static/screenshot.png",
+        "sizes": "333x548",
+        "type": "image/png",
+        "form_factor": "narrow"
+      }
+    ]
+  }
+  
