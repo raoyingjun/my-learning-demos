@@ -48,7 +48,7 @@ const loading = (progress, url) => {
 
 }
 const loaded = () => {
-    if (all('progress[value="100"]').length === 7) {
+    if (all('progress').length === 7) {
         setTimeout(() => document.body.removeChild($('tempMask')), 1000)
     }
 }
