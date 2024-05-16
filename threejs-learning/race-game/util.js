@@ -1,17 +1,17 @@
-import {DRACOLoader, GLTFLoader} from "three/addons";
-import {Box3, Group, TextureLoader, Vector3} from "three";
+import { DRACOLoader, GLTFLoader } from "three/addons";
+import { Box3, Group, TextureLoader, Vector3 } from "three";
 import * as THREE from "three";
 
 export const winSize = () => {
     const width = window.innerWidth,
         height = window.innerHeight,
         ratio = width / height;
-    return {width, height, ratio}
+    return { width, height, ratio }
 }
 
 
 const loading = (progress, url) => {
-    const {loaded, total, lengthComputable} = progress
+    const { loaded, total, lengthComputable } = progress
 
     let mask = document.getElementById('tempMask')
     if (!mask) {
@@ -82,14 +82,14 @@ export const randomHexColor = () => {
 export const rgbToHex = (...rgb) => '#' + rgb.map(v => v.toString(16).padStart(2, '0')).join('')
 
 export const visualToWebglCoords = (x, y) => {
-    const {width, height} = winSize()
+    const { width, height } = winSize()
     return {
         x: width / 2 - (width - x),
         y: (height / 2 - (height - y)) * -1
     }
 }
 
-export const numAnimate = ({from, to, onStep, onComplete, step = 50}) => {
+export const numAnimate = ({ from, to, onStep, onComplete, step = 50 }) => {
     const SCALE_FACTOR = 100 * global.animationRatio
     to *= SCALE_FACTOR
     from *= SCALE_FACTOR
@@ -111,10 +111,10 @@ export const numAnimate = ({from, to, onStep, onComplete, step = 50}) => {
     stepFn()
 }
 
-export const getModelAbsolutePath = (filename) => `/resource/${filename}.gltf`
+export const getModelAbsolutePath = (filename) => `${import.meta.env.BASE_URL}/resource/${filename}.gltf`
 
 export const generateModel = async (rawModel) => {
-    const {filename} = rawModel
+    const { filename } = rawModel
     const url = new URL(getModelAbsolutePath(filename), location.href).href
     const model = new Group()
     model.add((await loadModel(url, true)).scene)
@@ -144,7 +144,7 @@ export const debounce = (fn, threshold = 300) => {
 
 export const loadTexture = async (name) =>
     new Promise((resolve, reject) =>
-        new TextureLoader().load(`/resource/textures/${name}.png`, resolve, null, reject)
+        new TextureLoader().load(`${import.meta.env.BASE_URL}/resource/textures/${name}.png`, resolve, null, reject)
     )
 
 
