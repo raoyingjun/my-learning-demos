@@ -12,8 +12,8 @@ const useScene = () => {
 
     scene.add(ambientLight)
     scene.add(directionalLight)
-    scene.add(new DirectionalLightHelper(directionalLight, 100, 'red'))
-    scene.add(new CameraHelper(directionalLight.shadow.camera))
+    // scene.add(new DirectionalLightHelper(directionalLight, 100, 'red'))
+    // scene.add(new CameraHelper(directionalLight.shadow.camera))
 
     gui.add(directionalLight.shadow.camera, 'near', 0, 10)
     gui.add(directionalLight.shadow.camera, 'far', 0, 5000)
@@ -32,7 +32,7 @@ const useScene = () => {
     gui.onChange(() => {
         directionalLight.shadow.camera.updateProjectionMatrix()
     })
-    scene.add(new AxesHelper(500))
+    // scene.add(new AxesHelper(500))
 }
 
 const setBgLight = light => scene.backgroundIntensity = light

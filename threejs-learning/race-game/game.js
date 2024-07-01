@@ -604,7 +604,6 @@ class Car {
         this.roadIndex = Math.floor(ROAD_NUM / 2)
         this.object.position.set(0, 0, 0)
         this.object.rotation.set(0, Math.PI / 2, 0)
-        // this.object.add(new AxesHelper(50))
         Interaction.moveView(this.roadIndex)
     }
 

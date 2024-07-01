@@ -39,7 +39,7 @@ const generateRoads = (num, rows) => {
 
             road.position.z = x
             road.receiveShadow = true
-            road.add(new AxesHelper(50))
+            // road.add(new AxesHelper(50))
             roadRow.add(road)
         }
         roadRow.position.y = y

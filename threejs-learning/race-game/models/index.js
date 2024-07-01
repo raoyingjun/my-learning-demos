@@ -6,7 +6,7 @@ startPage.position.set(-100, -120, 0)
 
 const gamingPage = new Group()
 gamingPage.position.set(-100, -120, 0)
-gamingPage.add(new AxesHelper(200))
+// gamingPage.add(new AxesHelper(200))
 
 const endPage = new Group()
 
