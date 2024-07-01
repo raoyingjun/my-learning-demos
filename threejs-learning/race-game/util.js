@@ -1,17 +1,17 @@
-import { DRACOLoader, GLTFLoader } from "three/addons";
-import { Box3, Group, TextureLoader, Vector3 } from "three";
+import {DRACOLoader, GLTFLoader} from "three/addons";
+import {Box3, Group, TextureLoader, Vector3} from "three";
 import * as THREE from "three";
 
 export const winSize = () => {
     const width = window.innerWidth,
         height = window.innerHeight,
         ratio = width / height;
-    return { width, height, ratio }
+    return {width, height, ratio}
 }
 
 
 const loading = (progress, url) => {
-    const { loaded, total, lengthComputable } = progress
+    const {loaded, total} = progress
 
     let mask = document.getElementById('tempMask')
     if (!mask) {
@@ -22,21 +22,20 @@ const loading = (progress, url) => {
         mask.style.color = 'orange'
         mask.style.backgroundColor = 'rgba(255, 255, 255, .5)'
         mask.id = 'tempMask'
-        mask.innerHTML = '正在加载模型：'
+        mask.innerHTML = '正在加载相关模型资源'
     }
 
     let paraElement = document.getElementById('pid:' + url)
     if (!paraElement) {
         paraElement = document.createElement('p')
-        paraElement.innerHTML = `loading model [${url}] progress：`
+        paraElement.innerHTML = `正在加载位于 [${url}] 的模型资源<br>加载进度：`
         paraElement.id = 'pid:' + url
     }
 
     let progressElement = document.getElementById('progressid:' + url)
     if (!progressElement) {
         progressElement = document.createElement('progress')
-        progressElement.max = 100
-        progressElement.value = 0
+        progressElement.max = total
         progressElement.id = 'progressid:' + url
     }
 
@@ -44,12 +43,12 @@ const loading = (progress, url) => {
     mask.appendChild(paraElement)
     document.body.appendChild(mask)
 
-    progressElement.value = loaded / total * 100
+    progressElement.value = loaded
 
 }
 const loaded = () => {
-    if (all('progress').length === 7) {
-        setTimeout(() => document.body.removeChild($('tempMask')), 1000)
+    if (all('progress').length >= 7) {
+        document.body.removeChild($('tempMask'))
     }
 }
 
@@ -82,14 +81,14 @@ export const randomHexColor = () => {
 export const rgbToHex = (...rgb) => '#' + rgb.map(v => v.toString(16).padStart(2, '0')).join('')
 
 export const visualToWebglCoords = (x, y) => {
-    const { width, height } = winSize()
+    const {width, height} = winSize()
     return {
         x: width / 2 - (width - x),
         y: (height / 2 - (height - y)) * -1
     }
 }
 
-export const numAnimate = ({ from, to, onStep, onComplete, step = 50 }) => {
+export const numAnimate = ({from, to, onStep, onComplete, step = 50}) => {
     const SCALE_FACTOR = 100 * global.animationRatio
     to *= SCALE_FACTOR
     from *= SCALE_FACTOR
@@ -111,10 +110,10 @@ export const numAnimate = ({ from, to, onStep, onComplete, step = 50 }) => {
     stepFn()
 }
 
-export const getModelAbsolutePath = (filename) => `${import.meta.env.BASE_URL}/resource/${filename}.gltf`
+export const getModelAbsolutePath = (filename) => `${import.meta.env.BASE_URL}resource/${filename}.gltf`
 
 export const generateModel = async (rawModel) => {
-    const { filename } = rawModel
+    const {filename} = rawModel
     const url = new URL(getModelAbsolutePath(filename), location.href).href
     const model = new Group()
     model.add((await loadModel(url, true)).scene)
@@ -144,7 +143,7 @@ export const debounce = (fn, threshold = 300) => {
 
 export const loadTexture = async (name) =>
     new Promise((resolve, reject) =>
-        new TextureLoader().load(`${import.meta.env.BASE_URL}/resource/textures/${name}.png`, resolve, null, reject)
+        new TextureLoader().load(`${import.meta.env.BASE_URL}resource/textures/${name}.png`, resolve, null, reject)
     )
 
 

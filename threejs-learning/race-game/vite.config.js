@@ -1,10 +1,10 @@
 import {defineConfig} from "vite";
 
 export default defineConfig({
-    build:{
+    build: {
         target: 'esnext',
-        rollupOptions:{
-            output:{
+        rollupOptions: {
+            output: {
                 manualChunks: {
                     'three': ['three']
                 }
