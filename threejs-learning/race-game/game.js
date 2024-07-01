@@ -1,12 +1,13 @@
 import {endPage, gamingPage, startPage} from "./models";
-import {scene} from "./scene";
+import {scene, setBgLight, fadeInBg, fadeOutBg} from "./scene";
 import {$, all, debounce, global, numAnimate, randomRange, updateFps, visualToWebglCoords, winSize} from "./util";
 import {getRandomBlock} from './models/block'
-import {ROAD_NUM, ROAD_WIDTH, roads, roadTexture} from "./models/road";
-import {fadeInBackground, fadeOutBackground, setBackground, orbitControls} from "./render";
+import {ROAD_HEIGHT, ROAD_NUM, ROAD_WIDTH, roads, roadTexture} from "./models/road";
+import {orbitControls} from "./render";
 import {cars} from "./models/car";
 import {defaultView, moveView, camera} from './camera'
 import {directionalLight} from "./models/light";
+import {AxesHelper, Vector3} from "three";
 
 
 const CHECK_INTERVAL = 1000 / 30
@@ -18,8 +19,7 @@ const GAME_STARTED = 0
 const GAME_GAMING = 1
 const GAME_STOPPED = 2
 
-const BLOCK_SPEED = 2
-const ROAD_SPEED = 0.01
+const SPEED = 2
 
 class Game {
     state = GAME_STARTED
@@ -62,15 +62,17 @@ class Game {
         this.blocks = []
     }
 
+    isTooMuchBlock() {
+    }
+
     onGenerateBlock() {
         const generate = () => {
-            const len = this.blocks.length
-            const avgSpeed = len ? this.blocks.reduce((s, v) => s + v.acceleration, 0) / len : 0
-
+            const {acceleration, speed, max} = this.roads
             if (!this.interaction.isReducing) {
                 const block = new Block()
 
-                block.acceleration = avgSpeed || block.acceleration
+                block.acceleration = acceleration
+                block.speed = speed
 
                 block.onMove()
 
@@ -81,7 +83,7 @@ class Game {
                     this.removeBlock(block)
                 })
             }
-            this.generateBlockTimer = setTimeout(generate, GENERATE_INTERVAL)
+            this.generateBlockTimer = setTimeout(generate, GENERATE_INTERVAL * (max / (Math.max(speed, SPEED))))
         }
         generate()
     }
@@ -306,6 +308,9 @@ class Interaction {
         this.game = game
 
         this.useOrbitControls()
+
+        this.closeGamingPage()
+        this.closeEndPage()
     }
 
     flags = {
@@ -319,7 +324,8 @@ class Interaction {
         gamingPage: $('gamingPage'),
         endPage: $('endPage'),
         score: all('.score'),
-        time: all('.time')
+        time: all('.time'),
+        gamingTip: $('gamingTip')
     }
 
     bounce(ele) {
@@ -401,12 +407,12 @@ class Interaction {
         }
         rot();
 
-        setBackground(0x000000)
+        setBgLight(0)
         this.doms.startPage.style.opacity = 1
 
 
         this.html(this.doms.score, (this.score = 0))
-        this.html(this.doms.time, `${(this.time = 0)} seconds`)
+        this.html(this.doms.time, `${(this.time = 0)}`)
     }
 
     closeStartPage() {
@@ -416,26 +422,42 @@ class Interaction {
 
     startTimer() {
         this.timer = setInterval(() => {
-            this.html(this.doms.time, `${++this.time} seconds`)
+            this.html(this.doms.time, `${++this.time}`)
         }, 1000)
     }
 
     stopTimer() {
         clearInterval(this.timer)
     }
+    showGamingTip() {
+        const tip = this.doms.gamingTip
 
+        tip.style.display = 'block'
+        requestAnimationFrame(() =>{
+            tip.classList.add('animation')
+        })
+
+        tip.ontransitionend = () => {
+            tip.classList.remove('animation')
+            tip.style.display = 'none'
+        }
+    }
     openGamingPage() {
-        fadeInBackground()
+        fadeInBg()
+        this.doms.gamingPage.style.opacity = 1
+
+        this.showGamingTip()
         this.startTimer()
     }
 
     closeGamingPage() {
+        this.doms.gamingPage.style.opacity = 0
         this.stopTimer()
     }
 
     openEndPage() {
         this.doms.endPage.style.opacity = 1
-        fadeOutBackground()
+        fadeOutBg()
     }
 
     closeEndPage() {
@@ -447,20 +469,19 @@ class Interaction {
             const z = {z: Roads.getVerticalCenterPosition(this.game.car.roadIndex)}
             moveView({...defaultView, ...(this.game.state === GAME_GAMING ? z : null)}, camera.position, orbitControls.update)
             moveView({x: 0, y: 0, ...z}, orbitControls.target, orbitControls.update)
-        }, 1000))
+        }, 1500))
     }
 }
 
 class Speed {
     constructor(speed) {
-        this._speed = speed
-        this.acceleration = this.speed / 10
-        this.max = speed * 2
-        this.min = speed / 2
+        this.speed = speed
+        this.acceleration = this.speed / 50
+        this.max = speed * 10
+        this.min = 0
 
         this.canAccelerate(true)
         this.canOverMax(false)
-        this.reset()
     }
 
     reset() {
@@ -525,7 +546,7 @@ class Block extends Speed {
     z = 0
     checked = false
 
-    constructor(speed = BLOCK_SPEED) {
+    constructor(speed = SPEED) {
         super(speed * global.animationRatio)
 
         this.object = getRandomBlock()
@@ -533,11 +554,7 @@ class Block extends Speed {
 
         const {height} = winSize()
         const ratio = randomRange(Block_OFFSET_MIN, Block_OFFSET_MAX)
-        this.set(height * ratio, Roads.getVerticalCenterPosition(randomRange(0, 4)))
-
-        this.max = this._speed * 10
-        this.min = this._speed
-        this.acceleration = this._speed / 200
+        this.set(height * ratio * 2, Roads.getVerticalCenterPosition(randomRange(0, 4)))
 
         this.reset()
     }
@@ -561,7 +578,7 @@ class Block extends Speed {
                     from: 0,
                     to: 1,
                     onStep: v => o.material.opacity = v,
-                    step: 500
+                    step: 200
                 })
             }
         })
@@ -614,8 +631,8 @@ class Car {
     fitCar() {
         this.roadIndex = Math.floor(ROAD_NUM / 2)
         this.object.position.set(0, 0, 0)
-        this.object.rotation.set(0, Math.PI / 180 * 90, 0)
-
+        this.object.rotation.set(0, Math.PI / 2, 0)
+        // this.object.add(new AxesHelper(50))
         Interaction.moveView(this.roadIndex)
     }
 
@@ -663,15 +680,17 @@ class Car {
 }
 
 class Roads extends Speed {
+    x = 0
 
-    constructor(roads, speed = ROAD_SPEED) {
+    constructor(roads, speed = SPEED) {
         super(speed * global.animationRatio)
         this.object = roads
-
-        this.max = this._speed * 3
-        this.acceleration = this._speed / 500
-
         this.reset()
+        this.onDeprecated(() => {
+            const holder = this.object.children[0].removeFromParent()
+            holder.position.y = this.object.children[this.object.children.length - 1].position.y + ROAD_HEIGHT
+            this.object.add(holder)
+        })
 
     }
 
@@ -683,12 +702,39 @@ class Roads extends Speed {
 
     onMove() {
         this.forward(speed => {
-            roadTexture.offset.y -= speed
+            this.set(this.x - speed)
+
         })
+    }
+
+    set(x) {
+        this.object.position.setX(x)
+        this.x = x
     }
 
     offMove() {
         this.halt()
+    }
+
+    onDeprecated(callback) {
+        this.deprecated = setInterval(() => {
+            const {x} = this.object.children[0].getWorldPosition(new Vector3())
+            if (x < 0 && Math.abs(x) > winSize().height) {
+                callback && callback()
+            }
+        }, DEPRECATE_INTERVAL)
+    }
+
+    restoreRoad() {
+        const cds = this.object.children
+        for (let i = 0, len = this.object.children; i < len; i++) {
+            cds[i].position.y = i * ROAD_HEIGHT
+        }
+    }
+
+    reset() {
+        super.reset()
+        this.restoreRoad()
     }
 }
 

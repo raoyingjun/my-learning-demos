@@ -13,7 +13,7 @@
     ],
     "rotation": [
       0,
-      0,
+      60,
       0
     ],
     "filename": "rocks/rock_01"
@@ -46,7 +46,7 @@
     ],
     "rotation": [
       0,
-      0,
+      30,
       0
     ],
     "position": [

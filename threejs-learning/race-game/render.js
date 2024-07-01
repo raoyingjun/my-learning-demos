@@ -39,23 +39,7 @@ const renderToBody = () => {
     document.body.append(renderElement)
 }
 
-const setBackground = (color) => renderer.setClearColor(color)
-
-const FADE_STEP = 256;
-const fade = (from, to) => {
-    numAnimate({
-        from,
-        to,
-        onStep: v => setBackground(rgbToHex(...Array(3).fill(Math.floor(v)))),
-        step: FADE_STEP
-    })
-}
-
-const fadeInBackground = (from = 0, to = 255) => fade(from, to)
-const fadeOutBackground = (from = 255, to = 0) => fade(from, to)
-
 export {
     useRefresh, useResize, renderToBody,
-    setBackground, fadeInBackground, fadeOutBackground,
     renderer, renderElement, orbitControls
 }

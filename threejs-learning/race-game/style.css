@@ -30,10 +30,11 @@ p {
 }
 
 .animation {
-    transition: 3000ms opacity;
+    transition: 1500ms opacity;
 }
 
-.invisible {
+#gamingTip.animation {
+    transition: opacity 1500ms 5000ms;
     opacity: 0;
 }
 
@@ -44,7 +45,12 @@ p {
 .mr-24 {
     margin-right: 24px;
 }
-
+.mt-15p {
+    margin-top: 15%;
+}
+.mt-25p {
+    margin-top: 25%;
+}
 .tx-black {
     color: black;
 }
