@@ -194,6 +194,7 @@ class Game {
     }
 
     registerController() {
+        let isDeced = false
         this.controller = ({key, type}) => {
             switch (key) {
                 case ' ':
@@ -230,58 +231,27 @@ class Game {
                 case  'ArrowDown':
                     const isArrowUp = key === 'ArrowUp'
                     const isKeydown = type === 'keydown'
+                    const isAcc = isKeydown && isArrowUp
+                    const isDec = isKeydown && !isArrowUp
+                    const ratio = isAcc ? 1 : isDec ? isDeced ? -1 : -2 : isDeced ? -0.5 : -1
 
-                    this.interaction.isReducing = true
-                    if (isKeydown) {
-                        if (isArrowUp) {
-                            this.interaction.isReducing = false
-                            const isGltZero = this.roads.acceleration >= 0
-                            this.roads.acceleration *= isGltZero ? 1 : -1
-                            this.roads.updateSpeed(this.roads.acceleration)
-
-                            for (const block of this.blocks) {
-                                const isGltZero = block.acceleration >= 0
-                                block.acceleration *= isGltZero ? 1 : -1
-                                block.updateSpeed(block.acceleration)
-                            }
-                        } else {
-                            const isGltZero = this.roads.acceleration >= 0
-                            if (!this.roads.isRatioAcceleration) {
-                                this.roads.acceleration *= (isGltZero ? -10 : 10) * global.animationRatio
-                                this.roads.isRatioAcceleration = true
-                            }
-                            this.roads.updateSpeed(this.roads.acceleration)
-
-                            for (const block of this.blocks) {
-                                const isGltZero = block.acceleration >= 0
-                                if (!block.isRatioAcceleration) {
-                                    block.acceleration *= (isGltZero ? -10 : 10) * global.animationRatio
-                                    block.isRatioAcceleration = true
-                                }
-                                block.updateSpeed(block.acceleration)
-                            }
-                        }
-                    } else {
-                        const isGltZero = this.roads.acceleration >= 0
-                        this.roads.acceleration *= isGltZero ? -1 : 1
-                        this.roads.updateSpeed(this.roads.acceleration)
-
-                        for (const block of this.blocks) {
-                            const isGltZero = block.acceleration >= 0
-                            block.acceleration *= isGltZero ? -1 : 1
-                            block.updateSpeed(block.acceleration)
-                        }
+                    if(isDec && !isDeced) {
+                        isDeced = true
                     }
-                    if (this.roads.isRatioAcceleration) {
-                        this.roads.acceleration /= 10 * global.animationRatio
-                        this.roads.isRatioAcceleration = false
+                    if (!isDec && isDeced) {
+                        isDeced = false
                     }
+
+                    this.roads.acceleration = Math.abs(this.roads.acceleration) * ratio
+                    this.roads.updateSpeed(this.roads.acceleration)
+
                     for (const block of this.blocks) {
-                        if (block.isRatioAcceleration) {
-                            block.acceleration /= 10 * global.animationRatio
-                            block.isRatioAcceleration = false
-                        }
+                        block.acceleration = Math.abs(block.acceleration) * ratio
+                        block.updateSpeed(block.acceleration)
                     }
+
+                    this.interaction.isReducing = !isAcc
+
                     break;
                 default:
                     break;
@@ -429,11 +399,12 @@ class Interaction {
     stopTimer() {
         clearInterval(this.timer)
     }
+
     showGamingTip() {
         const tip = this.doms.gamingTip
 
         tip.style.display = 'block'
-        requestAnimationFrame(() =>{
+        requestAnimationFrame(() => {
             tip.classList.add('animation')
         })
 
@@ -442,6 +413,7 @@ class Interaction {
             tip.style.display = 'none'
         }
     }
+
     openGamingPage() {
         fadeInBg()
         this.doms.gamingPage.style.opacity = 1
@@ -476,7 +448,7 @@ class Interaction {
 class Speed {
     constructor(speed) {
         this.speed = speed
-        this.acceleration = this.speed / 50
+        this.acceleration = this.speed / 100
         this.max = speed * 10
         this.min = 0
 
