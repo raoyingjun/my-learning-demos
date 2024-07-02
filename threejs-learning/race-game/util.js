@@ -46,8 +46,10 @@ const loading = (progress, url) => {
     progressElement.value = loaded
 
 }
+let propsLen = 7
+let propsIdx = 0
 const loaded = () => {
-    if (all('progress').length >= 7) {
+    if (++propsIdx >= propsLen) {
         document.body.removeChild($('tempMask'))
     }
 }
