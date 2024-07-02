@@ -30,12 +30,7 @@ p {
 }
 
 .animation {
-    transition: 1500ms opacity;
-}
-
-#gamingTip.animation {
-    transition: opacity 1500ms 5000ms;
-    opacity: 0;
+    transition: opacity 1500ms;
 }
 
 .al-end {

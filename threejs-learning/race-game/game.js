@@ -235,7 +235,7 @@ class Game {
                     const isDec = isKeydown && !isArrowUp
                     const ratio = isAcc ? 1 : isDec ? isDeced ? -1 : -2 : isDeced ? -0.5 : -1
 
-                    if(isDec && !isDeced) {
+                    if (isDec && !isDeced) {
                         isDeced = true
                     }
                     if (!isDec && isDeced) {
@@ -403,15 +403,10 @@ class Interaction {
     showGamingTip() {
         const tip = this.doms.gamingTip
 
-        tip.style.display = 'block'
-        requestAnimationFrame(() => {
-            tip.classList.add('animation')
-        })
-
-        tip.ontransitionend = () => {
-            tip.classList.remove('animation')
-            tip.style.display = 'none'
-        }
+        tip.style.opacity = 1
+        setTimeout(() =>{
+                tip.style.opacity = 0
+        }, 5000)
     }
 
     openGamingPage() {
